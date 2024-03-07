@@ -36,20 +36,6 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// Search route
-// app.get('/search', (req, res) => {
-//   const query = req.query.q.toLowerCase();
-
-//   // Filter recipes based on query
-//   const filteredRecipes = recipes.filter(recipe => recipe.name.toLowerCase().includes(query));
-
-//   if (filteredRecipes.length) {
-//     res.json(filteredRecipes);
-//   } else {
-//     res.status(404).send('No matching recipes found.');
-//   }
-// });
-
 // Homepage route
 app.get("/", (req, res) => {
     res.redirect('home');

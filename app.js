@@ -92,16 +92,6 @@ app.post('/search', (req, res) => {
     })
     .catch((err) =>console.error(err));
   console.log(req.body);
-  // const query = req.query.q.toLowerCase();
-
-  // // Filter recipes based on query
-  // const filteredRecipes = Item.filter(recipe => recipe.name.toLowerCase().includes(query));
-
-  // if (filteredRecipes.length) {
-  //   res.json(filteredRecipes);
-  // } else {
-  //   res.status(404).send('No matching recipes found.');
-  // }
 })
 
 // Hall page route

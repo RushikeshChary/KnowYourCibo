@@ -7,30 +7,16 @@ document.addEventListener("mousemove", function (e) {
 });
 
 
-//Now, code for tab changing.
+document.getElementById('section1').style.display = "block";
 
-// const tabItems = document.querySelectorAll(".button-container-1 .button-container-2");
-// const tabContentItems = document.querySelectorAll(".tab-content-item");
+function showSection(sectionId) {
+    // Hide all sections
+    var sections = document.getElementsByClassName("section");
+    for (var i = 0; i < sections.length; i++) {
+        sections[i].style.display = "none";
+    }
 
-// // Select tab content
-// function selectItem(e) {
-//   removeBorder();
-//   removeShow();
-//   // Add border to current tab
-//   this.classList.add("tab-border");
-//   // Grab content item from DOM
-//   const tabContentItem = document.querySelector(`#${this.id}-content`);
-//   // Add show class
-//   tabContentItem.classList.add("show");
-// }
-
-// function removeBorder() {
-//   tabItems.forEach(item => item.classList.remove("tab-border"));
-// }
-
-// function removeShow() {
-//   tabContentItems.forEach(item => item.classList.remove("show"));
-// }
-
-// // Listen for tab click
-// tabItems.forEach(item => item.addEventListener("click", selectItem));
+    // Show the selected section
+    var section = document.getElementById(sectionId);
+    section.style.display = "block";
+}

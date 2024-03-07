@@ -95,8 +95,8 @@ app.post('/search', (req, res) => {
 })
 
 // Hall page route
-app.get("/hall", (req, res) => {
-    res.render('hall');
+app.get("/hall-2", (req, res) => {
+    res.render('hall-2');
 });
 
 // Profile page route

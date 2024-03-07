@@ -83,12 +83,15 @@ app.get('/find', (req, res) => {
     .catch((err) =>console.error(err));
 })
 
-app.post('/search', (req, res) => {
+app.get('/searchPage', (req, res) => {
+  res.render('searchPage',{items: []});
+})
+app.post('/searchPage', (req, res) => {
   const search = req.body.search;
   // console.log(req.query.q.toLowerCase());
   Item.find({$or: [ { name: search }, { hall : search }, {category : search} ] } )
     .then((result) =>{
-      res.render('search', {items: result});
+      res.render('searchPage', {items: result});
     })
     .catch((err) =>console.error(err));
   console.log(req.body);

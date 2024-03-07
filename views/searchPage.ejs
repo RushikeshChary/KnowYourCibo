@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+  <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js"></script>
+  <title>KnowYourCibo</title>
+  <link rel="stylesheet" href="searchStyle.css">
+  <!-- <script src="script.js"></script> -->
+</head>
+
+
+
+<main>
+<!-- social media -->
+  <div class="social-media">
+        <ul>
+          <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
+          <li><i class="fa fa-instagram" aria-hidden="true"></i></li>
+          <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
+        </ul>
+  </div>
+
+  <!-- sidestrip -->
+  <div class="side-strip">
+        <span>EAT RATE CURATE</span>
+  </div>
+
+  <!-- body -->
+
+  <div class="cross">
+    <a href="/home">
+    <span class="close">&times;</span>
+    </a>
+  </div>
+
+
+  <div class="search-container">
+  <form action="/searchPage" method="POST">
+    <input type="text" placeholder="Search..." name="search" >
+    <button type="submit"><i class="fa fa-search"></i></button>
+  </form>
+  </div>
+
+
+
+
+<section class="section">
+
+  <% if (items.length > 0) { %> <% items.forEach(item => { %>
+  <a href="/<%= item.hall %>">
+    <div class="item-container">
+      <img src="searchImages/dosa.jpeg" alt="Paneer" class="item-image">
+      <div class="item-details">
+        <h2 class="item-name">Item name: <%= item.name %></h2>
+        <h2 class="hall-name">Hall name: <%= item.hall %></h2>
+      </div>
+    </div>
+  </a>
+  <% }) %> <% } else { %>
+  <p>There are no items to matching.</p>
+  <% } %>
+
+
+
+
+
+
+</section>
+
+
+
+
+
+
+<!-- transitions -->
+  <script>
+
+    TweenMax.staggerFrom(".social-media ul li", 1.2, {
+    delay: 0.30,
+    opacity: 0,
+    y: 20,
+    ease: Power3.easeInOut
+  }, 0.08);
+
+  TweenMax.staggerFrom(".side-strip", 1.2, {
+  delay: 0.30,
+  opacity: 0,
+  y: 20,
+  ease: Power3.easeInOut
+}, 0.08);
+
+    TweenMax.staggerFrom(".close", 1.2, {
+    delay: 0.30,
+    opacity: 0,
+    x: -20,
+    ease: Power3.easeInOut
+    }, 0.08);
+
+    TweenMax.staggerFrom(".search-container", 1.2, {
+    delay: 0.35,
+    opacity: 0,
+    x: -20,
+    ease: Power3.easeInOut
+    }, 0.08);
+
+    TweenMax.staggerFrom(".section", 1.2, {
+    delay: 0.40,
+    opacity: 0,
+    x: -20,
+    ease: Power3.easeInOut
+    }, 0.08);
+
+
+
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
+:root {
+  --backgroundcolor: #FFF7F1;
+  --text-color: #D37676;
+  --hover-color: #776B5D;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: 'Montserrat';
+  font-size: 12px;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  scroll-behavior: smooth;
+  background-color: var(--backgroundcolor);
+  color: var(--text-color);
+  background-size: cover;
+}
+
+main{
+  display: grid;
+}
+
+ul li{
+  list-style: none;
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+/* cursor */
+#cursor {
+   position: absolute;
+   height: 20px;
+   width: 20px;
+   border: 2px solid black;
+   box-sizing: border-box;
+   transition: 0.2s;
+   transform: translate(-50%, -50%);
+   border-radius: 50%;
+   animation: cursorAnim .5s infinite alternate;
+   pointer-events: none;
+   z-index: 1;
+ }
+
+#cursor::after {
+    content: "";
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    border: 5px solid var(--text-color);
+    border-radius: 50%;
+    top: -5px;
+    left: -5px;
+    animation: cursorAnim2 .5s infinite alternate;
+ }
+
+/* cursor animations */
+ @keyframes cursorAnim {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(.7);
+    }
+ }
+
+ @keyframes cursorAnim2 {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(.4);
+    }
+ }
+
+ @keyframes cursorAnim3 {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(3);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+ }
+/* cursor animation ends */
+
+
+
+.search :hover{
+  padding: 8px;
+  color: var(--hover-color);
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s ease-in;
+}
+
+
+/* Main heading KYC */
+.logo {
+  font-size: 40px;
+  color: var(--text-color);
+  font-family: Monoton;
+}
+
+/* social media */
+.social-media {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+}
+
+.social-media ul li {
+      list-style: none;
+      color: #944E63;
+      margin-top: 20px;
+      margin-left:  20px;
+      font-size: 25px;
+}
+
+.social-media ul li :hover{
+  padding: 2px;
+  color: var(--hover-color);
+  font-size: 27px;
+  font-weight: 600;
+  transition: 0.2s ease-in;
+}
+
+/* sidestrip */
+.side-strip {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: -4em;
+      transform: rotate(90deg);
+      color: #944E63;
+      letter-spacing: 4px;
+      font-size: 17px;
+      font-weight: 700;
+}
+
+/* body */
+body{
+  background-image: url("searchImages/back.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 70%;
+}
+
+.section{
+  margin: 60px;
+  background-color: var(--backgroundcolor);
+  height: 80vh;
+  width: 90vw;
+  opacity: 95%;
+  margin-bottom: 0px;
+  margin-top: 20px;
+  scroll-behavior: smooth;
+  overflow-y: auto;
+}
+
+.cross{
+  margin: 10px;
+  justify-content: center;
+  text-align: center;
+}
+
+.close{
+  padding: 10px;
+  text-align: center;
+  font-size: 35px;
+  color: black;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.close:hover {
+  color: #944E63;
+  font-size: 40px;
+  transition: 0.2s ease-in;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.search-container .fa{
+  font-size: 25px;
+  color: black;
+}
+
+.search-container .fa:hover{
+  color: #944E63;
+  transition: 0.2s ease-in;
+}
+
+input[type="text"] {
+  padding: 8px;
+  border: 2px solid var(--text-color);
+  border-radius: 21px;
+  margin-right: 10px;
+  width: 30vw;
+  height: 42px;
+}
+
+.section .item-container{
+  display: flex;
+  margin: 20px;
+  margin-top: 10px;
+  margin-bottom: 0;
+  padding: 10px;
+  height: 24vh;
+  background-color: var(--text-color);
+  color: var(--backgroundcolor);
+}
+
+.section .item-container:nth-child(1){
+  margin-top: 20px;
+}
+
+.section .item-container:nth-last-child(1){
+  margin-bottom: 10px;
+}
+
+.section .item-container img{
+  height: 21vh;
+  width: 23vh;
+}
+
+.section .item-container .item-details{
+  margin: 10px;
+  padding: 10px;
+}
+
+.section .item-container .item-details h2{
+  font-size: 22px;
+}
+
+.section .item-container .item-details h3{
+  font-size: 17px;
+}

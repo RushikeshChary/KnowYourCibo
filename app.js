@@ -44,7 +44,7 @@ app.get('/home', (req, res) => {
     res.render('home');
 })
 
-//Database check
+//Database check to add items to database.
 app.post('/check', (req, res) => {
   const item = new Item({
     name: 'Paneer kabab',
@@ -75,9 +75,13 @@ app.get('/searchPage', (req, res) => {
 app.post('/searchPage', (req, res) => {
   const search = req.body.search;
   // console.log(req.query.q.toLowerCase());
+  // db.collection.find({ field: { $regex: /pattern/i } })
+  // var regexPattern = new RegExp(search, "i");
+  // Item.find({$or: [ { name: { $regex: regexPattern } }, { hall : { $regex: regexPattern } }, {category : { $regex: regexPattern } } ] } )
   Item.find({$or: [ { name: search }, { hall : search }, {category : search} ] } )
     .then((result) =>{
       res.render('searchPage', {items: result});
+      console.log(result);
     })
     .catch((err) =>console.error(err));
   console.log(req.body);

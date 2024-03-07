@@ -171,6 +171,8 @@ body{
   margin-top: 20px;
   scroll-behavior: smooth;
   overflow-y: auto;
+  justify-content: center;
+  align-items: center;
 }
 
 .cross{
@@ -255,4 +257,8 @@ input[type="text"] {
 
 .section .item-container .item-details h3{
   font-size: 17px;
+}
+
+.section p{
+  text-align: center;
 }

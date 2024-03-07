@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- These preconnect links optimize the loading of external resources, such as Google Fonts. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <title>Hall Page</title>
+    <!-- Importing several useful features -->
+    <!-- 1. Fonts and icons-->
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
+    <!-- 2. Animation effects like parallax errors -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+    <!-- 3. Linking main css file. -->
+    <link rel="stylesheet" href="hallStyle.css" />
+    <!-- The following line is make a custom cursor effects. -->
+    <div id="cursor"></div>
+  </head>
+
+  <body>
+    <header class="wrapper">
+      <div class="nav">
+        <div class="logo">KnowYourCibo</div>
+
+        <div class="menu-links">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Restaurants</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Feedback</a></li>
+            <li><a href="#">Contact us</a></li>
+          </ul>
+        </div>
+
+        <div class="search">
+          <label for="fa fa-search">Search</label>
+          <i class="fa fa-search"></i>
+        </div>
+        <div class="account"><a href="#">my account</a></div>
+      </div>
+    </header>
+
+    <main>
+
+      
+      <div class="button-container1">
+        <button>ALL</button>
+        <button>VEG SABJI</button>
+        <button>DAAL & ALOO</button>
+        <button>FAST FOOD</button>
+        <button>PARATHA & ROTI</button>
+        <button>CHICKEN</button>
+      </div>
+      
+      <div class="button-container2">
+        <button>BIRYANI</button>
+        <button>CHICKEN TANDOOR</button>
+        <button>DOSA</button>
+        <button>MAGGI</button>
+        <button>EGG</button>
+        <button>BEVERAGES</button>
+      </div>
+
+      <div class="social-media">
+        <ul>
+          <li>
+            <!-- Add the google maps share link here and make target to _blank to open gmaps in another tab. -->
+            <a href="https://maps.app.goo.gl/ffMStQCvLY33yZqB9" target="_blank">
+              <i class="fa fa-map-marker" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-instagram" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="side-strip">
+        <span>EAT RATE CURATE</span>
+      </div>
+
+      <div class="mosaic-container">
+        <div class="tile">Container 1</div>
+        <div class="tile">Container 2</div>
+        <div class="tile">Container 1</div>
+        <div class="tile">Container 2</div>
+        <div class="tile">Container 1</div>
+        <div class="tile">Container 2</div>
+        <div class="tile">Container 1</div>
+        <div class="tile">Container 2</div>
+        <div class="tile">Container 1</div>
+        <div class="tile">Container 2</div>
+        <div class="tile">Container 1</div>
+        <div class="tile">Container 2</div>
+        <div class="tile">Container 1</div>
+        <div class="tile">Container 2</div>
+        <div class="tile">Container 1</div>
+        <div class="tile">Container 2</div>
+        <div class="tile">Container 1</div>
+        <div class="tile">Container 2</div>
+        <div class="tile">Container 1</div>
+        <div class="tile">Container 2</div>
+      </div>
+    </main>
+
+    <footer></footer>
+    <script src="hallScript.js"></script>
+  </body>
+</html>

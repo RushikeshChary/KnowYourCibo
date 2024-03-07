@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+  <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js"></script>
+  <title>KnowYourCibo</title>
+  <link rel="stylesheet" href="homeStyle.css">
+  <script src="homeScript.js" async></script>
+</head>
+
+<!-- loader page -->
+<div class="temp"></div>
+<div class="first-block"></div>
+<div class="second-block"></div>
+<div class="loader">
+      <ul>
+            <li>K</li>
+            <li>N</li>
+            <li>O</li>
+            <li>W</li>
+            <li>Y</li>
+            <li>O</li>
+            <li>U</li>
+            <li>R</li>
+            <li>C</li>
+            <li>I</li>
+            <li>B</li>
+            <li>O</li>
+      </ul>
+</div>
+
+<body>
+
+<!-- nav bar -->
+<header class="wrapper">
+  <div >
+    <div class="nav">
+      <div class="logo">KnowYourCibo</div>
+
+      <div class="menu-links">
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Restaurants</a></li>
+          <li><a href="profile">Profile</a></li>
+          <li><a href="#">Feedback</a></li>
+          <li><a href="#">Contact us</a></li>
+        </ul>
+      </div>
+
+      <div class="search"><i class="fa fa-search"></i>
+        <form action="/search" method="POST">
+          <label for="searchInput">Search:</label>
+          <input type="text" id="searchInput" name="search" placeholder="Search">
+          <button type="submit">Search</button>
+        </form>
+      </div>
+      <div class="account"><a href="#">my account</a></div>
+
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- social media -->
+  <div class="social-media">
+        <ul>
+              <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
+              <li><i class="fa fa-instagram" aria-hidden="true"></i></li>
+              <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
+        </ul>
+  </div>
+
+  <!-- sidestrip -->
+  <div class="side-strip">
+        <span>EAT RATE CURATE</span>
+  </div>
+
+  <!-- body -->
+  <div class="container1">
+    <div class="tile" id="card1">
+        <img src="homeImages/biryani.jpeg">
+    </div>
+    <div class="tile" id="card2">
+        <img src="homeImages/burger.jpeg">
+    </div>
+    <div class="tile" id="card3">
+        <img src="homeImages/dosa.jpeg">
+    </div>
+    <div class="tile" id="card4">
+        <img src="homeImages/pavb.jpeg">
+    </div>
+    <div class="tile">
+        <h3>Embark on a culinary journey with our honest and insightful
+          food reviews. Whether you're craving comfort food or
+          seeking gastronomic delights, find your next foodie destination here.</h3>
+    </div>
+    <div class="tile" id="card5">
+      <img src="homeImages/pavb.jpeg">
+    </div>
+    <div class="tile" id="card6">
+      <img src="homeImages/dosa.jpeg">
+    </div>
+    <!-- rotating text -->
+  <div class="tile">
+    <p id="text1"></p>
+  </div>
+</div>
+
+  <!-- bottom bar -->
+  <!-- <section class="bottom-bar">
+        <div class="container">
+              <div class="row">
+                    <div class="col-lg-4">
+                      <h6>Contact Us</h6>
+                      <p>Phone: <a href="tel:+1234567890">+91 7842443888</a></p>
+                      <p>Email: <a href="mailto:info@example.com">vijaymahanthi0520@gmail.com</a></p>
+                      <p>Instagram: <a href="https://instagram.com/yourusername" target="_blank">@knowyourcibo</a></p>
+                    </div>
+              </div>
+        </div> -->
+
+        <!-- copyright -->
+        <!-- <div class="copyright">© 2024 by KnowYourCibo. All rights reserved.</div>
+  </section> -->
+  <%- include("./partials/footer.ejs")%>
+</main>
+
+
+<!-- transitions -->
+  <script>
+
+    TweenMax.from(".logo", 1, {
+      delay: 5,
+      opacity: 0,
+      x: -20,
+      ease: Expo.easeInOut
+    })
+
+    TweenMax.staggerFrom(".menu-links ul li", 1, {
+      delay: 5.2,
+      opacity: 0,
+      x: -20,
+      ease: Power3.easeInOut
+    }, 0.08)
+
+    TweenMax.from(".search", 1, {
+      delay: 5.5,
+      opacity: 0,
+      x: -20,
+      ease: Expo.easeInOut
+    })
+
+    TweenMax.from(".account", 1, {
+      delay: 5.6,
+      opacity: 0,
+      x: -20,
+      ease: Expo.easeInOut
+    })
+
+    TweenMax.staggerFrom(".social-media ul li", 1, {
+    delay: 5.75,
+    opacity: 0,
+    y: 20,
+    ease: Power3.easeInOut
+  }, 0.08);
+
+    TweenMax.from(".bottom-bar", 1, {
+      delay: 5.7,
+      opacity: 0,
+      x: -20,
+      ease: Expo.easeInOut
+    })
+
+    TweenMax.from(".copyright", 1, {
+      delay: 5.7,
+      opacity: 0,
+      x: -20,
+      ease: Expo.easeInOut
+    })
+
+    TweenMax.staggerFrom(".side-strip", 1, {
+    delay: 5.8,
+    opacity: 0,
+    y: 20,
+    ease: Power3.easeInOut
+  }, 0.08);
+
+    TweenMax.from(".tile:nth-child(1)", 1, {
+    delay: 5.75,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+  })
+    TweenMax.from(".tile:nth-child(2)", 1, {
+    delay: 5.8,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+  })
+    TweenMax.from(".tile:nth-child(3)", 1, {
+    delay: 5.85,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+    })
+    TweenMax.from(".tile:nth-child(4)", 1, {
+    delay: 5.9,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+    })
+    TweenMax.from(".tile:nth-child(5)", 1, {
+    delay: 5.75,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+    })
+    TweenMax.from(".tile:nth-child(6)", 1, {
+    delay: 5.8,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+    })
+
+    TweenMax.from(".tile:nth-child(7)", 1, {
+    delay: 5.85,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+    })
+    TweenMax.from(".tile:nth-child(8)", 1, {
+    delay: 5.9,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+    })
+  </script>
+
+</body>
+
+</html>

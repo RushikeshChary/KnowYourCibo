@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="left-content">
+            <h1>KnowYourCibo</h1>
+        </div>
+        <nav class="navigation">
+            <a href="#">Home</a>
+            <a href="#">Restaurant</a>
+            <a href="#">Profile</a>
+            <a href="#">Feedback</a>
+            <a href="#">Contact Us</a>
+        </nav>
+        <div class="right-content">
+            <input type="text" placeholder="Search">
+            <button>Login</button>
+        </div>
+    </header>
+
+    <section class="profile-section">
+        <img src="C:\Users\RAJ VINAYAK MEENA\Downloads\foodimage.jpg" >
+        <div class="profile-container">
+            <div class="profile-card">
+                <h2>Edit Profile</h2>
+                <form id="edit-profile-form">
+                    <label for="name">Name:</label>
+                    <div class="name-fields">
+                        <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+                        <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+                    </div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone">
+                    <label for="password">Password:</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" required>
+                        <p class="password-validation">Use 8 or more characters with a mix of letters, numbers, and symbols.</p>
+                    </div>
+                    <button type="submit">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+

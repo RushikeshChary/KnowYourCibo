@@ -62,8 +62,15 @@
 
       <div class="search"><i class="fa fa-search"></i></div>
 
-      <div class="account"><a href="#">my account</a></div>
-
+       <div class="account">
+        <% if (isLoggedIn) { %>
+            <span>Hello, <%= userFirstName %>!</span>
+            <a href="/logout">Logout</a>
+          <% } else { %>
+            <a href="/login">Login</a>
+          <% } %>
+      </div>
+      
     </div>
   </div>
 </header>

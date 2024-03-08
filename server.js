@@ -11,6 +11,9 @@ const session = require("express-session");
 const Item = require("./models/item");
 const User = require("./models/user");
 
+var otp_global ;
+var otp_expires ;
+
 const app = express();
 
 const Port = process.env.PORT || 3000;
@@ -89,7 +92,7 @@ let transporter = nodemailer.createTransport({
 
 
 //Database check to add items to database.
-app.get('/check',checkLogin, (req, res) => {
+app.get('/check', (req, res) => {
   const user = new User({
     firstName: 'Bhavana',
     lastName: 'Denchanadula',
@@ -97,7 +100,7 @@ app.get('/check',checkLogin, (req, res) => {
     password: 'bhanu',
     no_reviews: 0,
     no_ratings: 0,
-    fav_items: [],
+    fav_items: ['65e8718f585fbfb2a6af90a3','65e86f1d70a3f056073e13a3'],
   })
   user.save()
     .then((result) =>{
@@ -161,7 +164,8 @@ app.post("/send-otp", async (req, res) => {
   const { email } = req.body;
   const otp = crypto.randomInt(100000, 999999).toString();
   const otpExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
-
+  otp_global = otp;
+  otp_expires = otpExpires;
   try {
     await User.findOneAndUpdate(
       { email },
@@ -181,10 +185,10 @@ app.post("/send-otp", async (req, res) => {
   }
 });
 
-app.post("/verify-otp", async (req, res) => {
+app.post("/verify-otp", (req, res) => {
   const { email, otp } = req.body;
-  const user = await User.findOne({ email });
-  if (user && user.otp === otp && user.otpExpires > new Date()) {
+  // const user = await User.findOne({ email });
+  if (otp_global === otp) {
     res.json({ success: true, message: "OTP verified successfully" });
   } else {
     res.status(400).json({ success: false, error: "Invalid or expired OTP" });
@@ -257,14 +261,19 @@ app.get("/searchPage", (req, res) => {
   res.render("searchPage", { items: [] });
 });
 
-app.post("/searchPage", (req, res) => {
+app.post("/searchPage", async (req, res) => {
   const search = req.body.search;
-  var regexPattern = new RegExp(search, "i");
-  Item.find({ $or: [{ name: { $regex: regexPattern } }, { hall: search }, { category: search }] })
-    .then((result) => {
-      res.render("searchPage", { items: result });
-    })
-    .catch((err) => console.error(err));
+  if(search.length > 0){
+    var regexPattern = new RegExp(search, "i");
+    await Item.find({ $or: [{ name: { $regex: regexPattern } }, { hall: search }, { category: search }] })
+      .then((result) => {
+        res.render("searchPage", { items: result });
+      })
+      .catch((err) => console.error(err));
+    }
+    else{
+      res.render("searchPage", { items: [] });
+    }
   console.log(req.body);
 });
 
@@ -274,12 +283,22 @@ app.get("/hall-2", (req, res) => {
 });
 
 // Profile page route
-app.get("/profile", (req, res) => {
+app.get("/profile", async (req, res) => {
   // const id = req.session.userId;
-  const id = '65eacd303c0674a83048c215';
-  User.findById({_id: id})
-    .then((result) => {
-      res.render("profile",{info:result, fav : result.fav_items});
+  const id = '65eadd97673a7bf0caf2dc26';
+  await User.findById({_id: id})
+    .then( async (result) => {
+      const favArray = result.fav_items;
+      if(favArray.length > 0){
+        await Item.find({ _id: { $in: favArray } })
+          .then(foundItems => {
+            console.log('Found items:', foundItems);
+            res.render("profile",{info:result, items : foundItems});
+          });
+      }
+      else{
+        res.render("profile",{info:result, items : []});
+      }
       console.log(result);
     })
 });

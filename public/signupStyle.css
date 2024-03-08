@@ -1,0 +1,81 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  body {
+    color: white !important;
+  }
+
+  .container {
+    background-image: url("searchImages/back.jpeg");
+  height: 100vh;
+  width: 100% !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+  
+  .w-50 {
+    width: 35% !important;
+    position: absolute !important;
+    top: 100px;
+    border: 2px solid cadetblue !important;
+    border-radius: 70px;
+    left: 35%;
+  }
+  .name-group {
+    display: flex; /* This enables Flexbox for the container */
+    justify-content: space-between; /* This will space the child elements evenly */
+    gap: 20px; /* Optional: adds space between the two input fields */
+}
+
+.mb-3 {
+    flex: 1; /* This allows each .mb-3 to grow and take up equal space within the container */
+}
+
+  
+  .form-label {
+    font-weight: 700;
+  }
+  .btn-link {
+    background: none;
+    border: none;
+    color: white; /* Hyperlink color */
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    margin: 0;
+    font-size: inherit; /* The button font size will inherit from its parent container */
+    font-family: inherit;
+    margin-left:48%; /* The button font family will inherit from its parent container */
+}
+
+.btn-link:hover, .btn-link:focus {
+    color: rgb(49, 171, 118); /* Slightly darker blue on hover/focus, similar to a hyperlink */
+    text-decoration: none; /* Optionally remove the underline on hover/focus */
+}
+
+/* Upon clicking, you want to change the color to black */
+/* You'll add this class dynamically with JavaScript */
+.btn-link-black {
+    color: rgb(205, 19, 19) !important; /* Using !important to ensure it overrides any other color styling */
+}
+
+  
+  
+  .btn-success {
+    background-color: rgb(0, 0, 0) !important;
+    border: none !important;
+    width: 100px;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .w-50 {
+        width: 100% !important;
+        left: 0 !important;
+    }
+  }
+  

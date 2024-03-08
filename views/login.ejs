@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Login Page</title>
+    <link href="loginStyle.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <form class="w-50 mx-auto py-5 shadow p-4" action="/login" method="POST">
+        <h3 class="text-white">Login</h3><hr>
+        <% if (isLoggedIn) { %>
+            <div class="alert alert-success" role="alert">
+                Welcome back, <%= userFirstName %>! You are already logged in.
+                <a href="/logout" class="btn btn-primary">Log Out</a>
+            </div>
+        <% } else { %>
+            <form class="w-50 mx-auto py-5 shadow p-4" action="/login" method="POST">
+                <h3 class="text-white">Login In</h3><hr>
+                <% if (errorMessage && errorMessage.length > 0) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= errorMessage %>
+                    </div>
+                <% } %>
+            <% } %>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <div class="mb-3 d-flex">
+            <button type="submit" class="btn btn-success">Login</button>
+            <a href="/signup" class="ms-auto mt-2 white-link">Create New Account ?</a>
+        </div>
+    </form>
+</div>
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

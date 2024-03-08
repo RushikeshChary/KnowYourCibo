@@ -1,31 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Website</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <div class="left-content">
-            <h1>KnowYourCibo</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- These preconnect links optimize the loading of external resources, such as Google Fonts. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <title>Edit Profile</title>
+    <!-- Importing several useful features -->
+    <!-- 1. Fonts and icons-->
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
+    <!-- 2. Animation effects like parallax errors -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+    <!-- 3. Linking main css file. -->
+    <link rel="stylesheet" href="editProfileStyle.css" />
+    <!-- The following line is make a custom cursor effects. -->
+    <div id="cursor"></div>
+  </head>
+
+  <body>
+    <header class="wrapper">
+      <div class="nav">
+        <div class="logo">KnowYourCibo</div>
+
+        <div class="menu-links">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Restaurants</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Feedback</a></li>
+            <li><a href="#">Contact us</a></li>
+          </ul>
         </div>
-        <nav class="navigation">
-            <a href="#">Home</a>
-            <a href="#">Restaurant</a>
-            <a href="#">Profile</a>
-            <a href="#">Feedback</a>
-            <a href="#">Contact Us</a>
-        </nav>
-        <div class="right-content">
-            <input type="text" placeholder="Search">
-            <button>Login</button>
+
+        <div class="search">
+          <label for="fa fa-search">Search</label>
+          <i class="fa fa-search"></i>
         </div>
+        <div class="account"><a href="#">my account</a></div>
+      </div>
     </header>
 
+
     <section class="profile-section">
-        <img src="C:\Users\RAJ VINAYAK MEENA\Downloads\foodimage.jpg" >
+        <img src="EditprofileImages/foodimage.jpg" >
         <div class="profile-container">
             <div class="profile-card">
                 <h2>Edit Profile</h2>
@@ -49,8 +82,8 @@
             </div>
         </div>
     </section>
-
-    <script src="script.js"></script>
+    <%- include("./partials/footer.ejs")%>
+    <script src="editProfileScript.js"></script>
 </body>
 </html>
 

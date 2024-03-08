@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
-  <link rel="stylesheet" href="profile.css">
+  <link rel="stylesheet" href="profileStyle.css">
   <title>KnowYourCibo</title>
   <meta charset="UTF-8">
   <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
@@ -79,13 +79,13 @@
       <div class="column">
         <div class="leftcol">
           <div class="img__container">
-            <img src="../public/profileImages/user.jpeg" alt="Anna Smith" />
+            <img src="profileImages/user.jpeg" alt="Anna Smith" />
           </div>
           <h2><%= info.firstName %> <%= info.lastName %></h2>
           <p><%= info.email %></p>
       
           <ul class="about">
-            <li><span><%= fav.length %></span>Favorites</li>
+            <li><span><%= items.length %></span>Favorites</li>
             <li><span><%= info.no_ratings %></span>Rating</li>
             <li><span><%= info.no_reviews %></span>Reviews</li>
           </ul>
@@ -112,11 +112,18 @@
                 <img src="profileImages/img_1.avif" alt="Photo" />
             </div>
 
+            <% if (items.length > 0) { %> <% items.forEach(item => { %>
+              <div>
+                <img src=<%= item.image %> alt="Photo">
+              </div>
+            <% }) %> <% } else { %>
+            <h2>You have no favorite items.</h2>
+            <% } %>
 
             
 
 
-            <div>
+            <!-- <div>
                 <img src="profileImages/img_2.avif" alt="Photo" />
             </div>
             <div>
@@ -166,7 +173,7 @@
           </div>
           <div>
               <img src="profileImages/img_6.avif" alt="Photo" />
-          </div>
+          </div> -->
         </div>
       </div>
       </div>

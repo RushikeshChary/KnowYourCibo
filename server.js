@@ -116,21 +116,20 @@ app.get("/signup", (req, res) => {
 });
 
 // Sign-up Route
-app.post("/check-user", async (req, res) => {
+app.post('/check-user', async (req, res) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
     if (user) {
-      res.json({ exists: true, message: "User already exists." });
+      res.json({ exists: true, message: 'User already exists.' });
     } else {
       res.json({ exists: false });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error checking user existence." });
+    res.status(500).json({ error: 'Error checking user existence.' });
   }
 });
-
 // app.get('/login', (req, res) => {
 //   res.render('login', { errorMessage: '' });
 // });
@@ -160,59 +159,74 @@ app.get("/login", async (req, res) => {
   });
 });
 
-app.post("/send-otp", async (req, res) => {
-  const { email } = req.body;
+app.post('/send-otp', async (req, res) => {
+  const { email, firstName, lastName } = req.body; // Capture firstName and lastName for later user creation
   const otp = crypto.randomInt(100000, 999999).toString();
   const otpExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
-  otp_global = otp;
-  otp_expires = otpExpires;
+
+  // Store OTP and email expiration in memory
+  otpStore[email] = { otp, otpExpires, firstName, lastName };
+
   try {
-    await User.findOneAndUpdate(
-      { email },
-      { otp, otpExpires },
-      { upsert: true, new: true }
-    );
     await transporter.sendMail({
       from: process.env.GMAIL_USER,
       to: email,
-      subject: "Your OTP",
-      text: `Your OTP is: ${otp}`,
+      subject: 'Your OTP',
+      text: `Your OTP is: ${otp}`
     });
-    res.json({ message: "OTP sent to " + email });
+    res.json({ message: 'OTP sent to ' + email });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error sending OTP" });
+    res.status(500).json({ error: 'Error sending OTP' });
   }
 });
 
-app.post("/verify-otp", (req, res) => {
+
+app.post('/verify-otp', async (req, res) => {
   const { email, otp } = req.body;
-  // const user = await User.findOne({ email });
-  if (otp_global === otp) {
-    res.json({ success: true, message: "OTP verified successfully" });
+  const otpData = otpStore[email];
+
+  if (otpData && otpData.otp === otp && otpData.otpExpires > new Date()) {
+    res.json({ success: true, message: 'OTP verified successfully. Please set your password.' });
   } else {
-    res.status(400).json({ success: false, error: "Invalid or expired OTP" });
+    res.status(400).json({ success: false, error: 'Invalid or expired OTP' });
   }
 });
-
 //password setter.
-app.post("/set-password", async (req, res) => {
+app.post('/set-password', async (req, res) => {
   const { email, password, confirmPassword } = req.body;
 
   if (password !== confirmPassword) {
-    res.status(400).json({ error: "Passwords do not match" });
+    res.status(400).json({ error: 'Passwords do not match' });
     return;
   }
 
-  const salt = await bcrypt.genSalt(10);
+  if (!otpStore[email]) {
+    res.status(400).json({ error: 'OTP verification required' });
+    return;
+  }
+
+
+ const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
   try {
-    await User.findOneAndUpdate({ email }, { password: hashedPassword });
-    res.json({ message: "Password set successfully. You can now log in." });
+    // Create user with data from otpStore and the hashed password
+    const { firstName, lastName } = otpStore[email];
+    await User.create({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+    });
+
+    // Clean up OTP store
+    delete otpStore[email];
+
+    res.json({ message: 'Signup complete. You can now log in.' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error setting password" });
+    res.status(500).json({ error: 'Error creating user account' });
   }
 });
 

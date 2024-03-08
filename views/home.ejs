@@ -52,9 +52,9 @@
 
       <div class="menu-links">
         <ul>
-          <li><a href="#">Home</a></li>
+          <li><a href="/home">Home</a></li>
           <li><a href="#">Restaurants</a></li>
-          <li><a href="#">Profile</a></li>
+          <li><a href="/profile">Profile</a></li>
           <li><a href="#">Feedback</a></li>
           <li><a href="#">Contact us</a></li>
         </ul>
@@ -64,7 +64,7 @@
 
        <div class="account">
         <% if (isLoggedIn) { %>
-            <span>Hello, <%= userFirstName %>!</span>
+            <span>Hello, Bhavana!</span>
             <a href="/logout">Logout</a>
           <% } else { %>
             <a href="/login">Login</a>

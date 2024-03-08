@@ -9,37 +9,41 @@ const crypto = require("crypto");
 const path = require("path");
 const session = require("express-session");
 const Item = require("./models/item.js");
-//const User = require("./models/user");
+const User = require("./models/user");
 
-var otp_global;
-var otp_expires;
 var otpStore = {}; // Declaration of otpStore
 
-const userSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
-  email: { type: String, unique: true, required: true },
-  password: { type: String, required: true },
-});
-const User = mongoose.model('User', userSchema);
+// const userSchema = new mongoose.Schema({
+//   firstName: String,
+//   lastName: String,
+//   email: { type: String, unique: true, required: true },
+//   password: { type: String, required: true },
+// });
+// const User = mongoose.model('User', userSchema);
 
 const app = express();
 
 const Port = process.env.PORT || 3000;
 // connect to mongodb & listen for requests
-const dbURI1 = "mongodb://127.0.0.1:27017/UserCredentials";
+const dbURI1 =
+  "mongodb+srv://rushi:rushi@cluster.8ailuyg.mongodb.net/Food-items?retryWrites=true&w=majority&appName=Cluster";
 
-mongoose.connect(dbURI1)
-  .then(result => app.listen(Port, () => {
-    console.log('Database connection established');
-    console.log(`Server is running at http://localhost:${Port}`);
-  }))
-  .catch(err => console.log(err));
-  
+mongoose
+  .connect(dbURI1)
+  .then((result) =>
+    app.listen(Port, () => {
+      console.log("Database connection established");
+      console.log(`Server is running at http://localhost:${Port}`);
+    })
+  )
+  .catch((err) => console.log(err));
+
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.json());
 
 app.use(
   session({
@@ -55,25 +59,19 @@ app.use((req, res, next) => {
   res.locals.path = req.path;
   next();
 });
+
 app.use((req, res, next) => {
   res.locals.isLoggedIn = req.session.userId ? true : false;
-  res.locals.userFirstName = req.session.userFirstName || '';
+  res.locals.userFirstName = req.session.userFirstName || "";
   next();
 });
-
-
-
-
-app.use(express.json());
-
-
 
 function checkLogin(req, res, next) {
   if (req.session.userId && req.session) {
     next();
   } else {
     // res.redirect("/login");
-    res.send("You cannot access this page")
+    res.send("You cannot access this page");
   }
 }
 
@@ -86,25 +84,24 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-
 //Database check to add items to database.
-app.get('/check', (req, res) => {
+app.get("/check", (req, res) => {
   const user = new User({
-    firstName: 'Bhavana',
-    lastName: 'Denchanadula',
-    email: 'bhavana19@gmail.com',
-    password: 'bhanu',
+    firstName: "Bhavana",
+    lastName: "Denchanadula",
+    email: "bhavana19@gmail.com",
+    password: "bhanu",
     no_reviews: 0,
     no_ratings: 0,
-    fav_items: ['65e8718f585fbfb2a6af90a3','65e86f1d70a3f056073e13a3'],
-  })
-  user.save()
-    .then((result) =>{
+    fav_items: ["65e8718f585fbfb2a6af90a3", "65e86f1d70a3f056073e13a3"],
+  });
+  user
+    .save()
+    .then((result) => {
       res.send(result);
     })
-    .catch((err) =>console.error(err));
-
-})
+    .catch((err) => console.error(err));
+});
 
 //Authentication routing.
 app.get("/signup", (req, res) => {
@@ -112,18 +109,18 @@ app.get("/signup", (req, res) => {
 });
 
 // Sign-up Route
-app.post('/check-user', async (req, res) => {
+app.post("/check-user", async (req, res) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
     if (user) {
-      res.json({ exists: true, message: 'User already exists.' });
+      res.json({ exists: true, message: "User already exists." });
     } else {
       res.json({ exists: false });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error checking user existence.' });
+    res.status(500).json({ error: "Error checking user existence." });
   }
 });
 // app.get('/login', (req, res) => {
@@ -167,7 +164,7 @@ app.get("/login", async (req, res) => {
   }
 });
 
-app.post('/send-otp', async (req, res) => {
+app.post("/send-otp", async (req, res) => {
   const { email, firstName, lastName } = req.body; // Capture firstName and lastName for later user creation
   const otp = crypto.randomInt(100000, 999999).toString();
   const otpExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
@@ -175,50 +172,49 @@ app.post('/send-otp', async (req, res) => {
   // Store OTP and email expiration in memory
   otpStore[email] = { otp, otpExpires, firstName, lastName };
 
-
-
   try {
     await transporter.sendMail({
       from: process.env.GMAIL_USER,
       to: email,
-      subject: 'Your OTP',
-      text: `Your OTP is: ${otp}`
+      subject: "Your OTP",
+      text: `Your OTP is: ${otp}`,
     });
-    res.json({ message: 'OTP sent to ' + email });
+    res.json({ message: "OTP sent to " + email });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error sending OTP' });
+    res.status(500).json({ error: "Error sending OTP" });
   }
 });
 
-
-app.post('/verify-otp', async (req, res) => {
+app.post("/verify-otp", async (req, res) => {
   const { email, otp } = req.body;
   const otpData = otpStore[email];
 
   if (otpData && otpData.otp === otp && otpData.otpExpires > new Date()) {
-    res.json({ success: true, message: 'OTP verified successfully. Please set your password.' });
+    res.json({
+      success: true,
+      message: "OTP verified successfully. Please set your password.",
+    });
   } else {
-    res.status(400).json({ success: false, error: 'Invalid or expired OTP' });
+    res.status(400).json({ success: false, error: "Invalid or expired OTP" });
   }
 });
 
 //password setter.
-app.post('/set-password', async (req, res) => {
+app.post("/set-password", async (req, res) => {
   const { email, password, confirmPassword } = req.body;
 
   if (password !== confirmPassword) {
-    res.status(400).json({ error: 'Passwords do not match' });
+    res.status(400).json({ error: "Passwords do not match" });
     return;
   }
 
   if (!otpStore[email]) {
-    res.status(400).json({ error: 'OTP verification required' });
+    res.status(400).json({ error: "OTP verification required" });
     return;
   }
 
-
- const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
   try {
@@ -234,13 +230,13 @@ app.post('/set-password', async (req, res) => {
     // Clean up OTP store
     delete otpStore[email];
 
-    res.json({ message: 'Signup complete. You can now log in.' });
+    res.json({ message: "Signup complete. You can now log in." });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error creating user account' });
+    res.status(500).json({ error: "Error creating user account" });
   }
 });
-app.post('/signup', async (req, res) => {
+app.post("/signup", async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
 
   // Check if all fields are provided
@@ -250,16 +246,42 @@ app.post('/signup', async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(firstName, lastName);
     const newUser = new User({
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
-      firstName, // Make sure these fields match your Mongoose schema
-      lastName
     });
+    // const user = new User({
+    //   firstName: 'Bhavana',
+    //   lastName: 'Denchanadula',
+    //   email: 'bhavana19@gmail.com',
+    //   password: 'bhanu',
+    //   no_reviews: 0,
+    //   no_ratings: 0,
+    //   fav_items: ['65e8718f585fbfb2a6af90a3','65e86f1d70a3f056073e13a3'],
+    // })
+    // user.save()
+    //   .then((result) =>{
+    //     res.send(result);
+    //   })
+    //   .catch((err) =>console.error(err));
+    newUser
+      .save()
+      .then((savedUser) => {
+        console.log("User saved successfully:", savedUser);
+      })
+      .catch((error) => {
+        if (error.name === "ValidationError") {
+          console.error("Validation error:", error.message);
+        } else {
+          console.error("Error saving user:", error);
+        }
+      });
 
-    await newUser.save();
     // Redirect or handle post-signup logic here
-    res.redirect('/login');
+    // res.redirect('/login');
   } catch (error) {
     console.error(error);
     res.status(500).send("Error signing up user.");
@@ -268,46 +290,46 @@ app.post('/signup', async (req, res) => {
 //Later, change this /dashboard to /home.
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  
-  try {
-      // Normalize email to lowercase before lookup to ensure case-insensitive match
-      const normalizedEmail = email.toLowerCase();
-      const user = await User.findOne({ email: normalizedEmail });
 
-      if (user) {
-          // If user is found, compare provided password with hashed password in the database
-          const isMatch = await bcrypt.compare(password, user.password);
-          
-          if (isMatch) {
-              // Passwords match, set user information in session
-              req.session.userId = user._id; // Assuming 'user' is your user object from the database
-              req.session.userFirstName = user.firstName; // Ensure this matches the field name in your user model       
-              
-              // Redirect to the home page
-              return res.redirect("/home");
-          } else {
-              // Passwords do not match, render login page with error
-              return res.render("login", {
-                  errorMessage: "Invalid email or password.",
-                  userFirstName: '',
-                  isLoggedIn: false
-              });
-          }
+  try {
+    // Normalize email to lowercase before lookup to ensure case-insensitive match
+    const normalizedEmail = email.toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail });
+
+    if (user) {
+      // If user is found, compare provided password with hashed password in the database
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (isMatch) {
+        // Passwords match, set user information in session
+        req.session.userId = user._id; // Assuming 'user' is your user object from the database
+        req.session.userFirstName = user.firstName; // Ensure this matches the field name in your user model
+
+        // Redirect to the home page
+        return res.redirect("/home");
       } else {
-          // No user found with the provided email, render login page with error
-          return res.render("login", {
-              errorMessage: "Invalid email or password.",
-              userFirstName: '',
-              isLoggedIn: false
-          });
+        // Passwords do not match, render login page with error
+        return res.render("login", {
+          errorMessage: "Invalid email or password.",
+          userFirstName: "",
+          isLoggedIn: false,
+        });
       }
-  } catch (error) {
-      console.error("Error during login:", error);
+    } else {
+      // No user found with the provided email, render login page with error
       return res.render("login", {
-          errorMessage: "An error occurred during login. Please try again.",
-          userFirstName: '',
-          isLoggedIn: false
+        errorMessage: "Invalid email or password.",
+        userFirstName: "",
+        isLoggedIn: false,
       });
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+    return res.render("login", {
+      errorMessage: "An error occurred during login. Please try again.",
+      userFirstName: "",
+      isLoggedIn: false,
+    });
   }
 });
 app.get("/dashboard", checkLogin, (req, res) => {
@@ -345,7 +367,7 @@ app.get("/home", async (req, res) => {
 
   res.render("home", {
     isLoggedIn,
-    userFirstName
+    userFirstName,
   });
 });
 
@@ -355,17 +377,22 @@ app.get("/searchPage", (req, res) => {
 
 app.post("/searchPage", async (req, res) => {
   const search = req.body.search;
-  if(search.length > 0){
+  if (search.length > 0) {
     var regexPattern = new RegExp(search, "i");
-    await Item.find({ $or: [{ name: { $regex: regexPattern } }, { hall: search }, { category: search }] })
+    await Item.find({
+      $or: [
+        { name: { $regex: regexPattern } },
+        { hall: search },
+        { category: search },
+      ],
+    })
       .then((result) => {
         res.render("searchPage", { items: result });
       })
       .catch((err) => console.error(err));
-    }
-    else{
-      res.render("searchPage", { items: [] });
-    }
+  } else {
+    res.render("searchPage", { items: [] });
+  }
   console.log(req.body);
 });
 
@@ -377,25 +404,69 @@ app.get("/hall-2", (req, res) => {
 // Profile page route
 app.get("/profile", async (req, res) => {
   // const id = req.session.userId;
-  const id = '65eadd97673a7bf0caf2dc26';
-  await User.findById({_id: id})
-    .then( async (result) => {
-      const favArray = result.fav_items;
-      if(favArray.length > 0){
-        await Item.find({ _id: { $in: favArray } })
-          .then(foundItems => {
-            console.log('Found items:', foundItems);
-            res.render("profile",{info:result, items : foundItems});
-          });
-      }
-      else{
-        res.render("profile",{info:result, items : []});
-      }
-      console.log(result);
-    })
+  const id = "65eadd97673a7bf0caf2dc26";
+  await User.findById({ _id: id }).then(async (result) => {
+    const favArray = result.fav_items;
+    if (favArray.length > 0) {
+      await Item.find({ _id: { $in: favArray } }).then((foundItems) => {
+        // console.log('Found items:', foundItems);
+        res.render("profile", { info: result, items: foundItems });
+      });
+    } else {
+      res.render("profile", { info: result, items: [] });
+    }
+    // console.log(result);
+  });
 });
 
 //edit profile page route
 app.get("/editProfile", (req, res) => {
   res.render("editProfile");
+});
+
+//TODO: Add checkLogin function as a middleware.
+app.post("/editProfile", async (req, res) => {
+  // const userId = req.session.userId;
+  const userId = "65eadd97673a7bf0caf2dc26";
+  const { firstName, lastName, password, newpassword } = req.body;
+  console.log(firstName, lastName, password, newpassword);
+  var updatedDetails = {};
+  const user = {};
+  // try{
+    //   updatedDetails = {
+      //     firstName: firstName,
+      //     lastName: lastName,
+      //     password: newpassword,
+      //   };
+      // }catch{
+        //   res.send('Incorrect password');
+        // }
+        // console.log(req.body);
+  try {
+    await bcrypt.hash(newpassword, 10)
+      .then((newhashedPassword)=>{
+        updatedDetails = {
+          firstName: firstName,
+          lastName: lastName,
+          password: newhashedPassword,
+        };
+      })
+      .catch((err)=>{
+         console.log(err);
+       });
+    await User.findByIdAndUpdate(
+      userId, // _id of the document to be updated
+      { $set: updatedDetails }, // Updated details
+      { new: true } // Options: new - return the modified document, runValidators - run validators on the update
+    )
+      .then((updatedUser)=>{
+        console.log("User details updated successfully:", updatedUser);
+      })
+      .catch((err)=>{
+         console.log(err);
+      })
+  } catch (err) {
+    console.log(err);
+  }
+  res.redirect("/profile");
 });

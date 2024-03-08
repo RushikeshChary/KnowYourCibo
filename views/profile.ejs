@@ -81,13 +81,13 @@
           <div class="img__container">
             <img src="../public/profileImages/user.jpeg" alt="Anna Smith" />
           </div>
-          <h2>Anna Smith</h2>
-          <p>anna@example.com</p>
+          <h2><%= info.firstName %> <%= info.lastName %></h2>
+          <p><%= info.email %></p>
       
           <ul class="about">
-            <li><span>4,073</span>Favorites</li>
-            <li><span>322</span>Rating</li>
-            <li><span>200,543</span>Reviews</li>
+            <li><span><%= fav.length %></span>Favorites</li>
+            <li><span><%= info.no_ratings %></span>Rating</li>
+            <li><span><%= info.no_reviews %></span>Reviews</li>
           </ul>
           <hr>
           <div class="content">
@@ -111,6 +111,11 @@
             <div>
                 <img src="profileImages/img_1.avif" alt="Photo" />
             </div>
+
+
+            
+
+
             <div>
                 <img src="profileImages/img_2.avif" alt="Photo" />
             </div>

@@ -27,8 +27,6 @@ const userSchema = new Schema({
   {
     type: Array
   },
-  otpExpires: Date, // Timestamp to validate OTP expiry
-
 },{ timestamps: true });
 
 //Collection name has to be Users.

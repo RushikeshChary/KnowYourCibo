@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Item = require('./models/item')
+const User = require("./models/user");
 const path = require('path');
 
 const Port = 3000;
@@ -8,9 +9,10 @@ const Port = 3000;
 const app = express();
 
 // connect to mongodb & listen for requests
-const dbURI = "mongodb+srv://rushi:rushi@cluster.8ailuyg.mongodb.net/Food-items?retryWrites=true&w=majority&appName=Cluster";
+const dbURI1 = "mongodb+srv://rushi:rushi@cluster.8ailuyg.mongodb.net/Food-items?retryWrites=true&w=majority&appName=Cluster";
+// const dbURI2 = "mongodb+srv://rushi:rushi@cluster.8ailuyg.mongodb.net/Users?retryWrites=true&w=majority&appName=Cluster";
 
-mongoose.connect(dbURI)
+mongoose.connect(dbURI1)
   .then(result => app.listen(Port, () => {
     console.log('Database connection established');
     console.log(`Server is running at http://localhost:${Port}`);
@@ -45,15 +47,17 @@ app.get('/home', (req, res) => {
 })
 
 //Database check to add items to database.
-app.post('/check', (req, res) => {
-  const item = new Item({
-    name: 'Paneer kabab',
-    hall: 'Hall-2',
-    category: 'veg',
-    rating: 4,
-    price: 65
+app.get('/check', (req, res) => {
+  const user = new User({
+    firstName: 'Rushikesh Chary',
+    lastName: 'Denchanadula',
+    email: 'ruushid19@gmail.com',
+    password: 'rushi',
+    no_reviews: 0,
+    no_ratings: 0,
+    fav_items: [],
   })
-  item.save()
+  user.save()
     .then((result) =>{
       res.send(result);
     })

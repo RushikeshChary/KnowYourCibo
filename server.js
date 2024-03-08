@@ -8,18 +8,26 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const path = require("path");
 const session = require("express-session");
-const Item = require("./models/item");
-const User = require("./models/user");
+const Item = require("./models/item.js");
+//const User = require("./models/user");
 
-var otp_global ;
-var otp_expires ;
+var otp_global;
+var otp_expires;
+var otpStore = {}; // Declaration of otpStore
+
+const userSchema = new mongoose.Schema({
+  firstName: String,
+  lastName: String,
+  email: { type: String, unique: true, required: true },
+  password: { type: String, required: true },
+});
+const User = mongoose.model('User', userSchema);
 
 const app = express();
 
 const Port = process.env.PORT || 3000;
-
 // connect to mongodb & listen for requests
-const dbURI1 = "mongodb+srv://rushi:rushi@cluster.8ailuyg.mongodb.net/Food-items?retryWrites=true&w=majority&appName=Cluster";
+const dbURI1 = "mongodb://127.0.0.1:27017/UserCredentials";
 
 mongoose.connect(dbURI1)
   .then(result => app.listen(Port, () => {
@@ -27,9 +35,7 @@ mongoose.connect(dbURI1)
     console.log(`Server is running at http://localhost:${Port}`);
   }))
   .catch(err => console.log(err));
-
-
-
+  
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
@@ -41,6 +47,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: { secure: "auto", httpOnly: true },
+    // store: new MongoStore({ mongooseConnection: mongoose.connection })
   })
 );
 
@@ -48,30 +55,19 @@ app.use((req, res, next) => {
   res.locals.path = req.path;
   next();
 });
+app.use((req, res, next) => {
+  res.locals.isLoggedIn = req.session.userId ? true : false;
+  res.locals.userFirstName = req.session.userFirstName || '';
+  next();
+});
+
+
+
 
 app.use(express.json());
 
 
-//Database check
-// app.post('/check', (req, res) => {
-//   const item = new Item({
-//     name: 'Paneer kabab',
-//     hall: 'Hall-2',
-//     category: 'veg',
-//     rating: 4,
-//     price: 65
-//   })
-//   item.save()
-//     .then((result) =>{
-//       res.send(result);
-//     })
-//     .catch((err) =>console.error(err));
 
-// })
-
-//Authentication starts from here.
-
-//Session check function.
 function checkLogin(req, res, next) {
   if (req.session.userId && req.session) {
     next();
@@ -135,28 +131,40 @@ app.post('/check-user', async (req, res) => {
 // });
 
 app.get("/login", async (req, res) => {
-  if (req.session.userId) {
-    try {
+  try {
+    if (req.session.userId) {
       const user = await User.findById(req.session.userId);
       if (user) {
-        // User is logged in, pass user's first name to the template
+        // If user is found, pass user data to the template
         res.render("login", {
           userFirstName: user.firstName,
           isLoggedIn: true,
           errorMessage: "",
         });
-        return;
+      } else {
+        // If user is not found, still render the login page but with default values
+        res.render("login", {
+          userFirstName: "",
+          isLoggedIn: false,
+          errorMessage: "",
+        });
       }
-    } catch (error) {
-      console.error("Failed to fetch user", error);
+    } else {
+      // If there is no session, render the login page with default values
+      res.render("login", {
+        userFirstName: "",
+        isLoggedIn: false,
+        errorMessage: "",
+      });
     }
+  } catch (error) {
+    console.error("Error fetching user", error);
+    res.render("login", {
+      userFirstName: "",
+      isLoggedIn: false,
+      errorMessage: "An error occurred. Please try again.",
+    });
   }
-  // User is not logged in or an error occurred
-  res.render("login", {
-    userFirstName: "",
-    isLoggedIn: false,
-    errorMessage: "",
-  });
 });
 
 app.post('/send-otp', async (req, res) => {
@@ -166,6 +174,8 @@ app.post('/send-otp', async (req, res) => {
 
   // Store OTP and email expiration in memory
   otpStore[email] = { otp, otpExpires, firstName, lastName };
+
+
 
   try {
     await transporter.sendMail({
@@ -192,6 +202,7 @@ app.post('/verify-otp', async (req, res) => {
     res.status(400).json({ success: false, error: 'Invalid or expired OTP' });
   }
 });
+
 //password setter.
 app.post('/set-password', async (req, res) => {
   const { email, password, confirmPassword } = req.body;
@@ -229,26 +240,76 @@ app.post('/set-password', async (req, res) => {
     res.status(500).json({ error: 'Error creating user account' });
   }
 });
+app.post('/signup', async (req, res) => {
+  const { email, password, firstName, lastName } = req.body;
 
+  // Check if all fields are provided
+  if (!email || !password || !firstName || !lastName) {
+    return res.status(400).send("Please fill in all the fields.");
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      email,
+      password: hashedPassword,
+      firstName, // Make sure these fields match your Mongoose schema
+      lastName
+    });
+
+    await newUser.save();
+    // Redirect or handle post-signup logic here
+    res.redirect('/login');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error signing up user.");
+  }
+});
 //Later, change this /dashboard to /home.
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
+  
   try {
-    const user = await User.findOne({ email });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      res.render("login", { errorMessage: "Invalid email or password." });
-    } else {
-      req.session.userId = user._id;
-      res.redirect("/dashboard");
-    }
+      // Normalize email to lowercase before lookup to ensure case-insensitive match
+      const normalizedEmail = email.toLowerCase();
+      const user = await User.findOne({ email: normalizedEmail });
+
+      if (user) {
+          // If user is found, compare provided password with hashed password in the database
+          const isMatch = await bcrypt.compare(password, user.password);
+          
+          if (isMatch) {
+              // Passwords match, set user information in session
+              req.session.userId = user._id; // Assuming 'user' is your user object from the database
+              req.session.userFirstName = user.firstName; // Ensure this matches the field name in your user model       
+              
+              // Redirect to the home page
+              return res.redirect("/home");
+          } else {
+              // Passwords do not match, render login page with error
+              return res.render("login", {
+                  errorMessage: "Invalid email or password.",
+                  userFirstName: '',
+                  isLoggedIn: false
+              });
+          }
+      } else {
+          // No user found with the provided email, render login page with error
+          return res.render("login", {
+              errorMessage: "Invalid email or password.",
+              userFirstName: '',
+              isLoggedIn: false
+          });
+      }
   } catch (error) {
-    console.error(error);
-    res.render("login", {
-      errorMessage: "An error occurred. Please try again.",
-    });
+      console.error("Error during login:", error);
+      return res.render("login", {
+          errorMessage: "An error occurred during login. Please try again.",
+          userFirstName: '',
+          isLoggedIn: false
+      });
   }
 });
-
 app.get("/dashboard", checkLogin, (req, res) => {
   res.send("Welcome to your Dashboard!");
 });
@@ -258,7 +319,7 @@ app.get("/logout", (req, res) => {
     if (err) {
       console.error("Session destruction error", err);
     }
-    res.redirect("/login");
+    res.redirect("/home");
   });
 });
 //Authentication ends here.
@@ -268,9 +329,26 @@ app.get("/", (req, res) => {
   res.redirect("home");
 });
 
-app.get("/home", (req, res) => {
-  res.render("home");
+app.get("/home", async (req, res) => {
+  let userFirstName = "";
+  let isLoggedIn = false;
+
+  if (req.session.userId) {
+    try {
+      const user = await User.findById(req.session.userId);
+      userFirstName = user.firstName;
+      isLoggedIn = true;
+    } catch (error) {
+      console.error("Error fetching user for home page", error);
+    }
+  }
+
+  res.render("home", {
+    isLoggedIn,
+    userFirstName
+  });
 });
+
 app.get("/searchPage", (req, res) => {
   res.render("searchPage", { items: [] });
 });

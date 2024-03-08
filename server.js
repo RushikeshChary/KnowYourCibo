@@ -9,7 +9,7 @@ const crypto = require("crypto");
 const path = require("path");
 const session = require("express-session");
 const Item = require("./models/item.js");
-const User = require("./models/user");
+const User = require("./models/user.js");
 
 var otpStore = {}; // Declaration of otpStore
 
@@ -253,20 +253,6 @@ app.post("/signup", async (req, res) => {
       email,
       password: hashedPassword,
     });
-    // const user = new User({
-    //   firstName: 'Bhavana',
-    //   lastName: 'Denchanadula',
-    //   email: 'bhavana19@gmail.com',
-    //   password: 'bhanu',
-    //   no_reviews: 0,
-    //   no_ratings: 0,
-    //   fav_items: ['65e8718f585fbfb2a6af90a3','65e86f1d70a3f056073e13a3'],
-    // })
-    // user.save()
-    //   .then((result) =>{
-    //     res.send(result);
-    //   })
-    //   .catch((err) =>console.error(err));
     newUser
       .save()
       .then((savedUser) => {
@@ -428,27 +414,28 @@ app.get("/editProfile", (req, res) => {
 app.post("/editProfile", async (req, res) => {
   // const userId = req.session.userId;
   const userId = "65eadd97673a7bf0caf2dc26";
-  const { firstName, lastName, password, newpassword } = req.body;
-  console.log(firstName, lastName, password, newpassword);
+  const { firstName, lastName,email, password, newpassword } = req.body;
   var updatedDetails = {};
-  const user = {};
-  // try{
-    //   updatedDetails = {
-      //     firstName: firstName,
-      //     lastName: lastName,
-      //     password: newpassword,
-      //   };
-      // }catch{
-        //   res.send('Incorrect password');
-        // }
-        // console.log(req.body);
   try {
+    await User.findById({_id: userId})
+      .then(async(user) => {
+        const isMatch = await bcrypt.compare(password, user.password);
+        if(!isMatch) {
+          res.send('Incorrect password');
+        }
+        if(email !== user.email){
+          res.json()
+        }
+      })
+      .catch(err => {
+         console.log(err);
+      })
     await bcrypt.hash(newpassword, 10)
       .then((newhashedPassword)=>{
         updatedDetails = {
           firstName: firstName,
           lastName: lastName,
-          password: newhashedPassword,
+          password: newhashedPassword   //bhanu
         };
       })
       .catch((err)=>{

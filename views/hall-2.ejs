@@ -1,83 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <!-- These preconnect links optimize the loading of external resources, such as Google Fonts. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <title>Hall Page</title>
-    <!-- Importing several useful features -->
-    <!-- 1. Fonts and icons-->
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
-    </style>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
-    <!-- 2. Animation effects like parallax errors -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
-    <!-- 3. Linking main css file. -->
-    <link rel="stylesheet" href="hallStyle.css" />
-    <!-- The following line is make a custom cursor effects. -->
-    <div id="cursor"></div>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+  <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js"></script>
+  <title>KnowYourCibo</title>
+  <link rel="stylesheet" href="stylepage.css">
+  <link rel="stylesheet" href="hallStyle.css">
+  <script src="script.js"></script>
+</head>
 
-  <body>
-    <header class="wrapper">
-      <div class="nav">
-        <div class="logo">KnowYourCibo</div>
+<!-- nav bar -->
+<header class="wrapper">
+  <div >
+    <div class="nav">
+      <div class="logo">KnowYourCibo</div>
 
-        <div class="menu-links">
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Restaurants</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Feedback</a></li>
-            <li><a href="#">Contact us</a></li>
-          </ul>
-        </div>
-
-        <div class="search">
-          <label for="fa fa-search">Search</label>
-          <i class="fa fa-search"></i>
-        </div>
-        <div class="account"><a href="#">my account</a></div>
-      </div>
-    </header>
-
-    <main>
-
-      
-      <div class="button-container1">
-        <button>ALL</button>
-        <button>VEG SABJI</button>
-        <button>DAAL & ALOO</button>
-        <button>FAST FOOD</button>
-        <button>PARATHA & ROTI</button>
-        <button>CHICKEN</button>
-      </div>
-      
-      <div class="button-container2">
-        <button>BIRYANI</button>
-        <button>CHICKEN TANDOOR</button>
-        <button>DOSA</button>
-        <button>MAGGI</button>
-        <button>EGG</button>
-        <button>BEVERAGES</button>
+      <div class="menu-links">
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Restaurants</a></li>
+          <li><a href="#">Profile</a></li>
+          <li><a href="#">Feedback</a></li>
+          <li><a href="#">Contact us</a></li>
+        </ul>
       </div>
 
-      <div class="social-media">
+      <div class="search"><i class="fa fa-search"></i></div>
+
+      <div class="account"><a href="#">my account</a></div>
+
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- social media -->
+  <div class="social-media">
         <ul>
           <li>
             <!-- Add the google maps share link here and make target to _blank to open gmaps in another tab. -->
@@ -85,53 +58,592 @@
               <i class="fa fa-map-marker" aria-hidden="true"></i>
             </a>
           </li>
-          <li>
-            <a href="#">
-              <i class="fa fa-facebook" aria-hidden="true"></i>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i class="fa fa-instagram" aria-hidden="true"></i>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i class="fa fa-twitter" aria-hidden="true"></i>
-            </a>
-          </li>
+          <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
+          <li><i class="fa fa-instagram" aria-hidden="true"></i></li>
+          <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
         </ul>
-      </div>
+  </div>
 
-      <div class="side-strip">
+  <!-- sidestrip -->
+  <div class="side-strip">
         <span>EAT RATE CURATE</span>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <!-- body -->
+
+<div class="container">
+
+  <div class="left-container">
+
+      <h1>Hall 1 Canteen</h1>
+      <p>Hall of Residence 1</p>
+      <p>Fifth Ave</p>
+      <p>IIT Kanpur</p>
+
+      <!-- <h3>Ratings</h3> -->
+
+      <!-- here we display ratings -->
+      <div class="ratings">
+
       </div>
 
-      <div class="mosaic-container">
-        <div class="tile">Container 1</div>
-        <div class="tile">Container 2</div>
-        <div class="tile">Container 1</div>
-        <div class="tile">Container 2</div>
-        <div class="tile">Container 1</div>
-        <div class="tile">Container 2</div>
-        <div class="tile">Container 1</div>
-        <div class="tile">Container 2</div>
-        <div class="tile">Container 1</div>
-        <div class="tile">Container 2</div>
-        <div class="tile">Container 1</div>
-        <div class="tile">Container 2</div>
-        <div class="tile">Container 1</div>
-        <div class="tile">Container 2</div>
-        <div class="tile">Container 1</div>
-        <div class="tile">Container 2</div>
-        <div class="tile">Container 1</div>
-        <div class="tile">Container 2</div>
-        <div class="tile">Container 1</div>
-        <div class="tile">Container 2</div>
-      </div>
-    </main>
+  </div>
+  <div class="right-container">
 
-    <footer></footer>
-    <script src="hallScript.js"></script>
-  </body>
+    <h1>Categories</h1>
+  <section class="category">
+    <ul>
+      <li onclick="showSection('section1')"><a href="#">Chicken</a></li>
+      <li onclick="showSection('section2')"><a href="#">Veg</a></li>
+      <li onclick="showSection('section3')"><a href="#">Mutton</a></li>
+      <li onclick="showSection('section4')"><a href="#">Fish</a></li>
+      <li onclick="showSection('section5')"><a href="#">Beverages</a></li>
+      <li onclick="showSection('section6')"><a href="#">Chicken</a></li>
+      <li onclick="showSection('section7')"><a href="#">Veg</a></li>
+      <li onclick="showSection('section8')"><a href="#">Fast Food</a></li>
+      <li onclick="showSection('section9')"><a href="#">Breads</a></li>
+      <li onclick="showSection('section10')"><a href="#">Beverages</a></li>
+    </ul>
+  </section>
+
+  <div class="mosaic-container">
+
+    <!-- content 1 -->
+      <div id="section1" class="section" style="display: block;">
+
+            <div class="tile">
+              <div class="inner">
+
+              <div class="image"><img src="burger.jpeg" alt=""></div>
+              <div>
+                <div class="innertext">
+                  <h2>Burger</h2>
+                  <h3>Price</h3>
+                </div>
+                <div class="Ratings">
+                </div>
+                <div class="rating-buttons">
+                  <span class="fa fa-star checked"></span>
+                  <span class="fa fa-star checked"></span>
+                  <span class="fa fa-star checked"></span>
+                  <span class="fa fa-star"></span>
+                  <span class="fa fa-star"></span>
+
+                  <i class="fa fa-heart"></i>
+
+
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <div class="tile">
+              <div class="inner">
+
+              <div class="image"><img src="burger.jpeg" alt=""></div>
+              <div>
+                <div class="innertext">
+                  <h2>Burger</h2>
+                  <h3>Price</h3>
+                </div>
+                <div class="Ratings">
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <div class="tile">
+              <div class="inner">
+
+              <div class="image"><img src="burger.jpeg" alt=""></div>
+              <div>
+                <div class="innertext">
+                  <h2>Burger</h2>
+                  <h3>Price</h3>
+                </div>
+                <div class="Ratings">
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <div class="tile">
+              <div class="inner">
+
+              <div class="image"><img src="burger.jpeg" alt=""></div>
+              <div>
+                <div class="innertext">
+                  <h2>Burger</h2>
+                  <h3>Price</h3>
+                </div>
+                <div class="Ratings">
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <div class="tile">
+              <div class="inner">
+
+                <div class="image"><img src="burger.jpeg" alt=""></div>
+                <div>
+                  <div class="innertext">
+                    <h2>Burger</h2>
+                    <h3>Price</h3>
+                  </div>
+                  <div class="Ratings"> <h1>rating</h1>
+                  </div>
+                  <div class="ratings-buttons">
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="tile">
+              <div class="inner">
+
+              <div class="image"><img src="burger.jpeg" alt=""></div>
+              <div>
+                <div class="innertext">
+                  <h2>Burger</h2>
+                  <h3>Price</h3>
+                </div>
+                <div class="Ratings">
+                </div>
+              </div>
+            </div>
+            </div>
+
+    </div>
+
+
+      <!-- content 2 -->
+      <div id="section2" class="section" style="display: none;">
+
+          <div class="tile">
+            <div class="inner">
+
+            <div class="image"><img src="burger.jpeg" alt=""></div>
+            <div>
+              <div class="innertext">
+                <h2>Pizza</h2>
+                <h3>Price</h3>
+              </div>
+              <div class="Ratings">
+              </div>
+              <div class="rating-buttons">
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <span class="fa fa-star"></span>
+
+                <i class="fa fa-heart"></i>
+
+
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div class="tile">
+            <div class="inner">
+
+            <div class="image"><img src="burger.jpeg" alt=""></div>
+            <div>
+              <div class="innertext">
+                <h2>Burger</h2>
+                <h3>Price</h3>
+              </div>
+              <div class="Ratings">
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div class="tile">
+            <div class="inner">
+
+            <div class="image"><img src="burger.jpeg" alt=""></div>
+            <div>
+              <div class="innertext">
+                <h2>Burger</h2>
+                <h3>Price</h3>
+              </div>
+              <div class="Ratings">
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div class="tile">
+            <div class="inner">
+
+            <div class="image"><img src="burger.jpeg" alt=""></div>
+            <div>
+              <div class="innertext">
+                <h2>Burger</h2>
+                <h3>Price</h3>
+              </div>
+              <div class="Ratings">
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div class="tile">
+            <div class="inner">
+
+              <div class="image"><img src="burger.jpeg" alt=""></div>
+              <div>
+                <div class="innertext">
+                  <h2>Burger</h2>
+                  <h3>Price</h3>
+                </div>
+                <div class="Ratings"> <h1>rating</h1>
+                </div>
+                <div class="ratings-buttons">
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="tile">
+            <div class="inner">
+
+            <div class="image"><img src="burger.jpeg" alt=""></div>
+            <div>
+              <div class="innertext">
+                <h2>Burger</h2>
+                <h3>Price</h3>
+              </div>
+              <div class="Ratings">
+              </div>
+            </div>
+          </div>
+          </div>
+
+        </div>
+
+        <!-- content 3 -->
+        <div id="section3" class="section" style="display: none;">
+
+            <div class="tile">
+              <div class="inner">
+
+                <div class="image"><img src="burger.jpeg" alt=""></div>
+                <div>
+                  <div class="innertext">
+                    <h2>Chicken</h2>
+                    <h3>Price</h3>
+                  </div>
+                  <div class="Ratings">
+                  </div>
+                  <div class="rating-buttons">
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+
+                    <i class="fa fa-heart"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tile">
+              <div class="inner">
+
+              <div class="image"><img src="burger.jpeg" alt=""></div>
+              <div>
+                <div class="innertext">
+                  <h2>Burger</h2>
+                  <h3>Price</h3>
+                </div>
+                <div class="Ratings">
+                </div>
+              </div>
+              </div>
+            </div>
+
+            <div class="tile">
+              <div class="inner">
+
+              <div class="image"><img src="burger.jpeg" alt=""></div>
+              <div>
+                <div class="innertext">
+                  <h2>Burger</h2>
+                  <h3>Price</h3>
+                </div>
+                <div class="Ratings">
+                </div>
+              </div>
+              </div>
+            </div>
+
+            <div class="tile">
+              <div class="inner">
+
+              <div class="image"><img src="burger.jpeg" alt=""></div>
+              <div>
+                <div class="innertext">
+                  <h2>Burger</h2>
+                  <h3>Price</h3>
+                </div>
+                <div class="Ratings">
+                </div>
+              </div>
+              </div>
+            </div>
+
+            <div class="tile">
+              <div class="inner">
+
+                <div class="image"><img src="burger.jpeg" alt=""></div>
+                <div>
+                  <div class="innertext">
+                    <h2>Burger</h2>
+                    <h3>Price</h3>
+                  </div>
+                  <div class="Ratings"> <h1>rating</h1>
+                  </div>
+                  <div class="ratings-buttons">
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="tile">
+              <div class="inner">
+
+              <div class="image"><img src="burger.jpeg" alt=""></div>
+              <div>
+                <div class="innertext">
+                  <h2>Burger</h2>
+                  <h3>Price</h3>
+                </div>
+                <div class="Ratings">
+                </div>
+              </div>
+              </div>
+            </div>
+
+        </div>
+
+        <!-- Content 4 -->
+        <div id="section4" class="section" style="display: none;">
+
+        <div class="tile">
+          <div class="inner">
+
+          <div class="image"><img src="burger.jpeg" alt=""></div>
+          <div>
+            <div class="innertext">
+              <h2>Fish</h2>
+              <h3>Price</h3>
+            </div>
+            <div class="Ratings">
+            </div>
+            <div class="rating-buttons">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+
+              <i class="fa fa-heart"></i>
+
+
+            </div>
+          </div>
+          </div>
+        </div>
+
+        <div class="tile">
+          <div class="inner">
+
+          <div class="image"><img src="burger.jpeg" alt=""></div>
+          <div>
+            <div class="innertext">
+              <h2>Burger</h2>
+              <h3>Price</h3>
+            </div>
+            <div class="Ratings">
+            </div>
+          </div>
+          </div>
+        </div>
+
+        <div class="tile">
+            <div class="inner">
+
+            <div class="image"><img src="burger.jpeg" alt=""></div>
+            <div>
+              <div class="innertext">
+                <h2>Burger</h2>
+                <h3>Price</h3>
+              </div>
+              <div class="Ratings">
+              </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="tile">
+            <div class="inner">
+
+            <div class="image"><img src="burger.jpeg" alt=""></div>
+            <div>
+              <div class="innertext">
+                <h2>Burger</h2>
+                <h3>Price</h3>
+              </div>
+              <div class="Ratings">
+              </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="tile">
+      <div class="inner">
+
+        <div class="image"><img src="burger.jpeg" alt=""></div>
+        <div>
+          <div class="innertext">
+            <h2>Burger</h2>
+            <h3>Price</h3>
+          </div>
+          <div class="Ratings"> <h1>rating</h1>
+          </div>
+          <div class="ratings-buttons">
+          </div>
+
+        </div>
+      </div>
+  </div>
+
+        <div class="tile">
+      <div class="inner">
+
+      <div class="image"><img src="burger.jpeg" alt=""></div>
+      <div>
+        <div class="innertext">
+          <h2>Burger</h2>
+          <h3>Price</h3>
+        </div>
+        <div class="Ratings">
+        </div>
+      </div>
+      </div>
+  </div>
+
+        </div>
+
+      </div>
+
+</div>
+
+</div>
+
+
+
+<!-- transitions -->
+  <script>
+
+    TweenMax.from(".logo", 1.2, {
+      delay: 1,
+      opacity: 0,
+      x: -20,
+      ease: Expo.easeInOut
+    })
+
+    TweenMax.staggerFrom(".menu-links ul li", 1.2, {
+      delay: 1.15,
+      opacity: 0,
+      x: -20,
+      ease: Power3.easeInOut
+    }, 0.08)
+
+    TweenMax.from(".search", 1.2, {
+      delay: 1.3,
+      opacity: 0,
+      x: -20,
+      ease: Expo.easeInOut
+    })
+
+    TweenMax.from(".account", 1.2, {
+      delay: 1.5,
+      opacity: 0,
+      x: -20,
+      ease: Expo.easeInOut
+    })
+
+    TweenMax.staggerFrom(".social-media ul li", 1.2, {
+    delay: 1.60,
+    opacity: 0,
+    y: 20,
+    ease: Power3.easeInOut
+  }, 0.08);
+
+  TweenMax.staggerFrom(".side-strip", 1.2, {
+  delay: 1.60,
+  opacity: 0,
+  y: 20,
+  ease: Power3.easeInOut
+}, 0.08);
+
+    TweenMax.staggerFrom(".left-container h1", 1.2, {
+    delay: 1.65,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+  }, 0.08);
+
+  TweenMax.staggerFrom(".left-container p", 1.2, {
+  delay: 1.7,
+  opacity: 0,
+  x: -20,
+  ease: Expo.easeInOut
+}, 0.08);
+
+TweenMax.staggerFrom(".right-container h1", 1.2, {
+delay: 1.75,
+opacity: 0,
+x: -20,
+ease: Expo.easeInOut
+}, 0.08);
+
+TweenMax.staggerFrom(".category ul li", 1.2, {
+delay: 1.8,
+opacity: 0,
+x: -20,
+ease: Expo.easeInOut
+}, 0.08);
+
+TweenMax.staggerFrom(".tile", 1.2, {
+delay: 1.9,
+opacity: 0,
+x: -20,
+ease: Expo.easeInOut
+}, 0.08);
+
+
+  </script>
+
+</body>
+
 </html>

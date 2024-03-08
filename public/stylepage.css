@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 
 :root {
-  --backgroundcolor: #FFF7F1;
-  --text-color: #D37676;
+  --backgroundcolor: #F5EEE6;
+  --text-color: #B06161;
   --hover-color: #776B5D;
 }
 
@@ -99,7 +99,43 @@ a {
  }
 /* cursor animation ends */
 
+/* nav bar */
+.nav {
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+   padding-top: 20px;
+   text-transform: uppercase;
+   font-weight: 600;
+   color: var(--text-color);
+ }
 
+.nav ul li :hover{
+  padding: 8px;
+  color: var(--hover-color);
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s ease-in;
+  padding-bottom: 2.5px;
+  border-bottom: 1px solid var(--hover-color);
+}
+
+/* nav bar buttons */
+.menu-links ul li {
+  display: inline-block;
+  padding-right: 20px;
+  color: var(--text-color);
+}
+
+.account :hover{
+  padding: 8px;
+  color: var(--hover-color);
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s ease-in;
+  padding-bottom: 2.5px;
+  border-bottom: 1px solid var(--hover-color);
+}
 
 .search :hover{
   padding: 8px;
@@ -109,12 +145,41 @@ a {
   transition: 0.2s ease-in;
 }
 
-
 /* Main heading KYC */
 .logo {
   font-size: 40px;
   color: var(--text-color);
   font-family: Monoton;
+}
+
+/* bottom footer*/
+.bottom-bar {
+      width: 100%;
+      color: whitesmoke;
+      height: 5vh;
+}
+
+.row {
+      padding: 2em 2em 2em 2em;
+      background: #000;
+
+}
+
+.bottom-bar h6 {
+      font-weight: bolder;
+      text-transform: uppercase;
+      font-size: 14px;
+      padding: 5px;
+}
+
+.bottom-bar p {
+      font-size: 11px;
+      font-weight: lighter;
+}
+
+.bottom-bar a {
+  text-decoration: none;
+  color: whitesmoke;
 }
 
 /* social media */
@@ -126,18 +191,33 @@ a {
 
 .social-media ul li {
       list-style: none;
-      color: #944E63;
+      color: var(--text-color);
       margin-top: 20px;
       margin-left:  20px;
-      font-size: 25px;
+      font-size: 22px;
 }
 
 .social-media ul li :hover{
   padding: 2px;
   color: var(--hover-color);
-  font-size: 27px;
+  font-size: 24px;
   font-weight: 600;
   transition: 0.2s ease-in;
+}
+
+/* copyright */
+.copyright {
+      position: absolute;
+      z-index: 1;
+      color: grey;
+      font-size: 15px;
+      right: 0;
+      font-family: Roboto;
+      font-weight: 100;
+      top: 60px;
+      margin-right: 2em;
+      bottom: 20px;
+      padding: 15px;
 }
 
 /* sidestrip */
@@ -147,118 +227,10 @@ a {
       transform: translateY(-50%);
       right: -4em;
       transform: rotate(90deg);
-      color: #944E63;
+      color: var(--text-color);
       letter-spacing: 4px;
-      font-size: 17px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: 600;
 }
 
 /* body */
-body{
-  background-image: url("searchImages/back.jpeg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  opacity: 70%;
-}
-
-.section{
-  margin: 60px;
-  background-color: var(--backgroundcolor);
-  height: 80vh;
-  width: 90vw;
-  opacity: 95%;
-  margin-bottom: 0px;
-  margin-top: 20px;
-  scroll-behavior: smooth;
-  overflow-y: auto;
-  justify-content: center;
-  align-items: center;
-}
-
-.cross{
-  margin: 10px;
-  justify-content: center;
-  text-align: center;
-}
-
-.close{
-  padding: 10px;
-  text-align: center;
-  font-size: 35px;
-  color: black;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.close:hover {
-  color: #944E63;
-  font-size: 40px;
-  transition: 0.2s ease-in;
-}
-
-.search-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.search-container .fa{
-  font-size: 25px;
-  color: black;
-}
-
-.search-container .fa:hover{
-  color: #944E63;
-  transition: 0.2s ease-in;
-}
-
-input[type="text"] {
-  padding: 8px;
-  border: 2px solid var(--text-color);
-  border-radius: 21px;
-  margin-right: 10px;
-  width: 30vw;
-  height: 42px;
-}
-
-.section .item-container{
-  display: flex;
-  margin: 20px;
-  margin-top: 10px;
-  margin-bottom: 0;
-  padding: 10px;
-  height: 24vh;
-  background-color: var(--text-color);
-  color: var(--backgroundcolor);
-}
-
-.section .item-container:nth-child(1){
-  margin-top: 20px;
-}
-
-.section .item-container:nth-last-child(1){
-  margin-bottom: 10px;
-}
-
-.section .item-container img{
-  height: 21vh;
-  width: 23vh;
-}
-
-.section .item-container .item-details{
-  margin: 10px;
-  padding: 10px;
-}
-
-.section .item-container .item-details h2{
-  font-size: 22px;
-}
-
-.section .item-container .item-details h3{
-  font-size: 17px;
-}
-
-.section p{
-  text-align: center;
-}

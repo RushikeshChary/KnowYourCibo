@@ -17,15 +17,17 @@ const userSchema = new Schema({
   },
   no_reviews:
   {
-    type: Number
+    type: Number,
+    required: true
   },
   no_ratings:
   {
-    type: Number
+    type: Number,
+    required: true
   },
   fav_items:
   {
-    type: Array
+    type: Array,
   },
 },{ timestamps: true });
 

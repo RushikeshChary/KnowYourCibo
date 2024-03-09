@@ -225,6 +225,8 @@ app.post("/set-password", async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
+      no_reviews: 0,
+      no_ratings: 0
     });
 
     // Clean up OTP store
@@ -252,6 +254,8 @@ app.post("/signup", async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
+      no_reviews: 0,
+      no_ratings: 0
     });
     newUser
       .save()

@@ -5,45 +5,73 @@
     box-sizing: border-box;
   }
   body {
-    color: white !important;
-  }
-  
-  .container { /* Corrected class name from .contanier to .container */
-    background-image: url("searchImages/back.jpeg");
-    height: 100vh;
-    width: 100% !important;
-    background-position: center;
+    color: #51829B;
+    background-image: url("public/authenticationImages/background.jpeg");
     background-repeat: no-repeat;
     background-size: cover;
-    position: relative;
+    background-position: center;
+    font-family: Montserrat;
   }
-  
+
+  .container {
+    height: 90vh;
+    width: 100% !important;
+    position: relative;
+    font-weight: 600;
+  }
+
   .w-50 {
-    width: 30% !important;
+    width: 34% !important;
     position: absolute !important;
     top: 120px;
-    border: 2px solid cadetblue !important;
-    border-radius: 10px;
-    left: 35%;
+    border: 2px solid #51829B;
+    border-radius: 7px;
+    left: 32%;
+    background-color: white;
+    padding: 25px;
+    color: #51829B;
+    align-items: center;
+    justify-content: center;
   }
-  
+
+  .container .w50 h3{
+    color: #51829B;
+    text-align: center;
+  }
+
   .form-label {
     font-weight: 700;
   }
-  
-  .btn-success {
-    background-color: rgb(0, 0, 0) !important;
-    border: none !important;
+
+  .btn {
     width: 100px;
+    border: 2px solid #51829B;
+    border-radius: 5px;
+    background-color: #51829B;
+    color: white;
+    padding: 10px;
   }
+
+  .btn :hover {
+    border: 2px solid whitesmoke;
+    background-color: whitesmoke;
+    color: #51829B;
+    padding-left: 12px;
+    padding-right: 12px;
+    transition: 0.2s ease-in-out;
+  }
+
   .white-link {
     color: white !important; /* Using !important to ensure override of any other styles */
   }
-  
+
+  .mb-3{
+    font-weight: 500;
+  }
+
   @media only screen and (max-width: 600px) {
     .w-50 {
         width: 100% !important;
         left: 0 !important;
     }
   }
-  

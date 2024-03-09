@@ -71,7 +71,9 @@ function checkLogin(req, res, next) {
     next();
   } else {
     // res.redirect("/login");
-    res.send("You cannot access this page. Please login or Signup to access user personal pages and to give rating or reviews.");
+    res.send(
+      "You cannot access this page. Please login or Signup to access user personal pages and to give rating or reviews."
+    );
   }
 }
 
@@ -226,7 +228,7 @@ app.post("/set-password", async (req, res) => {
       email,
       password: hashedPassword,
       no_reviews: 0,
-      no_ratings: 0
+      no_ratings: 0,
     });
 
     // Clean up OTP store
@@ -255,7 +257,7 @@ app.post("/signup", async (req, res) => {
       email,
       password: hashedPassword,
       no_reviews: 0,
-      no_ratings: 0
+      no_ratings: 0,
     });
     newUser
       .save()
@@ -393,7 +395,7 @@ app.get("/hall-2", (req, res) => {
 });
 
 // Profile page route
-app.get("/profile",checkLogin, async (req, res) => {
+app.get("/profile", checkLogin, async (req, res) => {
   const id = req.session.userId;
   // const id = "65eadd97673a7bf0caf2dc26";
   await User.findById({ _id: id }).then(async (result) => {
@@ -410,8 +412,31 @@ app.get("/profile",checkLogin, async (req, res) => {
   });
 });
 
+//Disliking an item in profile page.
+app.post("/dislike-item", async (req, res) => {
+  const userId = req.session.userId;
+  // const userId = "65eadd97673a7bf0caf2dc26";
+  const { item_id } = req.body;
+  // console.log(item_id);
+  try {
+    const user = await User.findById(userId);
+    const newArray = user.fav_items.filter((item) => item !== item_id);
+    // console.log(newArray);
+    const updatedDetails = {
+      fav_items: newArray,
+    };
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updatedDetails },
+      { new: true }
+    );
+    res.json({ message: "This item will be removed from your favorites" });
+  } catch (err) {
+    console.error(err);
+  }
+});
 //edit profile page route
-app.get("/editProfile",checkLogin, (req, res) => {
+app.get("/editProfile", checkLogin, (req, res) => {
   res.render("editProfile");
 });
 
@@ -430,7 +455,10 @@ app.post("/check-editProfile", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.json({ message: "Incorrect password!! Enter correct password to update details" });
+      return res.json({
+        message:
+          "Incorrect password!! Enter correct password to update details",
+      });
     }
 
     const newhashedPassword = await bcrypt.hash(newpassword, 10);
@@ -451,6 +479,8 @@ app.post("/check-editProfile", async (req, res) => {
     return res.json({ message: "Updated details successfully" });
   } catch (err) {
     console.error(err);
-    return res.json({ error: "Some error occurred in editing profile!! Try again." });
+    return res.json({
+      error: "Some error occurred in editing profile!! Try again.",
+    });
   }
 });

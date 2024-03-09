@@ -411,62 +411,98 @@ app.get("/editProfile", (req, res) => {
 });
 
 //TODO: Add checkLogin function as a middleware.
+// app.post("/check-editProfile", async (req, res) => {
+//   // const userId = req.session.userId;
+//   const userId = "65eadd97673a7bf0caf2dc26";
+//   const { firstName, lastName, password, newpassword } = req.body;
+//   var updatedDetails = {};
+//   try {
+//     await User.findById({ _id: userId })
+//       .then(async (user) => {
+//         const isMatch = await bcrypt.compare(password, user.password);
+//         if (!isMatch) {
+//           return res.json({message: "Incorrect password!! Enter correct password to update details"});
+//           // return;
+//         }
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         return res.json({ error: "Error in checking password!! Try again." });
+//         // return;
+//       });
+//     await bcrypt
+//       .hash(newpassword, 10)
+//       .then((newhashedPassword) => {
+//         updatedDetails = {
+//           firstName: firstName,
+//           lastName: lastName,
+//           password: newhashedPassword, //bhanu
+//         };
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         return res.json({ error: "Error in hashing new password!! Try again." });
+//         // return;
+//       });
+//     await User.findByIdAndUpdate(
+//       userId, // _id of the document to be updated
+//       { $set: updatedDetails }, // Updated details
+//       { new: true } // Options: new - return the modified document, runValidators - run validators on the update
+//     )
+//       .then((updatedUser) => {
+//         console.log("User details updated successfully:", updatedUser);
+//         return res.json({ message: "Updated details successfully" });
+//         // res.redirect("/profile");
+//         // return;
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         return res.json({ error: "Error in updating details!! Try again." });
+//         // return;
+//       });
+//   } catch (err) {
+//     console.log(err);
+//     return res.json({ error: "Some error occured in editing profile!! Try again." });
+//     // return;
+//   }
+// });
+
 app.post("/check-editProfile", async (req, res) => {
   // const userId = req.session.userId;
   const userId = "65eadd97673a7bf0caf2dc26";
   const { firstName, lastName, password, newpassword } = req.body;
   var updatedDetails = {};
   try {
-    await User.findById({ _id: userId })
-      .then(async (user) => {
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-          return res.json({
-            message:
-              "Incorrect password!! Enter correct password to update details.",
-          });
-          // return;
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        return res.json({ error: "Error in checking password!! Try again." });
-        // return;
-      });
-    await bcrypt
-      .hash(newpassword, 10)
-      .then((newhashedPassword) => {
-        updatedDetails = {
-          firstName: firstName,
-          lastName: lastName,
-          password: newhashedPassword, //bhanu
-        };
-      })
-      .catch((err) => {
-        console.log(err);
-        return res.json({ error: "Error in hashing new password!! Try again." });
-        // return;
-      });
-    await User.findByIdAndUpdate(
-      userId, // _id of the document to be updated
-      { $set: updatedDetails }, // Updated details
-      { new: true } // Options: new - return the modified document, runValidators - run validators on the update
-    )
-      .then((updatedUser) => {
-        console.log("User details updated successfully:", updatedUser);
-        return res.json({ message: "Updated details successfully" });
-        // res.redirect("/profile");
-        // return;
-      })
-      .catch((err) => {
-        console.log(err);
-        return res.json({ error: "Error in updating details!! Try again." });
-        // return;
-      });
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.json({ error: "User not found." });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.json({ message: "Incorrect password!! Enter correct password to update details" });
+    }
+
+    const newhashedPassword = await bcrypt.hash(newpassword, 10);
+
+    updatedDetails = {
+      firstName: firstName,
+      lastName: lastName,
+      password: newhashedPassword,
+    };
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updatedDetails },
+      { new: true }
+    );
+
+    console.log("User details updated successfully:", updatedUser);
+    return res.json({ message: "Updated details successfully" });
   } catch (err) {
-    console.log(err);
-    return res.json({ error: "Some error occured in editing profile!! Try again." });
-    // return;
+    console.error(err);
+    return res.json({ error: "Some error occurred in editing profile!! Try again." });
   }
 });
-

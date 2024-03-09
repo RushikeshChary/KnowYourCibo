@@ -33,6 +33,7 @@ document.getElementById("edit-profile-form").onsubmit = async (e) => {
     const data = await response.json();
     if (data.error) {
       alert(data.error);
+      window.location.href = "/profile";
     } else {
       alert(data.message);
       window.location.href = "/profile";
@@ -42,3 +43,5 @@ document.getElementById("edit-profile-form").onsubmit = async (e) => {
     alert("Error in fetching changes from server");
   }
 };
+
+

@@ -484,3 +484,8 @@ app.post("/check-editProfile", async (req, res) => {
     });
   }
 });
+
+app.get("/Restaurants", (req, res) => {
+  res.render("restaurant");
+});
+

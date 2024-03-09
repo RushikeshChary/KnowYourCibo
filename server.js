@@ -388,9 +388,9 @@ app.get("/hall-2", (req, res) => {
 });
 
 // Profile page route
-app.get("/profile", async (req, res) => {
-  // const id = req.session.userId;
-  const id = "65eadd97673a7bf0caf2dc26";
+app.get("/profile",checkLogin, async (req, res) => {
+  const id = req.session.userId;
+  // const id = "65eadd97673a7bf0caf2dc26";
   await User.findById({ _id: id }).then(async (result) => {
     const favArray = result.fav_items;
     if (favArray.length > 0) {
@@ -406,70 +406,13 @@ app.get("/profile", async (req, res) => {
 });
 
 //edit profile page route
-app.get("/editProfile", (req, res) => {
+app.get("/editProfile",checkLogin, (req, res) => {
   res.render("editProfile");
 });
 
-//TODO: Add checkLogin function as a middleware.
-// app.post("/check-editProfile", async (req, res) => {
-//   // const userId = req.session.userId;
-//   const userId = "65eadd97673a7bf0caf2dc26";
-//   const { firstName, lastName, password, newpassword } = req.body;
-//   var updatedDetails = {};
-//   try {
-//     await User.findById({ _id: userId })
-//       .then(async (user) => {
-//         const isMatch = await bcrypt.compare(password, user.password);
-//         if (!isMatch) {
-//           return res.json({message: "Incorrect password!! Enter correct password to update details"});
-//           // return;
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         return res.json({ error: "Error in checking password!! Try again." });
-//         // return;
-//       });
-//     await bcrypt
-//       .hash(newpassword, 10)
-//       .then((newhashedPassword) => {
-//         updatedDetails = {
-//           firstName: firstName,
-//           lastName: lastName,
-//           password: newhashedPassword, //bhanu
-//         };
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         return res.json({ error: "Error in hashing new password!! Try again." });
-//         // return;
-//       });
-//     await User.findByIdAndUpdate(
-//       userId, // _id of the document to be updated
-//       { $set: updatedDetails }, // Updated details
-//       { new: true } // Options: new - return the modified document, runValidators - run validators on the update
-//     )
-//       .then((updatedUser) => {
-//         console.log("User details updated successfully:", updatedUser);
-//         return res.json({ message: "Updated details successfully" });
-//         // res.redirect("/profile");
-//         // return;
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         return res.json({ error: "Error in updating details!! Try again." });
-//         // return;
-//       });
-//   } catch (err) {
-//     console.log(err);
-//     return res.json({ error: "Some error occured in editing profile!! Try again." });
-//     // return;
-//   }
-// });
-
 app.post("/check-editProfile", async (req, res) => {
-  // const userId = req.session.userId;
-  const userId = "65eadd97673a7bf0caf2dc26";
+  const userId = req.session.userId;
+  // const userId = "65eadd97673a7bf0caf2dc26";
   const { firstName, lastName, password, newpassword } = req.body;
   var updatedDetails = {};
   try {
@@ -499,7 +442,7 @@ app.post("/check-editProfile", async (req, res) => {
       { new: true }
     );
 
-    console.log("User details updated successfully:", updatedUser);
+    // console.log("User details updated successfully:", updatedUser);
     return res.json({ message: "Updated details successfully" });
   } catch (err) {
     console.error(err);

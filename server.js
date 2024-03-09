@@ -71,7 +71,7 @@ function checkLogin(req, res, next) {
     next();
   } else {
     // res.redirect("/login");
-    res.send("You cannot access this page");
+    res.send("You cannot access this page. Please login or Signup to access user personal pages and to give rating or reviews.");
   }
 }
 
@@ -85,23 +85,23 @@ let transporter = nodemailer.createTransport({
 });
 
 //Database check to add items to database.
-app.get("/check", (req, res) => {
-  const user = new User({
-    firstName: "Bhavana",
-    lastName: "Denchanadula",
-    email: "bhavana19@gmail.com",
-    password: "bhanu",
-    no_reviews: 0,
-    no_ratings: 0,
-    fav_items: ["65e8718f585fbfb2a6af90a3", "65e86f1d70a3f056073e13a3"],
-  });
-  user
-    .save()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => console.error(err));
-});
+// app.get("/check", (req, res) => {
+//   const user = new User({
+//     firstName: "Bhavana",
+//     lastName: "Denchanadula",
+//     email: "bhavana19@gmail.com",
+//     password: "bhanu",
+//     no_reviews: 0,
+//     no_ratings: 0,
+//     fav_items: ["65e8718f585fbfb2a6af90a3", "65e86f1d70a3f056073e13a3"],
+//   });
+//   user
+//     .save()
+//     .then((result) => {
+//       res.send(result);
+//     })
+//     .catch((err) => console.error(err));
+// });
 
 //Authentication routing.
 app.get("/signup", (req, res) => {
@@ -318,9 +318,10 @@ app.post("/login", async (req, res) => {
     });
   }
 });
-app.get("/dashboard", checkLogin, (req, res) => {
-  res.send("Welcome to your Dashboard!");
-});
+
+// app.get("/dashboard", checkLogin, (req, res) => {
+//   res.send("Welcome to your Dashboard!");
+// });
 
 app.get("/logout", (req, res) => {
   req.session.destroy(function (err) {

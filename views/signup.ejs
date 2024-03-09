@@ -115,10 +115,12 @@
         .getElementById("verifyEmail")
         .addEventListener("click", async () => {
           const email = document.getElementById("email").value;
-          if (!email) {
-            alert("Please enter an email.");
-            return;
-          }
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    if (!email || !firstName || !lastName) {
+      alert("Please fill in all fields.");
+      return;
+    }
           try {
             // Check if the user exists
             const checkUserResponse = await fetch("/check-user", {
@@ -134,10 +136,10 @@
 
             // If user doesn't exist, proceed to send OTP
             const otpResponse = await fetch("/send-otp", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email }),
-            });
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, firstName, lastName }),
+      });
             const otpData = await otpResponse.json();
             alert(otpData.message);
             if (!otpData.error) {

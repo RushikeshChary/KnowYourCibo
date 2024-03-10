@@ -589,20 +589,27 @@ app.get("/Restaurants", async (req, res) => {
   // res.render("Restaurants");
 });
 
-app.get("/Restaurants/:name", async (req, res) => {
+app.get("/Restaurants/:name", (req, res) => {
   const name = req.params.name;
   console.log(name);
   const hall_name = name.trim();
   console.log(hall_name);
-  try {
-    // Use async/await to handle the asynchronous query
-    const items = await Item.find({ hall: hall_name});
-    console.log(items);
-    res.render('hall',{items: items});
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send("Internal Server Error");
-  }
+  // try {
+  //   // Use async/await to handle the asynchronous query
+  //   const items = await Item.find({ hall: hall_name});
+  //   console.log(items);
+  //   res.render('hall',{items: items});
+  // } catch (error) {
+  //   console.error("Error:", error);
+  //   res.status(500).send("Internal Server Error");
+  // }
+  Item.find({hall: name})
+    .then(result => {
+      res.render('hall', { items: result});
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 

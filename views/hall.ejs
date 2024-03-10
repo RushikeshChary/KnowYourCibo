@@ -21,7 +21,7 @@
   <title>KnowYourCibo</title>
   <link rel="stylesheet" href="stylepage.css">
   <link rel="stylesheet" href="hallStyle.css">
-  <script src="script.js"></script>
+  <script src="hallScript.js"></script>
 </head>
 
 <!-- nav bar -->
@@ -68,17 +68,6 @@
   <div class="side-strip">
         <span>EAT RATE CURATE</span>
   </div>
-
-
-
-
-
-
-
-
-
-
-
   <!-- body -->
 
 <div class="container">
@@ -125,11 +114,11 @@
             <div class="tile">
               <div class="inner">
                 <!-- write item.img in src section here -->
-              <div class="image"><img src="burger.jpeg" alt=""></div>
+              <div class="image"><img src="<%= item.image %>" alt=""></div>
               <div>
                 <div class="innertext">
-                  <h2>item.name</h2>
-                  <h3>item.price</h3>
+                  <h2><%=item.name%></h2>
+                  <h3><%=item.price%></h3>
                 </div>
                 <div class="Ratings">
                 </div>
@@ -519,23 +508,23 @@
             </div>
         </div>
 
-        <div class="tile">
-      <div class="inner">
+      <div class="tile">
+        <div class="inner">
 
-        <div class="image"><img src="burger.jpeg" alt=""></div>
-        <div>
-          <div class="innertext">
-            <h2>Burger</h2>
-            <h3>Price</h3>
-          </div>
-          <div class="Ratings"> <h1>rating</h1>
-          </div>
-          <div class="ratings-buttons">
-          </div>
+          <div class="image"><img src="burger.jpeg" alt=""></div>
+          <div>
+            <div class="innertext">
+              <h2>Burger</h2>
+              <h3>Price</h3>
+            </div>
+            <div class="Ratings"> <h1>rating</h1>
+            </div>
+            <div class="ratings-buttons">
+            </div>
 
+          </div>
         </div>
       </div>
-  </div>
 
         <div class="tile">
       <div class="inner">

@@ -589,24 +589,16 @@ app.get("/Restaurants", async (req, res) => {
   // res.render("Restaurants");
 });
 
-app.get("/Restaurants/:id", async (req, res) => {
-  const id = req.params.id;
-  console.log(id);
+app.get("/Restaurants/:name", async (req, res) => {
+  const name = req.params.name;
+  console.log(name);
+  const hall_name = name.trim();
+  console.log(hall_name);
   try {
     // Use async/await to handle the asynchronous query
-    const restaurant = await Restaurant.findOne({ _id: id });
-
-    if (!restaurant) {
-      // Handle the case where the restaurant with the given ID is not found
-      return res.status(404).send("Restaurant not found");
-    }
-
-    const restName = restaurant.Restaurant_name;
-
-    // Use async/await to handle the asynchronous query for items
-    const items = await Item.find({ hall: restName });
-
-    res.render("hall", { items });
+    const items = await Item.find({ hall: hall_name});
+    console.log(items);
+    res.render('hall',{items: items});
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
@@ -614,3 +606,7 @@ app.get("/Restaurants/:id", async (req, res) => {
 });
 
 
+app.get('/halltest',async (req, res) => {
+  const items = await Item.find({hall: 'Hall 2 Canteen' });
+  res.render('hall',{items: items});
+})

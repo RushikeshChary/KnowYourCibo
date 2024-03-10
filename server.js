@@ -339,6 +339,102 @@ app.get("/logout", (req, res) => {
 });
 //Authentication ends here.
 
+
+//forgot password starts
+
+app.post('/send-otp-forgot-password', async (req, res) => {
+  const { email } = req.body;
+
+  // Check if user exists
+  const user = await User.findOne({ email: email });
+  if (!user) {
+      return res.status(404).json({ error: "No account found with that email address." });
+  }
+
+  // Generate an OTP
+  const otp = crypto.randomInt(100000, 999999).toString();
+  const otpExpires = new Date(Date.now() + 15 * 60 * 1000); // OTP expiry time (15 minutes)
+
+  // Store the OTP in your storage system (Here, it's in-memory)
+  otpStore[email] = { otp, otpExpires };
+
+  // Send the OTP via email
+  try {
+      await transporter.sendMail({
+          from: process.env.GMAIL_USER, // Sender address
+          to: email, // Receiver address
+          subject: "Your Password Reset OTP", // Subject line
+          text: `Your OTP for password reset is: ${otp}`, // Plain text body
+      });
+
+      res.json({ message: "OTP sent to " + email });
+  } catch (error) {
+      console.error("Error sending OTP:", error);
+      res.status(500).json({ error: "Error sending OTP" });
+  }
+});
+
+app.post('/verify-otp-forgot-password', async (req, res) => {
+  const { email, otp } = req.body;
+
+  // Check if the OTP entry exists for the provided email
+  const otpData = otpStore[email];
+
+  if (otpData) {
+      // Check if the OTP matches and is not expired
+      if (otpData.otp === otp && otpData.otpExpires > new Date()) {
+          res.json({
+              success: true,
+              message: "OTP verified successfully. You can now reset your password.",
+          });
+      } else {
+          // OTP is invalid or expired
+          res.status(400).json({ error: "Invalid or expired OTP." });
+      }
+  } else {
+      // No OTP entry found for the provided email
+      res.status(400).json({ error: "OTP not found. Please request a new OTP." });
+  }
+});
+
+
+app.post('/reset-password', async (req, res) => {
+  const { email, otp, password, confirmPassword } = req.body;
+
+  // Validate that password and confirmPassword match
+  if (password !== confirmPassword) {
+      return res.status(400).json({ error: "Passwords do not match" });
+  }
+
+  // Check the OTP validity
+  const otpData = otpStore[email];
+  if (!otpData || otpData.otp !== otp || otpData.otpExpires < new Date()) {
+      return res.status(400).json({ error: "Invalid or expired OTP" });
+  }
+
+  // Hash the new password
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  // Update the user's password in the database
+  try {
+      const user = await User.findOne({ email: email });
+      if (user) {
+          user.password = hashedPassword;
+          await user.save();
+          delete otpStore[email]; // Clear the OTP from the store
+          res.json({ message: "Password reset successfully" });
+      } else {
+          res.status(404).json({ error: "User not found" });
+      }
+  } catch (error) {
+      console.error("Error resetting password:", error);
+      res.status(500).json({ error: "Error resetting password" });
+  }
+});
+
+// forgot password ends here.
+
 //Genereal routing starts from here.
 app.get("/", (req, res) => {
   res.redirect("home");

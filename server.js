@@ -88,23 +88,17 @@ let transporter = nodemailer.createTransport({
 });
 
 //Database check to add items to database.
-// app.get("/check", (req, res) => {
-//   const user = new User({
-//     firstName: "Bhavana",
-//     lastName: "Denchanadula",
-//     email: "bhavana19@gmail.com",
-//     password: "bhanu",
-//     no_reviews: 0,
-//     no_ratings: 0,
-//     fav_items: ["65e8718f585fbfb2a6af90a3", "65e86f1d70a3f056073e13a3"],
-//   });
-//   user
-//     .save()
-//     .then((result) => {
-//       res.send(result);
-//     })
-//     .catch((err) => console.error(err));
-// });
+app.get("/check", (req, res) => {
+  const rest = new Restaurant({
+    Restaurant_name: 'Hall 25'
+  });
+  rest
+    .save()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => console.error(err));
+});
 
 //Authentication routing.
 app.get("/signup", (req, res) => {
@@ -587,21 +581,36 @@ app.get("/forgot_password", (req, res) => {
 
 
 
-
 app.get("/Restaurants", async (req, res) => {
 
   const res_list = await Restaurant.find({});
-  console.log(res_list);
+  // console.log(res_list);
   res.render("Restaurants", { res_list });
   // res.render("Restaurants");
 });
 
 app.get("/Restaurants/:id", async (req, res) => {
   const id = req.params.id;
-  const restaurant = Restaurant.find({ _id: id });
-  const res = restaurant.name;
-  const items = await Item.find({hall: res});
-  res.render("hall", { items });
-  // res.render("Restaurants");
-})
+  console.log(id);
+  try {
+    // Use async/await to handle the asynchronous query
+    const restaurant = await Restaurant.findOne({ _id: id });
+
+    if (!restaurant) {
+      // Handle the case where the restaurant with the given ID is not found
+      return res.status(404).send("Restaurant not found");
+    }
+
+    const restName = restaurant.Restaurant_name;
+
+    // Use async/await to handle the asynchronous query for items
+    const items = await Item.find({ hall: restName });
+
+    res.render("hall", { items });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 

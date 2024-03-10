@@ -7,7 +7,7 @@ document.addEventListener("mousemove", function (e) {
 });
 
 
-document.getElementById('section1').style.display = "block";
+document.getElementById('veg').style.display = "block";
 
 function showSection(sectionId) {
     // Hide all sections

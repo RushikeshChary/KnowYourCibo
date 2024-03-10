@@ -67,21 +67,24 @@
 
   <section class="section">
 
-    <a href="#1">
+    <% if (res_list.length > 0) { %> <% res_list.forEach(restaurant => { %>
+    <a href="/Restaurants/<%= restaurant._id %>">
       <div class="card">
         <div class="img_card">
           <img src="img/R_1.jpg" alt="Avatar" style="width:100%">
         </div>
         <div class="container1">
-          <h2><b>Hall 1 Canteen</b></h2>
+          <h2><b> <%= restaurant.Restaurant_name %> </b></h2>
 
           <p>IIT KANPUR</p>
         </div>
       </div>
     </a>
+    <% }) %> <% } else { %>
+      <p>There are no restaurants available.<p>
+      <% } %>
 
-
-    <a href="#2">
+    <!-- <a href="#2">
       <div class="card">
         <div class="img_card">
          <img src="img/R_2.jpg" alt="Avatar" style="width:100%">
@@ -321,7 +324,7 @@
           <p>IIT KANPUR</p>
         </div>
       </div>
-    </a>
+    </a> -->
 
 
   </section>

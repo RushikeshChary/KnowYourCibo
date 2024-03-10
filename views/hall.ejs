@@ -119,16 +119,17 @@
   <div class="mosaic-container">
 
     <!-- content 1 -->
-      <div id="section1" class="section" style="display: block;">
+      <div id="veg" class="section" style="display: block;">
 
+            <% if (items.length > 0) { %> <% items.forEach(item => { %>
             <div class="tile">
               <div class="inner">
-
+                <!-- write item.img in src section here -->
               <div class="image"><img src="burger.jpeg" alt=""></div>
               <div>
                 <div class="innertext">
-                  <h2>Burger</h2>
-                  <h3>Price</h3>
+                  <h2>item.name</h2>
+                  <h3>item.price</h3>
                 </div>
                 <div class="Ratings">
                 </div>
@@ -138,16 +139,16 @@
                   <span class="fa fa-star checked"></span>
                   <span class="fa fa-star"></span>
                   <span class="fa fa-star"></span>
-
                   <i class="fa fa-heart"></i>
-
-
                 </div>
               </div>
+              </div>
             </div>
-            </div>
+            <% }) %> <% } else { %>
+              <p>There are no items in this section of restaurant.<p>
+              <% } %>
 
-            <div class="tile">
+            <!-- <div class="tile">
               <div class="inner">
 
               <div class="image"><img src="burger.jpeg" alt=""></div>
@@ -225,7 +226,7 @@
             </div>
             </div>
 
-    </div>
+    </div> -->
 
 
       <!-- content 2 -->

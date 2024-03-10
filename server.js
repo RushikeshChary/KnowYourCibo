@@ -10,6 +10,7 @@ const path = require("path");
 const session = require("express-session");
 const Item = require("./models/item.js");
 const User = require("./models/user.js");
+const Restaurant = require("./models/restaurant.js");
 
 var otpStore = {}; // Declaration of otpStore
 
@@ -583,7 +584,24 @@ app.post("/check-editProfile", async (req, res) => {
 app.get("/forgot_password", (req, res) => {
   res.render("forgot_password");
 });
-app.get("/Restaurants", (req, res) => {
-  res.render("Restaurants");
+
+
+
+
+app.get("/Restaurants", async (req, res) => {
+
+  const res_list = await Restaurant.find({});
+  console.log(res_list);
+  res.render("Restaurants", { res_list });
+  // res.render("Restaurants");
 });
+
+app.get("/Restaurants/:id", async (req, res) => {
+  const id = req.params.id;
+  const restaurant = Restaurant.find({ _id: id });
+  const res = restaurant.name;
+  const items = await Item.find({hall: res});
+  res.render("hall", { items });
+  // res.render("Restaurants");
+})
 

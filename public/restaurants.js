@@ -19,3 +19,5 @@ window.onload = function(){
         span.style.transform = `rotate(${11*i}deg)`;
     }
 }
+
+

@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
+:root {
+  --backgroundcolor: #F5EEE6;
+  --text-color: #9B4444;
+  --hover-color: #AC7D88;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+body {
+    font-family:'Montserrat';
+    margin:  0;
+    padding: 0;
+    background-color: var(--backgroundcolor);
+    background-size: cover;
+    background-position: center;
+    background-image: url("public/feedbackImages/background.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-size: 14px;
+}
+
+form {
+    width: 35vw;
+    max-width: 500px;
+    height: 80vh;
+   /* background-color: rgba(255, 255, 255, 0.8); */
+    padding: 15px;
+    border-radius: 30px;
+    margin-left: 56vw;
+    margin-top: 30px;
+    background-color: whitesmoke;
+    border: 2px solid #D37676;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    margin-left: 37px;
+}
+
+
+input, select, textarea {
+    width: 27vw;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-left: 37px;
+
+}
+
+button {
+    background-color: #4CAF50;
+    color: rgb(255, 255, 255);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    margin-left: 145px;
+
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Styles for rating input */
+label[for="rating"] {
+    display: block;
+    margin-bottom: 8px;
+}
+
+label[for="name"] {
+    padding-top: 10px;
+}
+
+.rating-container {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.rating-option {
+    display: none; /* Hide the default radio buttons */
+}
+
+.rating-option + label {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  /*  background-color: #a8a2a2; */
+
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.rating-option:checked + label {
+    background-color: #4CAF50;
+    color: rgb(255, 255, 255);
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+
+
+label {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 20px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 14px;
+  }
+
+ .nav ul li :hover{
+   padding: 8px;
+   color: var(--hover-color);
+   font-size: 16px;
+   font-weight: 600;
+   transition: 0.2s ease-in;
+   padding-bottom: 2.5px;
+   border-bottom: 1px solid var(--hover-color);
+ }
+
+ .logo {
+    font-size: 40px;
+    color: #9B4444;
+    font-family: Monoton;
+  }
+
+  .menu-links ul li {
+    display: inline-block;
+    padding-right: 20px;
+    color: var(--backgroundcolor);
+  }
+
+  .account :hover{
+    padding: 8px;
+    color: var(--hover-color);
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s ease-in;
+    padding-bottom: 2.5px;
+    border-bottom: 1px solid var(--hover-color);
+  }
+
+  .search :hover{
+    padding: 8px;
+    color: var(--hover-color);
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s ease-in;
+  }
+
+  ul li{
+    list-style: none;
+    list-style-type: none;
+  }
+
+
+/* social media */
+.social-media {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.social-media ul li {
+  list-style: none;
+  color: var(--text-color);
+  margin-top: 20px;
+  margin-left:  20px;
+  font-size: 22px;
+}
+
+.social-media ul li :hover{
+padding: 2px;
+color: var(--hover-color);
+font-size: 24px;
+font-weight: 600;
+transition: 0.2s ease-in;
+}
+
+.side-strip{
+  position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: -4em;
+      transform: rotate(90deg);
+      color: var(--text-color);
+      letter-spacing: 4px;
+      font-size: 15px;
+      font-weight: 800;
+}
+
+.feed{
+  text-align: center;
+  margin-top: 5px;
+  font-size: 30px;
+  color: #D37676;
+  font-weight: 600;
+  padding-bottom: 10px;
+}
+
+hr{
+  margin-left: 45px;
+  margin-right: 45px;
+  color: var(--text-color);
+}

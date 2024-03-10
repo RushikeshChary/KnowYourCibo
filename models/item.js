@@ -25,7 +25,11 @@ const itemSchema = new Schema(
     },
     image: {
       type: String,
-    }
+    },
+    reviews: [{
+      comment: { type: String, required: true },
+      postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required:true}
+  }],
   },
   { timestamps: true }
 );

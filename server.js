@@ -580,7 +580,9 @@ app.post("/check-editProfile", async (req, res) => {
     });
   }
 });
-
+app.get("/forgot_password", (req, res) => {
+  res.render("forgot_password");
+});
 app.get("/Restaurants", (req, res) => {
   res.render("Restaurants");
 });

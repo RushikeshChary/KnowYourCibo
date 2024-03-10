@@ -6,7 +6,7 @@
   }
   body {
     color: #51829B;
-    background-image: url("public/authenticationImages/background.jpeg");
+    background-image: url("authenticationImages/background.jpeg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -62,7 +62,7 @@
   }
 
   .white-link {
-    color: white !important; /* Using !important to ensure override of any other styles */
+    color: #51829B !important; /* Using !important to ensure override of any other styles */
   }
 
   .mb-3{
@@ -75,3 +75,4 @@
         left: 0 !important;
     }
   }
+

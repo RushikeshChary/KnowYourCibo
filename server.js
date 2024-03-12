@@ -582,87 +582,22 @@ app.get("/Restaurants", async (req, res) => {
   res.render("Restaurants", { res_list });
 });
 
-app.get("/Restaurants/:name", (req, res) => {
-  console.log('Handler called');
-  const name = req.params.name;
-  const hall_name = name.trim();
-  Item.find({ hall: hall_name })
-    .then(result => {
-      console.log('Rendering response');
-      res.render('hall', { items: result });
-      return;
-    })
-    .catch(err => {
-      console.log(err);
-    });
+app.get('/Restaurants/:restaurantId', async (req, res) => {
+  
+
+  try {
+    const restaurantId = req.params.restaurantId;
+    const restaurant = await Restaurant.findById(restaurantId);
+
+    if (!restaurant) {
+      return res.status(404).send('Restaurant not found');
+    }
+
+     // Assuming 'hall' is a field in your Item schema that corresponds to the restaurant's name
+    const items = await Item.find({ hall: restaurant.Restaurant_name });
+    // Combine restaurant and items into one object for the render method
+    res.render('hall', { restaurant: restaurant, items: items });
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
 });
-
-
-app.get('/Hall-1-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-1-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-2-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-2-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-3-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-3-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-4-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-4-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-5-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-5-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-6-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-6-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-7-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-7-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-8-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-8-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-9-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-9-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-10-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-10-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-11-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-11-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-12-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-12-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Hall-13-Canteen',async (req, res) => {
-  const items = await Item.find({hall: 'Hall-13-Canteen' });
-  res.render('hall',{items: items});
-})
-app.get('/Campus-D-shop',async (req, res) => {
-  const items = await Item.find({hall: 'Campus-D-shop' });
-  res.render('hall',{items: items});
-})
-app.get('/Campus-E-shop',async (req, res) => {
-  const items = await Item.find({hall: 'Campus-E-shop' });
-  res.render('hall',{items: items});
-})
-app.get('/Dominos',async (req, res) => {
-  const items = await Item.find({hall: 'Dominos' });
-  res.render('hall',{items: items});
-})
-app.get('/Campus-Restaurant',async (req, res) => {
-  const items = await Item.find({hall: 'Campus-Restaurant' });
-  res.render('hall',{items: items});
-})

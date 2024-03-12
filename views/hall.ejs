@@ -19,10 +19,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   <title>KnowYourCibo</title>
   <link rel="stylesheet" href="stylepage.css">
   <link rel="stylesheet" href="hallStyle.css">
   <script src="hallScript.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $("button").click(function(){
+        $("#div1").toggle();
+      });
+    });
+  </script>
+
 </head>
 
 <!-- nav bar -->
@@ -69,16 +80,66 @@
   <div class="side-strip">
         <span>EAT RATE CURATE</span>
   </div>
+
+
+
+
+
+
+
+
+
+
+
   <!-- body -->
 
 <div class="container">
 
   <div class="left-container">
 
-        <h1><%= restaurant.Restaurant_name %></h1>
+    <h1><%= restaurant.Restaurant_name %></h1>
       <p>Hall of Residence 1</p>
       <p>Fifth Ave</p>
       <p>IIT Kanpur</p>
+
+
+      <!-- review box -->
+      <div id="div1" style="display:none;">
+        <div class="review-container">
+        <div class="reviews">
+          <div class="user-name">
+            <h3>Name</h3>
+          </div>
+          <div class="review-text">
+            <p>Review</p>
+          </div>
+
+        </div>
+        <div class="reviews">
+          <p>Review</p>
+        </div>
+        <div class="reviews">
+          <p>Review</p>
+        </div>
+        <div class="reviews">
+          <p>Review</p>
+        </div>
+        <div class="reviews">
+          <p>Review</p>
+        </div>
+        <div class="reviews">
+          <p>Review</p>
+        </div>
+        <div class="reviews">
+          <p>Review</p>
+        </div>
+        </div>
+        <div class="review-input-container">
+          <input class="review-input" type="text" name="" value="">
+          <button class="review-button">+</button>
+
+        </div>
+      </div>
 
       <!-- <h3>Ratings</h3> -->
 
@@ -109,36 +170,37 @@
   <div class="mosaic-container">
 
     <!-- content 1 -->
-      <div id="veg" class="section" style="display: block;">
+      <div id="section1" class="section" style="display: block;">
 
-            <% if (items.length > 0) { %> <% items.forEach(item => { %>
-            <div class="tile">
-              <div class="inner">
-                <!-- write item.img in src section here -->
-              <div class="image"><img src="<%= item.image %>" alt=""></div>
-              <div>
-                <div class="innertext">
-                  <h2><%=item.name%></h2>
-                  <h3><%=item.price%></h3>
-                </div>
-                <div class="Ratings">
-                </div>
-                <div class="rating-buttons">
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star checked"></span>
-                  <span class="fa fa-star"></span>
-                  <span class="fa fa-star"></span>
-                  <i class="fa fa-heart"></i>
-                </div>
+        <% if (items.length > 0) { %> <% items.forEach(item => { %>
+          <div class="tile">
+            <div class="inner">
+              <!-- write item.img in src section here -->
+            <div class="image"><img src="<%= item.image %>" alt=""></div>
+            <div>
+              <div class="innertext">
+                <h2><%=item.name%></h2>
+                <h3><%=item.price%></h3>
               </div>
+              
+                  <div class="rating-box">
+                    <div class="stars">
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                    </div>
+               </div>
+                <button class="review-btn">Review</button>
               </div>
+            </div>
             </div>
             <% }) %> <% } else { %>
               <p>There are no items in this section of restaurant.<p>
               <% } %>
 
-            <!-- <div class="tile">
+            <div class="tile">
               <div class="inner">
 
               <div class="image"><img src="burger.jpeg" alt=""></div>
@@ -216,7 +278,7 @@
             </div>
             </div>
 
-    </div> -->
+    </div>
 
 
       <!-- content 2 -->
@@ -509,23 +571,23 @@
             </div>
         </div>
 
-      <div class="tile">
-        <div class="inner">
+        <div class="tile">
+      <div class="inner">
 
-          <div class="image"><img src="burger.jpeg" alt=""></div>
-          <div>
-            <div class="innertext">
-              <h2>Burger</h2>
-              <h3>Price</h3>
-            </div>
-            <div class="Ratings"> <h1>rating</h1>
-            </div>
-            <div class="ratings-buttons">
-            </div>
-
+        <div class="image"><img src="burger.jpeg" alt=""></div>
+        <div>
+          <div class="innertext">
+            <h2>Burger</h2>
+            <h3>Price</h3>
           </div>
+          <div class="Ratings"> <h1>rating</h1>
+          </div>
+          <div class="ratings-buttons">
+          </div>
+
         </div>
       </div>
+  </div>
 
         <div class="tile">
       <div class="inner">
@@ -549,6 +611,40 @@
 </div>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -634,6 +730,8 @@ ease: Expo.easeInOut
 
 
   </script>
+ 
+  
 
 </body>
 

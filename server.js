@@ -526,6 +526,10 @@ app.get("/editProfile", checkLogin, (req, res) => {
   res.render("editProfile");
 });
 
+app.get("/searchpage", (req, res) => {
+  res.render("searchPage");
+});
+
 app.post("/check-editProfile", async (req, res) => {
   const userId = req.session.userId;
   // const userId = "65eadd97673a7bf0caf2dc26";

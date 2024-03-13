@@ -1,26 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="signupStyle.css" />
     <title>Sign Up</title>
   </head>
   <body>
     <div class="container">
-      <form
-        class="w-50 mx-auto py-5 shadow p-4"
-        action="/signup"
-        method="POST"
-        id="signupForm"
-      >
-        <h3 class="text-white">Sign Up Now</h3>
+      <div class="left">
+      <form class="w-50" action="/signup" method="POST" id="signupForm" >
+        <h3>SignUp Now</h3>
         <hr />
         <div class="name-group">
           <div class="mb-3">
@@ -86,23 +77,21 @@
           <label for="confirmpassword" class="form-label"
             >Confirm Password</label
           >
-          <input
-            type="password"
-            class="form-control"
-            id="confirmpassword"
-            name="confirm"
-            required
-          />
+          <input type="password" class="form-control" id="confirmpassword" name="confirm" required />
         </div>
         <div class="mb-3 d-flex" id="submitSection" style="display: none">
-          <button type="submit" class="btn btn-success">Signup</button>
+          <button type="submit" class="btn btn-success">SignUp</button>
           <p class="form-label ms-auto mt-2">
             Already have an Account?
-            <a href="/login" class="text-white">login</a>
+            <a id="logind"href="/login">Login</a>
           </p>
         </div>
         <div id="otpMessage" class="alert" style="display: none"></div>
       </form>
+      </div>
+      <div class="right">
+
+      </div>
     </div>
     <!-- Bootstrap Bundle with Popper -->
     <script

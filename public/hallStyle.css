@@ -230,3 +230,22 @@
   color: #ff9c1a;
 } 
 
+
+.image {
+  position: relative;
+}
+
+.heart-icon {
+  color: red; /* Default color */
+  cursor: pointer;
+  size: 100;
+  position: absolute;
+  top: -1px;
+  right: 1px;
+  padding-top: 5px;
+  padding-right: 5px;
+}
+
+.heart-icon.clicked {
+  color: black; /* Color when pressed */
+}

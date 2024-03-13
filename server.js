@@ -90,7 +90,7 @@ let transporter = nodemailer.createTransport({
 //Database check to add items to database.
 app.get("/check", (req, res) => {
   const rest = new Restaurant({
-    Restaurant_name: 'Hall 2 Canteene'
+    Restaurant_name: "Hall 2 Canteene",
   });
   rest
     .save()
@@ -334,16 +334,17 @@ app.get("/logout", (req, res) => {
 });
 //Authentication ends here.
 
-
 //forgot password starts
 
-app.post('/send-otp-forgot-password', async (req, res) => {
+app.post("/send-otp-forgot-password", async (req, res) => {
   const { email } = req.body;
 
   // Check if user exists
   const user = await User.findOne({ email: email });
   if (!user) {
-      return res.status(404).json({ error: "No account found with that email address." });
+    return res
+      .status(404)
+      .json({ error: "No account found with that email address." });
   }
 
   // Generate an OTP
@@ -355,56 +356,55 @@ app.post('/send-otp-forgot-password', async (req, res) => {
 
   // Send the OTP via email
   try {
-      await transporter.sendMail({
-          from: process.env.GMAIL_USER, // Sender address
-          to: email, // Receiver address
-          subject: "Your Password Reset OTP", // Subject line
-          text: `Your OTP for password reset is: ${otp}`, // Plain text body
-      });
+    await transporter.sendMail({
+      from: process.env.GMAIL_USER, // Sender address
+      to: email, // Receiver address
+      subject: "Your Password Reset OTP", // Subject line
+      text: `Your OTP for password reset is: ${otp}`, // Plain text body
+    });
 
-      res.json({ message: "OTP sent to " + email });
+    res.json({ message: "OTP sent to " + email });
   } catch (error) {
-      console.error("Error sending OTP:", error);
-      res.status(500).json({ error: "Error sending OTP" });
+    console.error("Error sending OTP:", error);
+    res.status(500).json({ error: "Error sending OTP" });
   }
 });
 
-app.post('/verify-otp-forgot-password', async (req, res) => {
+app.post("/verify-otp-forgot-password", async (req, res) => {
   const { email, otp } = req.body;
 
   // Check if the OTP entry exists for the provided email
   const otpData = otpStore[email];
 
   if (otpData) {
-      // Check if the OTP matches and is not expired
-      if (otpData.otp === otp && otpData.otpExpires > new Date()) {
-          res.json({
-              success: true,
-              message: "OTP verified successfully. You can now reset your password.",
-          });
-      } else {
-          // OTP is invalid or expired
-          res.status(400).json({ error: "Invalid or expired OTP." });
-      }
+    // Check if the OTP matches and is not expired
+    if (otpData.otp === otp && otpData.otpExpires > new Date()) {
+      res.json({
+        success: true,
+        message: "OTP verified successfully. You can now reset your password.",
+      });
+    } else {
+      // OTP is invalid or expired
+      res.status(400).json({ error: "Invalid or expired OTP." });
+    }
   } else {
-      // No OTP entry found for the provided email
-      res.status(400).json({ error: "OTP not found. Please request a new OTP." });
+    // No OTP entry found for the provided email
+    res.status(400).json({ error: "OTP not found. Please request a new OTP." });
   }
 });
 
-
-app.post('/reset-password', async (req, res) => {
+app.post("/reset-password", async (req, res) => {
   const { email, otp, password, confirmPassword } = req.body;
 
   // Validate that password and confirmPassword match
   if (password !== confirmPassword) {
-      return res.status(400).json({ error: "Passwords do not match" });
+    return res.status(400).json({ error: "Passwords do not match" });
   }
 
   // Check the OTP validity
   const otpData = otpStore[email];
   if (!otpData || otpData.otp !== otp || otpData.otpExpires < new Date()) {
-      return res.status(400).json({ error: "Invalid or expired OTP" });
+    return res.status(400).json({ error: "Invalid or expired OTP" });
   }
 
   // Hash the new password
@@ -413,18 +413,18 @@ app.post('/reset-password', async (req, res) => {
 
   // Update the user's password in the database
   try {
-      const user = await User.findOne({ email: email });
-      if (user) {
-          user.password = hashedPassword;
-          await user.save();
-          delete otpStore[email]; // Clear the OTP from the store
-          res.json({ message: "Password reset successfully" });
-      } else {
-          res.status(404).json({ error: "User not found" });
-      }
+    const user = await User.findOne({ email: email });
+    if (user) {
+      user.password = hashedPassword;
+      await user.save();
+      delete otpStore[email]; // Clear the OTP from the store
+      res.json({ message: "Password reset successfully" });
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
   } catch (error) {
-      console.error("Error resetting password:", error);
-      res.status(500).json({ error: "Error resetting password" });
+    console.error("Error resetting password:", error);
+    res.status(500).json({ error: "Error resetting password" });
   }
 });
 
@@ -574,30 +574,28 @@ app.get("/forgot_password", (req, res) => {
   res.render("forgot_password");
 });
 
-
-
 app.get("/Restaurants", async (req, res) => {
-
   const res_list = await Restaurant.find({});
   res.render("Restaurants", { res_list });
 });
 
-app.get('/Restaurants/:restaurantId', async (req, res) => {
-  
-
+app.get("/Restaurants/:restaurantId", async (req, res) => {
   try {
     const restaurantId = req.params.restaurantId;
     const restaurant = await Restaurant.findById(restaurantId);
 
     if (!restaurant) {
-      return res.status(404).send('Restaurant not found');
+      return res.status(404).send("Restaurant not found");
     }
-
-     // Assuming 'hall' is a field in your Item schema that corresponds to the restaurant's name
-    const items = await Item.find({ hall: restaurant.Restaurant_name });
+    const veg = await Item.find({ hall: restaurant.Restaurant_name,category: 'veg'});
+    const nonVeg = await Item.find({ hall: restaurant.Restaurant_name ,category: 'nonVeg'});
+    const chicken = await Item.find({ hall: restaurant.Restaurant_name,category: 'chicken' });
+    const paneer = await Item.find({ hall: restaurant.Restaurant_name,category: 'paneer' });
+    const mutton = await Item.find({ hall: restaurant.Restaurant_name,category: 'mutton' });
+    const fish = await Item.find({ hall: restaurant.Restaurant_name,category: 'fish' });
     // Combine restaurant and items into one object for the render method
-    res.render('hall', { restaurant: restaurant, items: items });
+    res.render("hall", { restaurant: restaurant, veg: veg, paneer: paneer, chicken: chicken, nonVeg: nonVeg ,mutton: mutton,fish: fish});
   } catch (error) {
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
 });

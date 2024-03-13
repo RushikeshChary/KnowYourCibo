@@ -44,17 +44,17 @@
 
       <div class="menu-links">
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Restaurants</a></li>
-          <li><a href="#">Profile</a></li>
-          <li><a href="#">Feedback</a></li>
-          <li><a href="#">Contact us</a></li>
+          <li><a href="home">Home</a></li>
+          <li><a href="Restaurants">Restaurants</a></li>
+          <li><a href="profile">Profile</a></li>
+          <li><a href="feedback">Feedback</a></li>
+          <!-- <li><a href="#">Contact us</a></li> -->
         </ul>
       </div>
 
       <div class="search"><i class="fa fa-search"></i></div>
 
-      <div class="account"><a href="#">my account</a></div>
+      <!-- <div class="account"><a href="#">my account</a></div> -->
 
     </div>
   </div>
@@ -154,25 +154,26 @@
     <h1>Categories</h1>
   <section class="category">
     <ul>
-      <li onclick="showSection('section1')"><a href="#">Chicken</a></li>
+      <li onclick="showSection('section1')"><a href="#">Non-Veg</a></li>
       <li onclick="showSection('section2')"><a href="#">Veg</a></li>
       <li onclick="showSection('section3')"><a href="#">Mutton</a></li>
       <li onclick="showSection('section4')"><a href="#">Fish</a></li>
-      <li onclick="showSection('section5')"><a href="#">Beverages</a></li>
+      <li onclick="showSection('section5')"><a href="#">Paneer</a></li>
       <li onclick="showSection('section6')"><a href="#">Chicken</a></li>
-      <li onclick="showSection('section7')"><a href="#">Veg</a></li>
-      <li onclick="showSection('section8')"><a href="#">Fast Food</a></li>
-      <li onclick="showSection('section9')"><a href="#">Breads</a></li>
-      <li onclick="showSection('section10')"><a href="#">Beverages</a></li>
+      <!-- <li onclick="showSection('section7')"><a href="#">Beverages</a></li> -->
+      <!-- <li onclick="showSection('section8')"><a href="#">Fast Food</a></li> -->
+      <!-- <li onclick="showSection('section9')"><a href="#">Paneer</a></li> -->
+      <!-- <li onclick="showSection('section10')"><a href="#">Beverages</a></li> -->
     </ul>
   </section>
 
   <div class="mosaic-container">
 
     <!-- content 1 -->
+    <!-- Non-Veg -->
       <div id="section1" class="section" style="display: block;">
 
-        <% if (items.length > 0) { %> <% items.forEach(item => { %>
+        <% if (nonVeg.length > 0) { %> <% nonVeg.forEach(item => { %>
           <div class="tile">
             <div class="inner">
               <!-- write item.img in src section here -->
@@ -200,7 +201,7 @@
               <p>There are no items in this section of restaurant.<p>
               <% } %>
 
-            <div class="tile">
+            <!-- <div class="tile">
               <div class="inner">
 
               <div class="image"><img src="burger.jpeg" alt=""></div>
@@ -276,41 +277,43 @@
                 </div>
               </div>
             </div>
-            </div>
-
+            </div> -->
     </div>
 
 
       <!-- content 2 -->
+      <!-- Mutton -->
       <div id="section2" class="section" style="display: none;">
 
+        <% if (mutton.length > 0) { %> <% mutton.forEach(item => { %>
           <div class="tile">
             <div class="inner">
-
-            <div class="image"><img src="burger.jpeg" alt=""></div>
+              <!-- write item.img in src section here -->
+            <div class="image"><img src="<%= item.image %>" alt=""></div>
             <div>
               <div class="innertext">
-                <h2>Pizza</h2>
-                <h3>Price</h3>
+                <h2><%=item.name%></h2>
+                <h3><%=item.price%></h3>
               </div>
-              <div class="Ratings">
-              </div>
-              <div class="rating-buttons">
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-                <span class="fa fa-star"></span>
-
-                <i class="fa fa-heart"></i>
-
-
+              
+                  <div class="rating-box">
+                    <div class="stars">
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                    </div>
+               </div>
+                <button class="review-btn">Review</button>
               </div>
             </div>
-          </div>
-          </div>
+            </div>
+            <% }) %> <% } else { %>
+              <p>There are no items in this section of restaurant.<p>
+              <% } %>
 
-          <div class="tile">
+          <!-- <div class="tile">
             <div class="inner">
 
             <div class="image"><img src="burger.jpeg" alt=""></div>
@@ -386,38 +389,44 @@
               </div>
             </div>
           </div>
-          </div>
+          </div> -->
 
         </div>
 
+        
         <!-- content 3 -->
+        <!-- Fish -->
         <div id="section3" class="section" style="display: none;">
 
+          <% if (fish.length > 0) { %> <% items.forEach(item => { %>
             <div class="tile">
               <div class="inner">
-
-                <div class="image"><img src="burger.jpeg" alt=""></div>
-                <div>
-                  <div class="innertext">
-                    <h2>Chicken</h2>
-                    <h3>Price</h3>
-                  </div>
-                  <div class="Ratings">
-                  </div>
-                  <div class="rating-buttons">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-
-                    <i class="fa fa-heart"></i>
-                  </div>
+                <!-- write item.img in src section here -->
+              <div class="image"><img src="<%= item.image %>" alt=""></div>
+              <div>
+                <div class="innertext">
+                  <h2><%=item.name%></h2>
+                  <h3><%=item.price%></h3>
+                </div>
+                
+                    <div class="rating-box">
+                      <div class="stars">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                      </div>
+                 </div>
+                  <button class="review-btn">Review</button>
                 </div>
               </div>
-            </div>
+              </div>
+              <% }) %> <% } else { %>
+                <p>There are no items in this section of restaurant.<p>
+                <% } %>
 
-            <div class="tile">
+            <!-- <div class="tile">
               <div class="inner">
 
               <div class="image"><img src="burger.jpeg" alt=""></div>
@@ -495,7 +504,7 @@
               </div>
             </div>
 
-        </div>
+        </div> -->
 
         <!-- Content 4 -->
         <div id="section4" class="section" style="display: none;">

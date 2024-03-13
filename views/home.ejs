@@ -56,14 +56,13 @@
           <li><a href="/Restaurants">Restaurants</a></li>
           <li><a href="/profile">Profile</a></li>
           <li><a href="/Feedback">Feedback</a></li>
-          <li><a href="#">Contact us</a></li>
         </ul>
       </div>
 
-     <a href="/searchPage" class="search">
-    <i class="fa fa-search"></i>
-</a>
-
+      <a href="/searchPage" class="search">
+        <i class="fa fa-search"></i>
+    </a>
+    
 
        <div class="account">
         <% if (isLoggedIn) { %>
@@ -252,6 +251,20 @@
     ease: Expo.easeInOut
     })
   </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const currentPath = window.location.pathname;
+      const navLinks = document.querySelectorAll('.menu-links a');
+      navLinks.forEach(link => {
+          if (link.getAttribute('href') === currentPath) {
+              link.addEventListener('click', function(event) {
+                  event.preventDefault();
+              });
+          }
+      });
+  });
+</script>
 
 </body>
 

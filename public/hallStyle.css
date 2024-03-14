@@ -237,7 +237,7 @@
 }
 
 .heart-icon {
-  color: red; /* Default color */
+  color: black; /* Default color */
   cursor: pointer;
   size: 100;
   position: absolute;
@@ -248,5 +248,5 @@
 }
 
 .heart-icon.clicked {
-  color: black; /* Color when pressed */
+  color: red; /* Color when pressed */
 }

@@ -16,6 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Monoton&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js"></script>
     <title>KnowYourCibo</title>
+    <script src="feedBackScript.js" async></script>
     <link rel="stylesheet" href="feedbackStyle.css">
 </head>
 
@@ -32,15 +33,16 @@
 
         <div class="menu-links">
           <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Restaurants</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Feedback</a></li>
-            <li><a href="#">Contact us</a></li>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/Restaurants">Restaurants</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/Feedback">Feedback</a></li>
           </ul>
         </div>
 
-        <div class="search"><i class="fa fa-search"></i></div>
+        <a href="/searchPage" class="search">
+          <i class="fa fa-search"></i>
+      </a>
 
         <div class="account"><a href="#">my account</a></div>
 
@@ -74,7 +76,7 @@
   <!--body-->
   <div class="section">
 
-     <form action="#" method="post" id="feedbackForm">
+     <form action="/submit-feedback" method="POST" id="feedbackForm">
       <div class="right">
         <div class="feed">FEEDBACK</div><hr>
         <label for="name">Name:</label>
@@ -113,6 +115,7 @@
     </form>
   </div>
 </main>
+
 
 <!-- transitions -->
   <script>
@@ -167,5 +170,19 @@
     })
 
   </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.menu-links a');
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                });
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

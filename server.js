@@ -637,10 +637,10 @@ app.get("/Restaurants", async (req, res) => {
 app.get("/Restaurants/:restaurantId", async (req, res) => {
   let userFirstName = "";
   let isLoggedIn = false;
-
+  const user = {};
   if (req.session.userId) {
     try {
-      const user = await User.findById(req.session.userId);
+      user = await User.findById(req.session.userId);
       userFirstName = user.firstName;
       isLoggedIn = true;
     } catch (error) {
@@ -670,7 +670,7 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
 
     // Now itemArray should be populated with the results of the asynchronous operations
 
-    res.render("hall", { restaurant, itemArray, menu, isLoggedIn, userFirstName});
+    res.render("hall", { restaurant, itemArray, menu, isLoggedIn, userFirstName, user});
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");

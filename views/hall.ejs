@@ -95,8 +95,8 @@
   <div class="left-container">
 
     <h1><%= restaurant.Restaurant_name %></h1>
-      <p>Hall of Residence 1</p>
-      <p>Fifth Ave</p>
+      <!-- <p>Hall of Residence 1</p> -->
+      <!-- <p>Fifth Ave</p> -->
       <p>IIT Kanpur</p>
       <% if (menu.length > 0) { menu.forEach(item => { %>
         <div id="review-section-<%= item._id %>" class="review-container" style="display:none;">
@@ -208,6 +208,7 @@
               <div class="inner">
                 <!-- write item.img in src section here -->
                 <div class="image"><img src="<%= item.image %>" alt=""></div>
+                <%= user && user.favorites.includes(item._id) ? 'Item is favorite' : 'Item is not favorite' %>
                 <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon" data-info= <%=item._id %>></i>
                 <div>
                   <div class="innertext">
@@ -237,7 +238,7 @@
 
          
 
-      </div>
+    </div>
 
 </div>
 
@@ -354,7 +355,6 @@ ease: Expo.easeInOut
   icon.addEventListener('click', async function(event) {
     event.preventDefault();
     // Toggle the 'clicked' class to change the color
-    this.classList.toggle('clicked');
     const item_id = this.getAttribute("data-info");
     console.log(item_id);
     try {
@@ -377,6 +377,7 @@ ease: Expo.easeInOut
       console.error("Error:", error);
       alert(error.message || "An error occurred while processing your request");
     }
+    this.classList.toggle('clicked');
   });
 });
 

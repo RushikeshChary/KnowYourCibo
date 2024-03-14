@@ -26,13 +26,6 @@
   <script src="hallScript.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <script>
-    $(document).ready(function(){
-      $("button").click(function(){
-        $("#div1").toggle();
-      });
-    });
-  </script>
 
 </head>
 
@@ -101,46 +94,44 @@
       <p>Hall of Residence 1</p>
       <p>Fifth Ave</p>
       <p>IIT Kanpur</p>
+      <% if (menu.length > 0) { menu.forEach(item => { %>
+        <div id="review-section-<%= item._id %>" class="review-container" style="display:none;">
+          <% if (item.reviews && item.reviews.length > 0) { %>
+            <% item.reviews.forEach(review => { %>
+              <div class="reviews">
+                <div class="user-name">
+                  <h3><%= review.postedBy.firstName %></h3> <!-- Ensure firstName is defined -->
+                </div>
+                <div class="review-text">
+                  <p><%= review.comment %></p>
+                </div>
+              </div>
+            <% }); %> <!-- Closing forEach for reviews -->
+          <% } else { %>
+            <div class="reviews">
+              <div class="user-name">
+                <h3>Reviews</h3>
+              </div>
+              <div class="review-text">
+                <p>No reviews yet.</p>
+              </div>
+            </div>
+          <% } %>
+          
+          <form id="review-form-<%= item._id %>" onsubmit="event.preventDefault(); addReview('<%= item._id %>');">
+            <div class="review-input-container">
+              <input id="review-input-<%= item._id %>" class="review-input" type="text" placeholder="Write a review..." name="review">
+              <button type="submit" class="review-button">+</button>
+            </div>
+          </form>
+          
+        </div>
+      <% }); %> <!-- Closing forEach for items -->
+      <% } else { %>
+        <p>There are no items in this section of the restaurant.</p>
+      <% } %>
 
-
-      <!-- review box -->
-      <div id="div1" style="display:none;">
-        <div class="review-container">
-        <div class="reviews">
-          <div class="user-name">
-            <h3>Name</h3>
-          </div>
-          <div class="review-text">
-            <p>Review</p>
-          </div>
-
-        </div>
-        <div class="reviews">
-          <p>Review</p>
-        </div>
-        <div class="reviews">
-          <p>Review</p>
-        </div>
-        <div class="reviews">
-          <p>Review</p>
-        </div>
-        <div class="reviews">
-          <p>Review</p>
-        </div>
-        <div class="reviews">
-          <p>Review</p>
-        </div>
-        <div class="reviews">
-          <p>Review</p>
-        </div>
-        </div>
-        <div class="review-input-container">
-          <input class="review-input" type="text" name="" value="">
-          <button class="review-button">+</button>
-
-        </div>
-      </div>
-
+      
       <!-- <h3>Ratings</h3> -->
 
       <!-- here we display ratings -->
@@ -195,7 +186,7 @@
                     <i class="fa-solid fa-star"></i>
                   </div>
                 </div>
-                <button class="review-btn">Review</button>
+                <button class="review-btn" onclick="toggleReview('<%= item._id %>')">Review</button>
               </div>
             </div>
           </div>
@@ -213,6 +204,7 @@
               <div class="inner">
                 <!-- write item.img in src section here -->
                 <div class="image"><img src="<%= item.image %>" alt=""></div>
+                <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon"></i>
                 <div>
                   <div class="innertext">
                     <h2><%= item.name %></h2>
@@ -227,7 +219,7 @@
                       <i class="fa-solid fa-star"></i>
                     </div>
                   </div>
-                  <button class="review-btn">Review</button>
+                  <button class="review-btn" onclick="toggleReview('<%= item._id %>')">Review</button>
                 </div>
               </div>
             </div>
@@ -239,411 +231,7 @@
     <% } %>
 
 
-            <!-- <div class="tile">
-              <div class="inner">
-
-              <div class="image"><img src="burger.jpeg" alt=""></div>
-              <div>
-                <div class="innertext">
-                  <h2>Burger</h2>
-                  <h3>Price</h3>
-                </div>
-                <div class="Ratings">
-                </div>
-              </div>
-            </div>
-            </div>
-
-            <div class="tile">
-              <div class="inner">
-
-              <div class="image"><img src="burger.jpeg" alt=""></div>
-              <div>
-                <div class="innertext">
-                  <h2>Burger</h2>
-                  <h3>Price</h3>
-                </div>
-                <div class="Ratings">
-                </div>
-              </div>
-            </div>
-            </div>
-
-            <div class="tile">
-              <div class="inner">
-
-              <div class="image"><img src="burger.jpeg" alt=""></div>
-              <div>
-                <div class="innertext">
-                  <h2>Burger</h2>
-                  <h3>Price</h3>
-                </div>
-                <div class="Ratings">
-                </div>
-              </div>
-            </div>
-            </div>
-
-            <div class="tile">
-              <div class="inner">
-
-                <div class="image"><img src="burger.jpeg" alt=""></div>
-                <div>
-                  <div class="innertext">
-                    <h2>Burger</h2>
-                    <h3>Price</h3>
-                  </div>
-                  <div class="Ratings"> <h1>rating</h1>
-                  </div>
-                  <div class="ratings-buttons">
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-            <div class="tile">
-              <div class="inner">
-
-              <div class="image"><img src="burger.jpeg" alt=""></div>
-              <div>
-                <div class="innertext">
-                  <h2>Burger</h2>
-                  <h3>Price</h3>
-                </div>
-                <div class="Ratings">
-                </div>
-              </div>
-            </div>
-            </div> -->
-
-    <!-- </div> -->
-
-
-      <!-- content 2 -->
-      <!-- <div id="section2" class="section" style="display: none;">
-
-          <div class="tile">
-            <div class="inner">
-
-            <div class="image"><img src="burger.jpeg" alt=""></div>
-            <div>
-              <div class="innertext">
-                <h2>Pizza</h2>
-                <h3>Price</h3>
-              </div>
-              <div class="Ratings">
-              </div>
-              <div class="rating-buttons">
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-                <span class="fa fa-star"></span>
-
-                <i class="fa fa-heart"></i>
-
-
-              </div>
-            </div>
-          </div>
-          </div>
-
-          <div class="tile">
-            <div class="inner">
-
-            <div class="image"><img src="burger.jpeg" alt=""></div>
-            <div>
-              <div class="innertext">
-                <h2>Burger</h2>
-                <h3>Price</h3>
-              </div>
-              <div class="Ratings">
-              </div>
-            </div>
-          </div>
-          </div>
-
-          <div class="tile">
-            <div class="inner">
-
-            <div class="image"><img src="burger.jpeg" alt=""></div>
-            <div>
-              <div class="innertext">
-                <h2>Burger</h2>
-                <h3>Price</h3>
-              </div>
-              <div class="Ratings">
-              </div>
-            </div>
-          </div>
-          </div>
-
-          <div class="tile">
-            <div class="inner">
-
-            <div class="image"><img src="burger.jpeg" alt=""></div>
-            <div>
-              <div class="innertext">
-                <h2>Burger</h2>
-                <h3>Price</h3>
-              </div>
-              <div class="Ratings">
-              </div>
-            </div>
-          </div>
-          </div>
-
-          <div class="tile">
-            <div class="inner">
-
-              <div class="image"><img src="burger.jpeg" alt=""></div>
-              <div>
-                <div class="innertext">
-                  <h2>Burger</h2>
-                  <h3>Price</h3>
-                </div>
-                <div class="Ratings"> <h1>rating</h1>
-                </div>
-                <div class="ratings-buttons">
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="tile">
-            <div class="inner">
-
-            <div class="image"><img src="burger.jpeg" alt=""></div>
-            <div>
-              <div class="innertext">
-                <h2>Burger</h2>
-                <h3>Price</h3>
-              </div>
-              <div class="Ratings">
-              </div>
-            </div>
-          </div>
-          </div>
-
-        </div> -->
-
-        <!-- content 3 -->
-        <!-- <div id="section3" class="section" style="display: none;">
-
-            <div class="tile">
-              <div class="inner">
-
-                <div class="image"><img src="burger.jpeg" alt=""></div>
-                <div>
-                  <div class="innertext">
-                    <h2>Chicken</h2>
-                    <h3>Price</h3>
-                  </div>
-                  <div class="Ratings">
-                  </div>
-                  <div class="rating-buttons">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-
-                    <i class="fa fa-heart"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="tile">
-              <div class="inner">
-
-              <div class="image"><img src="burger.jpeg" alt=""></div>
-              <div>
-                <div class="innertext">
-                  <h2>Burger</h2>
-                  <h3>Price</h3>
-                </div>
-                <div class="Ratings">
-                </div>
-              </div>
-              </div>
-            </div>
-
-            <div class="tile">
-              <div class="inner">
-
-              <div class="image"><img src="burger.jpeg" alt=""></div>
-              <div>
-                <div class="innertext">
-                  <h2>Burger</h2>
-                  <h3>Price</h3>
-                </div>
-                <div class="Ratings">
-                </div>
-              </div>
-              </div>
-            </div>
-
-            <div class="tile">
-              <div class="inner">
-
-              <div class="image"><img src="burger.jpeg" alt=""></div>
-              <div>
-                <div class="innertext">
-                  <h2>Burger</h2>
-                  <h3>Price</h3>
-                </div>
-                <div class="Ratings">
-                </div>
-              </div>
-              </div>
-            </div>
-
-            <div class="tile">
-              <div class="inner">
-
-                <div class="image"><img src="burger.jpeg" alt=""></div>
-                <div>
-                  <div class="innertext">
-                    <h2>Burger</h2>
-                    <h3>Price</h3>
-                  </div>
-                  <div class="Ratings"> <h1>rating</h1>
-                  </div>
-                  <div class="ratings-buttons">
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-            <div class="tile">
-              <div class="inner">
-
-              <div class="image"><img src="burger.jpeg" alt=""></div>
-              <div>
-                <div class="innertext">
-                  <h2>Burger</h2>
-                  <h3>Price</h3>
-                </div>
-                <div class="Ratings">
-                </div>
-              </div>
-              </div>
-            </div>
-
-        </div> -->
-
-        <!-- Content 4 -->
-        <!-- <div id="section4" class="section" style="display: none;">
-
-        <div class="tile">
-          <div class="inner">
-
-          <div class="image"><img src="burger.jpeg" alt=""></div>
-          <div>
-            <div class="innertext">
-              <h2>Fish</h2>
-              <h3>Price</h3>
-            </div>
-            <div class="Ratings">
-            </div>
-            <div class="rating-buttons">
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star checked"></span>
-              <span class="fa fa-star"></span>
-              <span class="fa fa-star"></span>
-
-              <i class="fa fa-heart"></i>
-
-
-            </div>
-          </div>
-          </div>
-        </div>
-
-        <div class="tile">
-          <div class="inner">
-
-          <div class="image"><img src="burger.jpeg" alt=""></div>
-          <div>
-            <div class="innertext">
-              <h2>Burger</h2>
-              <h3>Price</h3>
-            </div>
-            <div class="Ratings">
-            </div>
-          </div>
-          </div>
-        </div>
-
-        <div class="tile">
-            <div class="inner">
-
-            <div class="image"><img src="burger.jpeg" alt=""></div>
-            <div>
-              <div class="innertext">
-                <h2>Burger</h2>
-                <h3>Price</h3>
-              </div>
-              <div class="Ratings">
-              </div>
-            </div>
-            </div>
-        </div>
-
-        <div class="tile">
-            <div class="inner">
-
-            <div class="image"><img src="burger.jpeg" alt=""></div>
-            <div>
-              <div class="innertext">
-                <h2>Burger</h2>
-                <h3>Price</h3>
-              </div>
-              <div class="Ratings">
-              </div>
-            </div>
-            </div>
-        </div>
-
-        <div class="tile">
-      <div class="inner">
-
-        <div class="image"><img src="burger.jpeg" alt=""></div>
-        <div>
-          <div class="innertext">
-            <h2>Burger</h2>
-            <h3>Price</h3>
-          </div>
-          <div class="Ratings"> <h1>rating</h1>
-          </div>
-          <div class="ratings-buttons">
-          </div>
-
-        </div>
-      </div>
-  </div>
-
-        <div class="tile">
-      <div class="inner">
-
-      <div class="image"><img src="burger.jpeg" alt=""></div>
-      <div>
-        <div class="innertext">
-          <h2>Burger</h2>
-          <h3>Price</h3>
-        </div>
-        <div class="Ratings">
-        </div>
-      </div>
-      </div>
-  </div>
-
-        </div> -->
+         
 
       </div>
 
@@ -741,6 +329,7 @@ ease: Expo.easeInOut
   starContainers.forEach(starContainer => {
     // Select all "i" elements within the current "starContainer" and store them in a NodeList called "stars"
     const stars = starContainer.querySelectorAll("i");
+
     // Loop through the "stars" NodeList
     stars.forEach((star, index1) => {
       // Add an event listener that runs a function when the "click" event is triggered
@@ -763,6 +352,62 @@ ease: Expo.easeInOut
       this.classList.toggle('clicked');
     });
   });
+  
+    function toggleReview(itemId) {
+  // First, hide all review containers
+  document.querySelectorAll('.review-container').forEach((container) => {
+    if (container.id !== 'review-section-' + itemId) {
+      $(container).hide();
+    }
+  });
+
+  // Then, toggle the display of the current item's review container
+  const reviewSection = document.getElementById('review-section-' + itemId);
+  if (reviewSection) {
+    $(reviewSection).toggle(); // Use jQuery to toggle visibility
+  }
+}
+
+function addReview(itemId) {
+  const form = document.getElementById('review-form-' + itemId);
+  const reviewInput = document.querySelector(`#review-form-${itemId} .review-input`);
+  const comment = reviewInput.value.trim();
+
+  if (!comment) {
+    alert('Please enter a review.');
+    return;
+  }
+
+  fetch(`/item/${itemId}/review`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      // Add any required authentication headers here
+    },
+    body: JSON.stringify({ comment: comment })
+  })
+  .then(response => {
+  if (!response.ok) {
+    // If the response status code is not in the 200 range
+    if (response.status === 401) {
+      // If the user is not authorized, prompt them to log in
+      alert('You must be logged in to add a review.');
+    }
+    throw new Error('Response not ok');
+  }
+  return response.json();
+})
+
+ .then(data => {
+  reviewInput.value = '';
+window.location.reload();
+})
+.catch(error => {
+  console.error('Error:', error);
+});
+} 
+
+
 </script>
   
 

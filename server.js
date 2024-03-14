@@ -658,3 +658,43 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+
+app.post('/item/:itemId/review', async (req, res) => {
+  if (!req.session.userId){ // Assuming you are using Passport.js or similar for authentication
+    return res.status(401).json({ success: false, message: 'You must be logged in to add a review.' });
+  }
+  const { comment } = req.body; // Assuming you're sending the review comment
+  const itemId = req.params.itemId;
+  const userId = req.session.userId; // Assuming you have a way to identify the logged-in user
+
+  try {
+    const item = await Item.findById(itemId);
+
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    // Check if the user has already reviewed this item
+    const alreadyReviewedIndex = item.reviews.findIndex(review => review.postedBy.toString() === userId.toString());
+
+    if (alreadyReviewedIndex !== -1) {
+      // User has already reviewed, update existing review
+      item.reviews[alreadyReviewedIndex].comment = comment;
+      // Add any other fields you want to update
+    } else {
+      // Add new review
+      item.reviews.push({
+        comment: comment,
+        postedBy: userId
+      });
+    }
+
+    await item.save();
+
+    res.status(200).json({ message: 'Review updated successfully', item });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while processing your request' });
+  }
+});

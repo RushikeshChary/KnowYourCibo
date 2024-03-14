@@ -178,26 +178,35 @@
                <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon" data-info= "<%=item._id %>"></i>
               <div>
                 <div class="innertext">
-                  <h2><%= item.name %></h2>
-                  <h3><%= item.price %></h3>
-                </div>
-                <div class="rating-box">
-                  <div class="stars">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
+                    <h2><%= item.name %></h2>
+                    <h3><%= item.price %></h3>
                   </div>
-                </div>
-                <button class="review-btn" onclick="toggleReview('<%= item._id %>')">Review</button>
+                  <div class="ratings-and-button-container">
+                    <div class="rating-box">
+                      <div class="stars">
+                        <% for(let i = 1; i <= 5; i++) { %>
+                          <i class="fa fa-star <%= item.userRatingValue && i <= item.userRatingValue ? 'active' : '' %>" data-rating="<%= i %>"></i>
+                        <% } %>
+                      </div>
+                    </div>
+                    <button class="submit-rating-btn" data-item-id="<%= item._id %>" data-rated="<%= item.userHasRated %>">
+                      <%= item.userHasRated ? 'Remove rating' : 'Rate' %>
+                    </button>
+                  </div>
+                  <div class="review-area">
+                    <button class="review-btn">Review</button>
+                    <div class="overall-rating">
+                      Rating: <%= item.overallRating.toFixed(1) %> / 5
+                        (<%= item.totalRatings %> ratings)
+                      </div>
+                    </div>
+                    
               </div>
             </div>
-          </div>
-        <% }) %>
-      <% } else { %>
-        <p>There are no items in this restaurant.<p>
-      <% } %>
+          <% }) %> 
+        <% } else { %>
+          <p>There are no items in this section of the restaurant.</p>
+        <% } %>
     </div>
 
     <% for (let i = 0; i < restaurant.category.length; i++) { %>

@@ -5,37 +5,34 @@
     box-sizing: border-box;
   }
   body {
-    color: #51829B;
-    background-image: url("authenticationImages/background.jpeg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    background-color: #B4B4B8;
     font-family: Montserrat;
+    overflow: hidden;
+  }
+
+  a{
+    text-decoration: none;
   }
 
   .container {
-    height: 90vh;
-    width: 100% !important;
-    position: relative;
+    height: 76vh;
+    width: 78vw ;
     font-weight: 600;
+    display: flex;
+    margin-top: 12vh;
+    border-radius: 25px;
   }
 
   .w-50 {
-    width: 34% !important;
-    position: absolute !important;
-    top: 120px;
-    border: 2px solid #51829B;
-    border-radius: 7px;
-    left: 32%;
+    width: 35vw;
+    margin-top: 9vh;
     background-color: white;
     padding: 25px;
-    color: #51829B;
-    align-items: center;
-    justify-content: center;
+    margin-left: 5vw;
   }
 
   .container .w50 h3{
-    color: #51829B;
+    color: black;
     text-align: center;
   }
 
@@ -45,28 +42,26 @@
 
   .btn {
     width: 100px;
-    border: 2px solid #51829B;
-    border-radius: 5px;
-    background-color: #51829B;
+    border: 2px solid black;
+    background-color: black;
     color: white;
     padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 
   .btn :hover {
     border: 2px solid whitesmoke;
     background-color: whitesmoke;
-    color: #51829B;
+    color: black;
     padding-left: 12px;
     padding-right: 12px;
     transition: 0.2s ease-in-out;
   }
 
-  .white-link {
-    color: #51829B !important; /* Using !important to ensure override of any other styles */
-  }
-
   .mb-3{
     font-weight: 500;
+    margin-top: 10px;
   }
 
   @media only screen and (max-width: 600px) {
@@ -76,3 +71,42 @@
     }
   }
 
+  .left{
+    width: 37vw;
+    background-image: url("b1.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 76vh;
+    background-position: center;
+  }
+
+  .right{
+    width: 41vw;
+    background-color: white;
+    height: 76vh;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #login{
+    height: 40px;
+    margin-right: 5vw;
+  }
+
+.form-control,
+hr{
+  width: 23vw;
+}
+
+.d-block{
+  font-size: 12px;
+  left: 67.5%;
+  position: absolute;
+}
+
+.ms-auto{
+  font-size: 12px;
+  position: absolute;
+  left: 65.5%;
+  padding-top: 17px;
+}

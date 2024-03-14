@@ -723,3 +723,99 @@ app.post('/item/:itemId/review', async (req, res) => {
     res.status(500).json({ message: 'An error occurred while processing your request' });
   }
 });
+app.post('/submit-rating', async (req, res) => {
+  const { itemId, rating } = req.body;
+  const userId = req.session.userId; // Make sure the user is logged in
+
+  if (!userId) {
+    return res.status(401).json({ error: 'User must be logged in to rate items' });
+  }
+
+  try {
+    const item = await Item.findById(itemId);
+    const user = await User.findById(userId);
+
+    if (!item) {
+      return res.status(404).json({ error: 'Item not found' });
+    }
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if user has already rated
+    const existingRatingIndex = item.ratings.findIndex(r => r.user.toString() === userId);
+    if (existingRatingIndex !== -1) {
+      // Update existing rating
+      item.ratings[existingRatingIndex].value = rating;
+    } else {
+      // Add new rating
+      item.ratings.push({ user: userId, value: rating });
+    }
+
+    // Here, you can increment the number of ratings for the user
+    user.no_ratings += 1;
+
+    await item.save();
+    await user.save();
+
+    res.status(200).json({ message: 'Rating submitted successfully' });
+  } catch (error) {
+    console.error('Error submitting rating:', error);
+    res.status(500).json({ error: 'Error submitting rating' });
+  }
+});
+app.post('/remove-rating', async (req, res) => {
+  const { itemId } = req.body;
+  const userId = req.session.userId; // Make sure the user is logged in
+
+  if (!userId) {
+      return res.status(401).json({ error: 'User must be logged in to remove ratings' });
+  }
+
+  try {
+      const item = await Item.findById(itemId);
+      if (!item) {
+          return res.status(404).json({ error: 'Item not found' });
+      }
+
+      // Remove the user's rating from the item
+      item.ratings = item.ratings.filter(rating => rating.user.toString() !== userId);
+      
+      await item.save();
+
+      res.json({ message: 'Rating removed successfully' });
+  } catch (error) {
+      console.error('Error removing rating:', error);
+      res.status(500).json({ error: 'Error removing rating' });
+  }
+});
+
+router.get('/items', async (req, res) => {
+  try {
+    const userId = req.session.userId; // Assuming you store logged in userId in session
+    let items = await Item.find({}); // Fetch all items, adjust query as needed
+
+    // Augment items with user rating information
+    items = items.map(item => {
+      const itemObj = item.toObject(); // Convert Mongoose document to plain object
+      
+      // Find user's rating for this item, if it exists
+      const userRating = item.ratings.find(rating => rating.user.toString() === userId);
+
+      // Add userRatingValue property to item object
+      itemObj.userRatingValue = userRating ? userRating.value : undefined;
+
+      // Add userHasRated property to easily check in the front end
+      itemObj.userHasRated = !!userRating;
+
+      return itemObj;
+    });
+
+    res.json(items);
+  } catch (error) {
+    console.error('Failed to fetch items with user ratings', error);
+    res.status(500).send('Error fetching items');
+  }
+});
+

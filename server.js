@@ -659,15 +659,23 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
     // console.log(categoryList);
     const itemArray = {};
 
+   
     for (const category of categoryList) {
       const itemList = await Item.find({
         hall: restaurant.Restaurant_name,
         category
+      })
+      .populate({
+        path: 'reviews.postedBy',
+        select: 'firstName'
       });
       itemArray[category] = itemList;
     }
-    const menu = await Item.find({ hall: restaurant.Restaurant_name});
-
+    const menu = await Item.find({ hall: restaurant.Restaurant_name})
+   .populate({
+      path: 'reviews.postedBy',
+      select: 'firstName'
+    });
     // Now itemArray should be populated with the results of the asynchronous operations
 
     res.render("hall", { restaurant, itemArray, menu, isLoggedIn, userFirstName});

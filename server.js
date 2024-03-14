@@ -588,18 +588,35 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
     const restaurantId = req.params.restaurantId;
     const restaurant = await Restaurant.findById(restaurantId);
 
+    console.log(restaurant.category);
+    const categoryList = restaurant.category;
+    console.log(categoryList);
+    const itemArray = {};
+
+    for (const category of categoryList) {
+      const itemList = await Item.find({
+        hall: restaurant.Restaurant_name,
+        category
+      });
+      itemArray[category] = itemList;
+    }
+
+    // Now itemArray should be populated with the results of the asynchronous operations
+
     if (!restaurant) {
       return res.status(404).send("Restaurant not found");
     }
-    const veg = await Item.find({ hall: restaurant.Restaurant_name,category: 'veg'});
-    const nonVeg = await Item.find({ hall: restaurant.Restaurant_name ,category: 'nonVeg'});
-    const chicken = await Item.find({ hall: restaurant.Restaurant_name,category: 'chicken' });
-    const paneer = await Item.find({ hall: restaurant.Restaurant_name,category: 'paneer' });
-    const mutton = await Item.find({ hall: restaurant.Restaurant_name,category: 'mutton' });
-    const fish = await Item.find({ hall: restaurant.Restaurant_name,category: 'fish' });
+    // const All = await Item.find({ hall: restaurant.Restaurant_name});
+    // const tiffins = await Item.find({ hall: restaurant.Restaurant_name ,category: 'tiffins'});
+    // const chicken = await Item.find({ hall: restaurant.Restaurant_name,category: 'chicken' });
+    // const paneer = await Item.find({ hall: restaurant.Restaurant_name,category: 'paneer' });
+    // const fastfood = await Item.find({ hall: restaurant.Restaurant_name,category: 'fastfood' });
+    // const beverages = await Item.find({ hall: restaurant.Restaurant_name,category: 'beverages' });
+
     // Combine restaurant and items into one object for the render method
-    res.render("hall", { restaurant: restaurant, veg: veg, paneer: paneer, chicken: chicken, nonVeg: nonVeg ,mutton: mutton,fish: fish});
+    res.render("hall", { restaurant, itemArray });
   } catch (error) {
+    console.log(error);
     res.status(500).send("Server error");
   }
 });

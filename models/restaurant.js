@@ -14,8 +14,10 @@ const RestaurantSchema = new Schema({
     type: String,
     required: true
   },
-  
-
+  category:{
+    type: Array,
+    required: true
+  }
 },{ timestamps: true });
 
 //Collection name has to be Users.

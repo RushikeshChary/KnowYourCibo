@@ -215,29 +215,32 @@
                     <h2><%= item.name %></h2>
                     <h3><%= item.price %></h3>
                   </div>
-                  <div class="rating-box">
-                    <div class="stars">
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
+                  <div class="ratings-and-button-container">
+                    <div class="rating-box">
+                      <div class="stars">
+                        <% for(let i = 1; i <= 5; i++) { %>
+                          <i class="fa fa-star <%= item.userRatingValue && i <= item.userRatingValue ? 'active' : '' %>" data-rating="<%= i %>"></i>
+                        <% } %>
+                      </div>
                     </div>
+                    <button class="submit-rating-btn" data-item-id="<%= item._id %>" data-rated="<%= item.userHasRated %>">
+                      <%= item.userHasRated ? 'Remove rating' : 'Rate' %>
+                    </button>
                   </div>
-                  <button class="review-btn" onclick="toggleReview('<%= item._id %>')">Review</button>
-                </div>
+                  <div class="review-area">
+                    <button class="review-btn">Review</button>
+                    <div class="overall-rating">
+                      Rating: <%= item.overallRating.toFixed(1) %> / 5
+                        (<%= item.totalRatings %> ratings)
+                      </div>
+                    </div>
+                    
               </div>
             </div>
-          <% }) %>
+          <% }) %> 
         <% } else { %>
-          <p>There are no items in this category of the restaurant.<p>
+          <p>There are no items in this section of the restaurant.</p>
         <% } %>
-      </div>
-    <% } %>
-
-
-         
-
     </div>
 
 </div>
@@ -438,6 +441,51 @@ window.location.reload();
 
 
 </script>
+<script>
+
+$(document).ready(function() {
+ // AJAX call for submitting or removing a rating
+$('.submit-rating-btn').click(function() {
+    const $thisButton = $(this); // The current "Rate" or "Remove rating" button
+    const itemId = $thisButton.data('item-id'); // ID of the item being rated
+    const isRated = $thisButton.data('rated'); // Whether the user has already rated this item
+
+    // Prepare the data to be sent in the AJAX request
+    let requestData = { itemId: itemId };
+    let requestUrl = isRated ? '/remove-rating' : '/submit-rating';
+
+    if (!isRated) {
+        // If submitting a new rating, get the rating value
+        const rating = $thisButton.siblings('.rating-box').find('.fa-star.active').length;
+        requestData.rating = rating;
+    }
+
+    // Make the AJAX request
+    $.ajax({
+        type: 'POST',
+        url: requestUrl,
+        data: requestData,
+        success: function(response) {
+            alert(response.message); // Display a success message
+
+            if (isRated) {
+                // If the rating was removed, reset the stars
+                $thisButton.siblings('.rating-box').find('.fa-star').removeClass('active');
+                $thisButton.text('Rate').data('rated', false); // Update the button
+            } else {
+                // If a rating was submitted, update the button to allow removal
+                $thisButton.text('Remove rating').data('rated', true);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error updating rating:', error);
+            alert('Failed to update rating. Please try again.');
+        }
+    });
+});
+});
+</script>
+
   
 
 </body>

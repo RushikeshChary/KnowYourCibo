@@ -676,6 +676,27 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
       path: 'reviews.postedBy',
       select: 'firstName'
     });
+    menu = menu.map(item => {
+          const itemObj = item.toObject();
+          
+          // Find user's rating for this item, if it exists
+          const userRating = item.ratings.find(rating => rating.user.toString() === userId);
+          
+          // Add userRatingValue to the item object
+          itemObj.userRatingValue = userRating ? userRating.value : null;
+          itemObj.userHasRated = !!userRating;
+          
+          return itemObj;
+      });
+      menu.forEach(item => {
+        const totalRatings = item.ratings.length;
+        const overallRating = totalRatings > 0 ? item.ratings.reduce((acc, curr) => acc + curr.value, 0) / totalRatings : 0;
+      
+        // Add default values for overallRating and totalRatings
+        item.overallRating = overallRating || 0;
+        item.totalRatings = totalRatings || 0;
+      });
+      
     // Now itemArray should be populated with the results of the asynchronous operations
 
     res.render("hall", { restaurant, itemArray, menu, isLoggedIn, userFirstName, user});

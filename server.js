@@ -524,30 +524,36 @@ app.post("/dislike-item", async (req, res) => {
   }
 });
 
-//Liking an item.
+//Liking an item from hall page.
 app.post('/like-item', async (req, res) => {
   const userId = req.session.userId;
-  // const userId = "65eadd97673a7bf0caf2dc26";
   const { item_id } = req.body;
   // console.log(item_id);
-  try {
-    const user = await User.findById(userId);
-    const newArray = [...user.fav_items, item_id];
-    // console.log(newArray);
-    const updatedDetails = {
-      fav_items: newArray,
-    };
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { $set: updatedDetails },
-      { new: true }
-    );
-    res.json({ message: "This item will be added to your favorites" });
-  } catch (err) {
-    console.error(err);
+  if(userId)
+  {
+    try {
+      const user = await User.findById(userId);
+      const newArray = [...user.fav_items, item_id];
+      const updatedDetails = {
+        fav_items: newArray,
+      };
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $set: updatedDetails },
+        { new: true }
+      );
+      res.json({ message: "This item will be added to your favorites. You can remove from your favorites in your profile page." });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "An error occurred while processing your request" });
+    }
   }
-  
-})
+  else
+  {
+    res.status(400).json({ error: "You are not logged in" });
+  }
+});
+
 
 //edit profile page route
 app.get("/editProfile", checkLogin, (req, res) => {
@@ -629,6 +635,18 @@ app.get("/Restaurants", async (req, res) => {
 });
 
 app.get("/Restaurants/:restaurantId", async (req, res) => {
+  let userFirstName = "";
+  let isLoggedIn = false;
+
+  if (req.session.userId) {
+    try {
+      const user = await User.findById(req.session.userId);
+      userFirstName = user.firstName;
+      isLoggedIn = true;
+    } catch (error) {
+      console.error("Error fetching user for home page", error);
+    }
+  }
   try {
     const restaurantId = req.params.restaurantId;
     const restaurant = await Restaurant.findById(restaurantId);
@@ -636,9 +654,9 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
     if (!restaurant) {
       return res.status(404).send("Restaurant not found");
     }
-    console.log(restaurant.category);
+    // console.log(restaurant.category);
     const categoryList = restaurant.category;
-    console.log(categoryList);
+    // console.log(categoryList);
     const itemArray = {};
 
     for (const category of categoryList) {
@@ -652,13 +670,12 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
 
     // Now itemArray should be populated with the results of the asynchronous operations
 
-    res.render("hall", { restaurant, itemArray, menu});
+    res.render("hall", { restaurant, itemArray, menu, isLoggedIn, userFirstName});
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");
   }
 });
-
 
 app.post('/item/:itemId/review', async (req, res) => {
   if (!req.session.userId){ // Assuming you are using Passport.js or similar for authentication

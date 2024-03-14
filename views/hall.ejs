@@ -37,17 +37,31 @@
 
       <div class="menu-links">
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Restaurants</a></li>
-          <li><a href="#">Profile</a></li>
-          <li><a href="#">Feedback</a></li>
-          <li><a href="#">Contact us</a></li>
+          <li><a href="/home">Home</a></li>
+          <li><a href="/Restaurants">Restaurants</a></li>
+          <li><a href="/profile">Profile</a></li>
+          <li><a href="/feedback">Feedback</a></li>
+          <!-- <li><a href="/">Contact us</a></li> -->
         </ul>
       </div>
 
-      <div class="search"><i class="fa fa-search"></i></div>
+      <!-- <div class="search"><i class="fa fa-search"></i></div> -->
+      <a href="/searchPage" class="search">
+        <i class="fa fa-search"></i>
+      </a>
 
-      <div class="account"><a href="#">my account</a></div>
+
+      <% if (isLoggedIn) { %>
+        <span>Hello, <%= userFirstName %> </span>
+        <div class="account">
+          <a href="/logout">Logout</a>
+        </div>
+      <% } else { %>
+        <div class="account">
+          <a href="/login">Login</a>
+        </div>
+      <% } %>
+      <!-- <div class="account"><a href="#">my account</a></div> -->
 
     </div>
   </div>
@@ -59,7 +73,7 @@
         <ul>
           <li>
             <!-- Add the google maps share link here and make target to _blank to open gmaps in another tab. -->
-            <a href="https://maps.app.goo.gl/ffMStQCvLY33yZqB9" target="_blank">
+            <a href=" <%= restaurant.location %> " target="_blank">
               <i class="fa fa-map-marker" aria-hidden="true"></i>
             </a>
           </li>
@@ -73,16 +87,6 @@
   <div class="side-strip">
         <span>EAT RATE CURATE</span>
   </div>
-
-
-
-
-
-
-
-
-
-
 
   <!-- body -->
 
@@ -171,7 +175,7 @@
             <div class="inner">
               <!-- write item.img in src section here -->
               <div class="image"><img src="<%= item.image %>" alt=""></div>
-               <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon"></i>
+               <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon" data-info= "<%=item._id %>"></i>
               <div>
                 <div class="innertext">
                   <h2><%= item.name %></h2>
@@ -204,7 +208,7 @@
               <div class="inner">
                 <!-- write item.img in src section here -->
                 <div class="image"><img src="<%= item.image %>" alt=""></div>
-                <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon"></i>
+                <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon" data-info= <%=item._id %>></i>
                 <div>
                   <div class="innertext">
                     <h2><%= item.name %></h2>
@@ -347,18 +351,42 @@ ease: Expo.easeInOut
 <script>
   // Add a click event listener to all heart icons with the 'heart-icon' class
   document.querySelectorAll('.heart-icon').forEach(function(icon) {
-    icon.addEventListener('click', function() {
-      // Toggle the 'clicked' class to change the color
-      this.classList.toggle('clicked');
-    });
+  icon.addEventListener('click', async function(event) {
+    event.preventDefault();
+    // Toggle the 'clicked' class to change the color
+    this.classList.toggle('clicked');
+    const item_id = this.getAttribute("data-info");
+    console.log(item_id);
+    try {
+      const response = await fetch("/like-item", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ item_id }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json(); // Assuming server sends error message in JSON format
+        throw new Error(errorData.error);
+      }
+      const data = await response.json();
+      alert(data.message);
+      // Reload the page after handling the response
+      window.location.reload();
+    } catch (error) {
+      console.error("Error:", error);
+      alert(error.message || "An error occurred while processing your request");
+    }
   });
-  
-    function toggleReview(itemId) {
+});
+
+  function toggleReview(itemId) {
   // First, hide all review containers
   document.querySelectorAll('.review-container').forEach((container) => {
     if (container.id !== 'review-section-' + itemId) {
       $(container).hide();
     }
+
   });
 
   // Then, toggle the display of the current item's review container

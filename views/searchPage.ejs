@@ -43,7 +43,7 @@
   <!-- body -->
 
   <div class="cross">
-    <a href="/home">
+    <a id="previousPageLink" href="#">
     <span class="close">&times;</span>
     </a>
   </div>
@@ -116,8 +116,13 @@
     }, 0.08);
 
 
+  document.addEventListener('DOMContentLoaded', function() {
+  const previousPageLink = document.getElementById('previousPageLink');
+  const previousPageUrl = document.referrer;
 
-
+  // Set the href attribute to the previous page URL
+  previousPageLink.setAttribute('href', previousPageUrl);
+});
   </script>
 
 </body>

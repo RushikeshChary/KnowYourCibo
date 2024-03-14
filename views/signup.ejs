@@ -10,84 +10,91 @@
   <body>
     <div class="container">
       <div class="left">
-      <form class="w-50" action="/signup" method="POST" id="signupForm" >
-        <h3>SignUp Now</h3>
-        <hr />
-        <div class="name-group">
-          <div class="mb-3">
-            <label for="firstName" class="Name">First Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="firstName"
-              name="firstName"
-              placeholder=""
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="lastName" class="Name">Last Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="lastName"
-              name="lastName"
-              placeholder=""
-              required
-            />
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address</label>
-          <button type="button" class="btn btn-link" id="verifyEmail">
-            Verify Email
-          </button>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            name="email"
-            placeholder=""
-            required
-          />
-        </div>
-        <div class="mb-3" id="otpSection" style="display: none">
-          <label for="otp" class="form-label">Enter OTP</label>
-          <button type="button" class="btn btn-link" id="verifyOtpLink">
-            Verify OTP
-          </button>
-          <input
-            type="text"
-            class="form-control"
-            id="otp"
-            name="otp"
-            placeholder=""
-            required
-          />
-        </div>
-        <div class="mb-3" style="display: none" id="passwordSection">
-          <label for="password" class="form-label">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            name="password"
-            required
-          />
-          <label for="confirmpassword" class="form-label"
-            >Confirm Password</label
-          >
-          <input type="password" class="form-control" id="confirmpassword" name="confirm" required />
-        </div>
-        <div class="mb-3 d-flex" id="submitSection" style="display: none">
-          <button type="submit" class="btn btn-success">SignUp</button>
-          <p class="form-label ms-auto mt-2">
-            Already have an Account?
-            <a id="logind"href="/login">Login</a>
-          </p>
-        </div>
-        <div id="otpMessage" class="alert" style="display: none"></div>
-      </form>
+        <section class="left-form">
+          <div class="">
+
+            <form class="w-50" action="/signup" method="POST" id="signupForm" >
+              <h3>SignUp Now</h3>
+              <hr />
+              <div class="name-group">
+                <div class="mb-3">
+                  <label for="firstName" class="Name">First Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="firstName"
+                    name="firstName"
+                    placeholder=""
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="lastName" class="Name">Last Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lastName"
+                    name="lastName"
+                    placeholder=""
+                    required
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <button type="button" class="btn btn-link" id="verifyEmail">
+                  Verify Email
+                </button>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder=""
+                  required
+                />
+              </div>
+              <div class="mb-3" id="otpSection" style="display:none">
+                <label for="otp" class="form-label">Enter OTP</label>
+                <button type="button" class="btn btn-link" id="verifyOtpLink">
+                  Verify OTP
+                </button>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="otp"
+                  name="otp"
+                  placeholder=""
+                  required
+                />
+              </div>
+              <div class="mb-3" style="display:none" id="passwordSection">
+                <label for="password" class="form-label">Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  required
+                />
+                <label for="confirmpassword" class="form-label"
+                  >Confirm Password</label
+                >
+                <input type="password" class="form-control" id="confirmpassword" name="confirm" required />
+              </div>
+              <div class="mb-3 d-flex" id="submitSection" style="display: none">
+                <button type="submit" class="btn btn-success">SignUp</button>
+                <p class="form-label ms-auto mt-2">
+                  Already have an Account?
+                  <a id="logind" href="/login">Login</a>
+                </p>
+              </div>
+              <div id="otpMessage" class="alert" style="display: none"></div>
+            </form>
+
+      </div>
+    </section>
+
       </div>
       <div class="right">
 

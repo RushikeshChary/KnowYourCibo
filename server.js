@@ -588,6 +588,9 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
     const restaurantId = req.params.restaurantId;
     const restaurant = await Restaurant.findById(restaurantId);
 
+    if (!restaurant) {
+      return res.status(404).send("Restaurant not found");
+    }
     console.log(restaurant.category);
     const categoryList = restaurant.category;
     console.log(categoryList);
@@ -600,21 +603,11 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
       });
       itemArray[category] = itemList;
     }
+    const menu = await Item.find({ hall: restaurant.Restaurant_name});
 
     // Now itemArray should be populated with the results of the asynchronous operations
 
-    if (!restaurant) {
-      return res.status(404).send("Restaurant not found");
-    }
-    // const All = await Item.find({ hall: restaurant.Restaurant_name});
-    // const tiffins = await Item.find({ hall: restaurant.Restaurant_name ,category: 'tiffins'});
-    // const chicken = await Item.find({ hall: restaurant.Restaurant_name,category: 'chicken' });
-    // const paneer = await Item.find({ hall: restaurant.Restaurant_name,category: 'paneer' });
-    // const fastfood = await Item.find({ hall: restaurant.Restaurant_name,category: 'fastfood' });
-    // const beverages = await Item.find({ hall: restaurant.Restaurant_name,category: 'beverages' });
-
-    // Combine restaurant and items into one object for the render method
-    res.render("hall", { restaurant, itemArray });
+    res.render("hall", { restaurant, itemArray, menu});
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");

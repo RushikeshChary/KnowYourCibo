@@ -1,6 +1,6 @@
-.mosaic-container {
+/* .mosaic-container {
 
-}
+} */
 
 .tile {
   height: 28vh;
@@ -81,6 +81,7 @@
   transition: 0.2s ease-in-out;
   padding-bottom: 2.5px;
   border-bottom: 1px solid var(--hover-color);
+  cursor: pointer;
 }
 
 .right-container h1{

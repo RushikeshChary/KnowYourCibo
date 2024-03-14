@@ -11,6 +11,7 @@ const session = require("express-session");
 const Item = require("./models/item.js");
 const User = require("./models/user.js");
 const Restaurant = require("./models/restaurant.js");
+const Feedback = require('./models/feedback.js');
 
 var otpStore = {}; // Declaration of otpStore
 
@@ -486,13 +487,14 @@ app.get("/profile", checkLogin, async (req, res) => {
   // const id = "65eadd97673a7bf0caf2dc26";
   await User.findById({ _id: id }).then(async (result) => {
     const favArray = result.fav_items;
+    const userFirstName = result.firstName;
     if (favArray.length > 0) {
       await Item.find({ _id: { $in: favArray } }).then((foundItems) => {
         // console.log('Found items:', foundItems);
-        res.render("profile", { info: result, items: foundItems });
+        res.render("profile", { info: result, items: foundItems, userFirstName });
       });
     } else {
-      res.render("profile", { info: result, items: [] });
+      res.render("profile", { info: result, items: [], userFirstName });
     }
     // console.log(result);
   });
@@ -521,6 +523,32 @@ app.post("/dislike-item", async (req, res) => {
     console.error(err);
   }
 });
+
+//Liking an item.
+app.post('/like-item', async (req, res) => {
+  const userId = req.session.userId;
+  // const userId = "65eadd97673a7bf0caf2dc26";
+  const { item_id } = req.body;
+  // console.log(item_id);
+  try {
+    const user = await User.findById(userId);
+    const newArray = [...user.fav_items, item_id];
+    // console.log(newArray);
+    const updatedDetails = {
+      fav_items: newArray,
+    };
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updatedDetails },
+      { new: true }
+    );
+    res.json({ message: "This item will be added to your favorites" });
+  } catch (err) {
+    console.error(err);
+  }
+  
+})
+
 //edit profile page route
 app.get("/editProfile", checkLogin, (req, res) => {
   res.render("editProfile");
@@ -574,9 +602,26 @@ app.post("/check-editProfile", async (req, res) => {
     });
   }
 });
+
 app.get("/forgot_password", (req, res) => {
   res.render("forgot_password");
 });
+
+app.get("/Feedback", (req, res) => {
+  res.render("feedback");
+});
+
+app.post('/submit-feedback', async (req, res) => {
+  try {
+      const newFeedback = new Feedback(req.body);
+      await newFeedback.save();
+      res.json({ message: 'Feedback submitted successfully.' });
+  } catch (error) {
+      console.error('Error submitting feedback:', error);
+      res.status(500).json({ message: 'Error submitting feedback.' });
+  }
+});
+
 
 app.get("/Restaurants", async (req, res) => {
   const res_list = await Restaurant.find({});

@@ -526,6 +526,7 @@ window.location.reload();
             // If a rating was submitted, update the button to allow removal
             $thisButton.text('Remove rating').data('rated', true);
           }
+            window.location.reload();
         },
         error: function(xhr, status, error) {
           if (xhr.status === 401) {

@@ -250,13 +250,16 @@
                         No ratings available
                       <% } %>
                     </div>
+                    <button class="submit-rating-btn" data-item-id="<%= item._id %>" data-rated="<%= item.userHasRated %>">
+                      <%= item.userHasRated ? 'Remove rating' : 'Rate' %>
+                    </button>
                   </div>
                 </div>
               </div>
               </div>
           <% }) %>
         <% } else { %>
-          <p>There are no items in this category of the restaurant.<p>
+          <p>There are no items in this section of the restaurant.</p>
         <% } %>
       </div>
     <% } %>

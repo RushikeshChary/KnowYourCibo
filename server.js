@@ -709,27 +709,27 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
       path: 'reviews.postedBy',
       select: 'firstName'
     });
-
     menu = menu.map(item => {
-      const itemObj = item.toObject();
+          const itemObj = item.toObject();
+          
+          // Find user's rating for this item, if it exists
+          const userRating = item.ratings.find(rating => rating.user.toString() === userId);
+          
+          // Add userRatingValue to the item object
+          itemObj.userRatingValue = userRating ? userRating.value : null;
+          itemObj.userHasRated = !!userRating;
+          
+          return itemObj;
+      });
+      menu.forEach(item => {
+        const totalRatings = item.ratings.length;
+        const overallRating = totalRatings > 0 ? item.ratings.reduce((acc, curr) => acc + curr.value, 0) / totalRatings : 0;
       
-      // Find user's rating for this item, if it exists
-      const userRating = item.ratings.find(rating => rating.user.toString() === userId);
+        // Add default values for overallRating and totalRatings
+        item.overallRating = overallRating || 0;
+        item.totalRatings = totalRatings || 0;
+      });
       
-      // Add userRatingValue to the item object
-      itemObj.userRatingValue = userRating ? userRating.value : null;
-      itemObj.userHasRated = !!userRating;
-      
-      return itemObj;
-  });
-  menu.forEach(item => {
-    const totalRatings = item.ratings.length;
-    const overallRating = totalRatings > 0 ? item.ratings.reduce((acc, curr) => acc + curr.value, 0) / totalRatings : 0;
-  
-    // Add default values for overallRating and totalRatings
-    item.overallRating = overallRating || 0;
-    item.totalRatings = totalRatings || 0;
-  });
     // Now itemArray should be populated with the results of the asynchronous operations
 
     res.render("hall", { restaurant, itemArray, menu, isLoggedIn, user,scrollToItemId: null});
@@ -864,34 +864,6 @@ app.post('/item/:itemId/review', async (req, res) => {
     res.status(500).json({ message: 'An error occurred while processing your request' });
   }
 });
-
-router.get('/menu', async (req, res) => {
-  try {
-    const userId = req.session.userId; // Assuming you store logged in userId in session
-    let menu = await Item.find({}); // Fetch all items, adjust query as needed
-
-    // Augment items with user rating information
-    menu = menu.map(item => {
-      const itemObj = item.toObject(); // Convert Mongoose document to plain object
-      
-      // Find user's rating for this item, if it exists
-      const userRating = item.ratings.find(rating => rating.user.toString() === userId);
-
-      // Add userRatingValue property to item object
-      itemObj.userRatingValue = userRating ? userRating.value : undefined;
-
-      // Add userHasRated property to easily check in the front end
-      itemObj.userHasRated = !!userRating;
-      return itemObj;
-    });
-    res.json(menu);
-
-  } catch (error) {
-    console.error('Failed to fetch items with user ratings', error);
-    res.status(500).send('Error fetching items');
-  }
-});
-
 app.post('/submit-rating', async (req, res) => {
   const { itemId, rating } = req.body;
   const userId = req.session.userId; // Make sure the user is logged in
@@ -959,3 +931,32 @@ app.post('/remove-rating', async (req, res) => {
       res.status(500).json({ error: 'Error removing rating' });
   }
 });
+
+router.get('/items', async (req, res) => {
+  try {
+    const userId = req.session.userId; // Assuming you store logged in userId in session
+    let items = await Item.find({}); // Fetch all items, adjust query as needed
+
+    // Augment items with user rating information
+    items = items.map(item => {
+      const itemObj = item.toObject(); // Convert Mongoose document to plain object
+      
+      // Find user's rating for this item, if it exists
+      const userRating = item.ratings.find(rating => rating.user.toString() === userId);
+
+      // Add userRatingValue property to item object
+      itemObj.userRatingValue = userRating ? userRating.value : undefined;
+
+      // Add userHasRated property to easily check in the front end
+      itemObj.userHasRated = !!userRating;
+
+      return itemObj;
+    });
+
+    res.json(items);
+  } catch (error) {
+    console.error('Failed to fetch items with user ratings', error);
+    res.status(500).send('Error fetching items');
+  }
+});
+

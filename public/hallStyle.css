@@ -250,7 +250,6 @@
 .clicked {
   color: red; /* Color when pressed */
 }
-
 .rating-area {
   display: flex;
   align-items: center;
@@ -289,3 +288,5 @@
 .submit-rating-btn {
   padding: 8px 16px; /* Adjust padding as needed */
 }
+
+

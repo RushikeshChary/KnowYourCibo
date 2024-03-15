@@ -1,0 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #B5C0D0;
+
+}
+
+.container {
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    width: 76vw;
+    height: 80vh;
+    display: flex;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: grey;
+    font-size: medium; /* Increased for better readability */
+}
+
+input[type=email], input[type=password], input[type=text] {
+    width: 100%;
+    padding: 12px; /* Increased padding for larger input fields */
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 5px;
+}
+
+button {
+    width: 60%; /* Full width button */
+    background-color: black;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    font-size: 16px; /* Larger font size */
+}
+
+button:hover {
+    background-color: grey;
+    cursor: pointer;
+}
+
+#message {
+    color: red;
+    margin-top: 20px;
+}
+
+#pageInfo {
+    color: orange;
+    margin-bottom: 20px; /* Added margin for spacing */
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%; /* More responsive on smaller screens */
+    }
+}
+
+.left{
+  width: 36vw;
+  height: 80vh;
+  background-image: url("forgotimages/forgot.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.right{
+  width: 40vw;
+  height: 80vh;
+  padding: 25px;
+}

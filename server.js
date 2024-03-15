@@ -690,9 +690,8 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
     // console.log(restaurant.category);
     const categoryList = restaurant.category;
     // console.log(categoryList);
-    const itemArray = {};
 
-   
+    const itemArray = {};
     for (const category of categoryList) {
       const itemList = await Item.find({
         hall: restaurant.Restaurant_name,
@@ -718,7 +717,6 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
           // Add userRatingValue to the item object
           itemObj.userRatingValue = userRating ? userRating.value : null;
           itemObj.userHasRated = !!userRating;
-          
           return itemObj;
       });
       menu.forEach(item => {
@@ -739,53 +737,23 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
   }
 });
 
-app.get('/Restaurants/:restaurantId', async (req, res) => {
-  try {
-      const restaurantId = req.params.restaurantId;
-      const restaurant = await Restaurant.findById(restaurantId);
-
-      if (!restaurant) {
-          return res.status(404).send('Restaurant not found');
-      }
-
-      let items = await Item.find({ hall: restaurant.Restaurant_name });
-      
-      // Assuming you have a loggedInUserId variable that holds the ID of the current user
-      const userId = req.session.userId; 
-      
-      items = items.map(item => {
-          const itemObj = item.toObject();
-          
-          // Find user's rating for this item, if it exists
-          const userRating = item.ratings.find(rating => rating.user.toString() === userId);
-          
-          // Add userRatingValue to the item object
-          itemObj.userRatingValue = userRating ? userRating.value : null;
-          itemObj.userHasRated = !!userRating;
-          
-          return itemObj;
-      });
-      items.forEach(item => {
-        const totalRatings = item.ratings.length;
-        const overallRating = totalRatings > 0 ? item.ratings.reduce((acc, curr) => acc + curr.value, 0) / totalRatings : 0;
-      
-        // Add default values for overallRating and totalRatings
-        item.overallRating = overallRating || 0;
-        item.totalRatings = totalRatings || 0;
-      });
-      
-
-      // Combine restaurant and items into one object for the render method
-      res.render('hall', { restaurant: restaurant, items: items });
-  } catch (error) {
-      res.status(500).send('Server error');
-  }
-});
-
 app.get("/search/item/:itemId", async (req, res) => {
+  let userFirstName = "";
+  let isLoggedIn = false;
+  let user = {};
+  let userId = req.session.userId
+  if (req.session.userId) {
+    try {
+      user = await User.findById(req.session.userId);
+      userFirstName = user.firstName;
+      isLoggedIn = true;
+    } catch (error) {
+      console.error("Error fetching user for home page", error);
+    }
+  }
+  const itemId = req.params.itemId;
+  const item = await Item.findById(itemId)
   try {
-    const itemId = req.params.itemId;
-    const item = await Item.findById(itemId)
 
     if (!item) {
       return res.status(404).send("Item not found");
@@ -817,7 +785,25 @@ app.get("/search/item/:itemId", async (req, res) => {
         path: 'reviews.postedBy',
         select: 'firstName'
       });
-
+      menu = menu.map(item => {
+        const itemObj = item.toObject();
+        
+        // Find user's rating for this item, if it exists
+        const userRating = item.ratings.find(rating => rating.user.toString() === userId);
+        
+        // Add userRatingValue to the item object
+        itemObj.userRatingValue = userRating ? userRating.value : null;
+        itemObj.userHasRated = !!userRating;
+        return itemObj;
+    });
+    menu.forEach(item => {
+      const totalRatings = item.ratings.length;
+      const overallRating = totalRatings > 0 ? item.ratings.reduce((acc, curr) => acc + curr.value, 0) / totalRatings : 0;
+    
+      // Add default values for overallRating and totalRatings
+      item.overallRating = overallRating || 0;
+      item.totalRatings = totalRatings || 0;
+    });
     // Render the same 'hall.ejs' template
     res.render("hall", { restaurant, itemArray, menu, scrollToItemId: itemId });
   } catch (error) {

@@ -163,7 +163,7 @@
     <div id="section1" class="section" style="display: block;">
       <% if (menu.length > 0) { %>
         <% menu.forEach(item => { %>
-          <div class="tile">
+          <div id="item-<%= item._id %>" class="tile">
             <div class="inner">
               <!-- write item.img in src section here -->
               <div class="image"><img src="<%= item.image %>" alt=""></div>
@@ -192,7 +192,7 @@
                 </button>
               </div>
               <div class="review-area">
-                <button class="review-btn">Review</button>
+                <button class="review-btn" onclick="toggleReview('<%= item._id %>')">Review</button>
                 <div class="overall-rating">
                   Rating: <%= item.overallRating.toFixed(1) %> / 5
                     (<%= item.totalRatings %> ratings)
@@ -200,13 +200,14 @@
               </div>
             </div>
           </div>
+          </div>
         <% }) %>
       <% } else { %>
         <p>There are no items in this restaurant.<p>
       <% } %>
     </div>
 
-
+    <!-- Respective categories. -->
     <% for (let i = 0; i < restaurant.category.length; i++) { %>
       <div id="section<%= i + 2 %>" class="section" style="display: none;">
         <% if (itemArray[restaurant.category[i]].length > 0) { %>
@@ -223,7 +224,6 @@
                     <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon" data-info= <%=item._id %>></i>
                     <% } %>
                 <div>
-
                   <div class="innertext">
                     <h2><%= item.name %></h2>
                     <h3><%= item.price %></h3>
@@ -263,7 +263,7 @@
         <% } %>
       </div>
     <% } %>
-    </div>
+    <!-- </div> -->
 
 </div>
 
@@ -415,7 +415,6 @@ ease: Expo.easeInOut
     if (container.id !== 'review-section-' + itemId) {
       $(container).hide();
     }
-
   });
 
   // Then, toggle the display of the current item's review container
@@ -463,8 +462,6 @@ window.location.reload();
   console.error('Error:', error);
 });
 } 
-
-
 </script>
   
 
@@ -492,8 +489,7 @@ window.location.reload();
   </script>
 <% } %>
 
-<script>
-
+  <script>
   $(document).ready(function() {
     // AJAX call for submitting or removing a rating
     $('.submit-rating-btn').click(function() {
@@ -540,7 +536,13 @@ window.location.reload();
       });
     });
   });
-  
+  </script>
+  <script>
+    $(document).ready(function(){
+      $(".review-btn").click(function(){
+        $("#div1").toggle();
+      });
+    });
   </script>
 </body>
 

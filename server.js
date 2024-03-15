@@ -842,7 +842,7 @@ app.get("/search/item/:itemId", async (req, res) => {
       item.totalRatings = totalRatings || 0;
     });
     // Render the same 'hall.ejs' template
-    res.render("hall", { restaurant, itemArray, menu, scrollToItemId: itemId });
+       res.render("hall", { restaurant, itemArray, menu,isLoggedIn, user, scrollToItemId: itemId });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");

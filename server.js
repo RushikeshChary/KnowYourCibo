@@ -752,15 +752,15 @@ app.get("/search/item/:itemId", async (req, res) => {
     }
   }
   const itemId = req.params.itemId;
-  const item = await Item.findById(itemId)
+  const item1 = await Item.findById(itemId)
   try {
 
-    if (!item) {
+    if (!item1) {
       return res.status(404).send("Item not found");
     }
 
     // Assuming 'hall' in the item is the name or ID of the restaurant
-    const restaurant = await Restaurant.findOne({ Restaurant_name: item.hall });
+    const restaurant = await Restaurant.findOne({ Restaurant_name: item1.hall });
 
     if (!restaurant) {
       return res.status(404).send("Restaurant not found");
@@ -780,7 +780,7 @@ app.get("/search/item/:itemId", async (req, res) => {
       itemArray[category] = itemList;
     }
 
-    const menu = await Item.find({ hall: item.hall })
+    let menu = await Item.find({ hall: item1.hall })
       .populate({
         path: 'reviews.postedBy',
         select: 'firstName'
@@ -805,7 +805,7 @@ app.get("/search/item/:itemId", async (req, res) => {
       item.totalRatings = totalRatings || 0;
     });
     // Render the same 'hall.ejs' template
-    res.render("hall", { restaurant, itemArray, menu, scrollToItemId: itemId });
+    res.render("hall", { restaurant, itemArray, menu ,isLoggedIn, user, scrollToItemId: itemId });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");

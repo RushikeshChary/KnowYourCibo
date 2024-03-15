@@ -20,13 +20,13 @@
   <script src="https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js"></script>
   <title>KnowYourCibo</title>
   <link rel="stylesheet" href="searchStyle.css">
-  <div id="cursor"></div>
   <!-- <script src="script.js"></script> -->
 </head>
 
 
 <main>
-<!-- social media -->
+  <div id="cursor"></div>
+  <!-- social media -->
   <div class="social-media">
         <ul>
           <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
@@ -68,7 +68,7 @@
       <div class="item-details">
         <h2 class="item-name">Item name: <%= item.name %></h2>
         <h2 class="hall-name">Hall name: <%= item.hall %></h2>
-        <h2 class="rating">Hall name: <%= item.rating %></h2>
+        <h2 class="rating">Rating: <%= (item.ratings.reduce((sum, rating) => sum + rating.value, 0) / item.ratings.length).toFixed(1) %></h2>
       </div>
     </div>
   </a>

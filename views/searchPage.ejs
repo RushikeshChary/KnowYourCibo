@@ -43,7 +43,7 @@
   <!-- body -->
 
   <div class="cross">
-    <a id="previousPageLink" href="#">
+    <a id="goBackButton" href="#">
     <span class="close">&times;</span>
     </a>
   </div>
@@ -117,13 +117,17 @@
     }, 0.08);
 
 
-  document.addEventListener('DOMContentLoaded', function() {
-  const previousPageLink = document.getElementById('previousPageLink');
-  const previousPageUrl = document.referrer;
+  // document.addEventListener('DOMContentLoaded', function() {
+  // const previousPageLink = document.getElementById('previousPageLink');
+  // const previousPageUrl = document.referrer;
 
-  // Set the href attribute to the previous page URL
-  previousPageLink.setAttribute('href', previousPageUrl);
-});
+  // // Set the href attribute to the previous page URL
+  // previousPageLink.setAttribute('href', previousPageUrl);
+// });
+  document.getElementById('goBackButton').addEventListener('click', function() {
+    window.history.back();
+  });
+
   </script>
 
 </body>

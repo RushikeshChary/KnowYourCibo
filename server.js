@@ -877,6 +877,9 @@ app.post('/item/:itemId/review', async (req, res) => {
         comment: comment,
         postedBy: userId
       });
+       const user = await User.findById(userId);
+      user.no_reviews += 1;
+      await user.save();
     }
 
     await item.save();
@@ -932,7 +935,7 @@ app.post('/submit-rating', async (req, res) => {
 app.post('/remove-rating', async (req, res) => {
   const { itemId } = req.body;
   const userId = req.session.userId; // Make sure the user is logged in
-
+  const user = await User.findById(userId);
   if (!userId) {
       return res.status(401).json({ error: 'User must be logged in to remove ratings' });
   }
@@ -947,7 +950,8 @@ app.post('/remove-rating', async (req, res) => {
       item.ratings = item.ratings.filter(rating => rating.user.toString() !== userId);
       
       await item.save();
-
+      user.no_ratings -= 1;
+      await user.save();
       res.json({ message: 'Rating removed successfully' });
   } catch (error) {
       console.error('Error removing rating:', error);

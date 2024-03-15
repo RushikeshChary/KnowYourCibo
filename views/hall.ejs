@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -39,7 +39,11 @@
         <ul>
           <li><a href="/home">Home</a></li>
           <li><a href="/Restaurants">Restaurants</a></li>
-          <li><a href="/profile">Profile</a></li>
+          <% if (isLoggedIn) { %>
+            <li><a href="/profile">Profile</a></li>
+            <!-- <a href="/logout">Logout</a> -->
+          <% }%>
+          
           <li><a href="/feedback">Feedback</a></li>
           <!-- <li><a href="/">Contact us</a></li> -->
         </ul>
@@ -52,7 +56,6 @@
 
 
       <% if (isLoggedIn) { %>
-        <span>Hello, <%= userFirstName %> </span>
         <div class="account">
           <a href="/logout">Logout</a>
         </div>

@@ -815,6 +815,34 @@ app.get("/search/item/:itemId", async (req, res) => {
         select: 'firstName'
       });
       itemArray[category] = itemList;
+      
+        for (let item of itemList) {
+          const itemObj = item.toObject();
+          
+          // Find user's rating for this item, if it exists
+          const userRating = itemObj.ratings.find(rating => rating.user.toString() === userId);
+          
+          // Add userRatingValue to the item object
+          itemObj.userRatingValue = userRating ? userRating.value : null;
+          itemObj.userHasRated = !!userRating;
+      
+          // Calculate total ratings and overall rating
+          const totalRatings = itemObj.ratings.length;
+          const overallRating = totalRatings > 0 
+            ? itemObj.ratings.reduce((acc, curr) => acc + curr.value, 0) / totalRatings 
+            : 0;
+          
+          // Add totalRatings and overallRating to the item object
+          itemObj.totalRatings = totalRatings;
+          itemObj.overallRating = overallRating;
+      
+          // Replace the original item with the modified itemObj in the itemList
+          const index = itemList.indexOf(item);
+          itemList[index] = itemObj;
+        }
+      
+      
+      
     }
 
     let menu = await Item.find({ hall: item.hall })

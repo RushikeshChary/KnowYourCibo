@@ -126,6 +126,7 @@ app.post("/check-user", async (req, res) => {
 // });
 
 app.get("/login", async (req, res) => {
+  let redirectUrl = req.headers.referer || '/home';
   try {
     if (req.session.userId) {
       const user = await User.findById(req.session.userId);
@@ -135,6 +136,7 @@ app.get("/login", async (req, res) => {
           userFirstName: user.firstName,
           isLoggedIn: true,
           errorMessage: "",
+          redirect: redirectUrl
         });
       } else {
         // If user is not found, still render the login page but with default values
@@ -142,6 +144,7 @@ app.get("/login", async (req, res) => {
           userFirstName: "",
           isLoggedIn: false,
           errorMessage: "",
+          redirect: redirectUrl
         });
       }
     } else {
@@ -150,6 +153,7 @@ app.get("/login", async (req, res) => {
         userFirstName: "",
         isLoggedIn: false,
         errorMessage: "",
+        redirect: redirectUrl
       });
     }
   } catch (error) {
@@ -158,6 +162,7 @@ app.get("/login", async (req, res) => {
       userFirstName: "",
       isLoggedIn: false,
       errorMessage: "An error occurred. Please try again.",
+      redirect: redirectUrl
     });
   }
 });
@@ -277,7 +282,7 @@ app.post("/signup", async (req, res) => {
 });
 //Later, change this /dashboard to /home.
 app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password ,redirect} = req.body;
 
   try {
     // Normalize email to lowercase before lookup to ensure case-insensitive match
@@ -294,7 +299,7 @@ app.post("/login", async (req, res) => {
         req.session.userFirstName = user.firstName; // Ensure this matches the field name in your user model
 
         // Redirect to the home page
-        return res.redirect("/home");
+        res.redirect(redirect || '/home');
       } else {
         // Passwords do not match, render login page with error
         return res.render("login", {
@@ -326,11 +331,12 @@ app.post("/login", async (req, res) => {
 // });
 
 app.get("/logout", (req, res) => {
+  let redirectUrl = req.headers.referer || '/home';
   req.session.destroy(function (err) {
     if (err) {
       console.error("Session destruction error", err);
     }
-    res.redirect("/home");
+    res.redirect(redirectUrl);
   });
 });
 //Authentication ends here.
@@ -752,15 +758,15 @@ app.get("/search/item/:itemId", async (req, res) => {
     }
   }
   const itemId = req.params.itemId;
-  const item1 = await Item.findById(itemId)
+  const item = await Item.findById(itemId)
   try {
 
-    if (!item1) {
+    if (!item) {
       return res.status(404).send("Item not found");
     }
 
     // Assuming 'hall' in the item is the name or ID of the restaurant
-    const restaurant = await Restaurant.findOne({ Restaurant_name: item1.hall });
+    const restaurant = await Restaurant.findOne({ Restaurant_name: item.hall });
 
     if (!restaurant) {
       return res.status(404).send("Restaurant not found");
@@ -780,7 +786,7 @@ app.get("/search/item/:itemId", async (req, res) => {
       itemArray[category] = itemList;
     }
 
-    let menu = await Item.find({ hall: item1.hall })
+    const menu = await Item.find({ hall: item.hall })
       .populate({
         path: 'reviews.postedBy',
         select: 'firstName'
@@ -805,7 +811,7 @@ app.get("/search/item/:itemId", async (req, res) => {
       item.totalRatings = totalRatings || 0;
     });
     // Render the same 'hall.ejs' template
-    res.render("hall", { restaurant, itemArray, menu ,isLoggedIn, user, scrollToItemId: itemId });
+    res.render("hall", { restaurant, itemArray, menu, scrollToItemId: itemId });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");

@@ -19,12 +19,18 @@ const itemSchema = new Schema(
       type: Number,
       required: true,
     },
-    rating: {
-      type: Number,
-      required: true,
-    },
+    ratings: [{
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      },
+      value: {
+        type: Number,
+        required: true
+      }
+    }],
     image: {
-      type: String,
+      type: String
     },
     reviews: [{
       comment: { type: String, required: true },

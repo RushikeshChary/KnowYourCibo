@@ -28,6 +28,7 @@ const userSchema = new Schema({
   fav_items:
   {
     type: Array,
+    required: true
   },
 },{ timestamps: true });
 

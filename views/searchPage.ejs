@@ -62,12 +62,13 @@
 <section class="section">
 
   <% if (items.length > 0) { %> <% items.forEach(item => { %>
-  <a href="/<%= item.hall %>">
+  <a href="/search/item/<%= item._id %>">
     <div class="item-container">
       <img src="searchImages/dosa.jpeg" alt="Paneer" class="item-image">
       <div class="item-details">
         <h2 class="item-name">Item name: <%= item.name %></h2>
         <h2 class="hall-name">Hall name: <%= item.hall %></h2>
+        <h2 class="rating">Hall name: <%= item.rating %></h2>
       </div>
     </div>
   </a>

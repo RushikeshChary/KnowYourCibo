@@ -12,7 +12,7 @@ const Item = require("./models/item.js");
 const User = require("./models/user.js");
 const Restaurant = require("./models/restaurant.js");
 const Feedback = require('./models/feedback.js');
-
+const router = express.Router();
 var otpStore = {}; // Declaration of otpStore
 
 // const userSchema = new mongoose.Schema({
@@ -524,16 +524,48 @@ app.post("/dislike-item", async (req, res) => {
   }
 });
 
+
+function rgbToColorName(rgbString) {
+  // Extracting the RGB values from the string
+  const rgbValues = rgbString.match(/\d+/g).map(Number);
+  const [r, g, b] = rgbValues;
+
+  // Mapping RGB values to color names
+  const colorMap = {
+      '0,0,0': 'black',
+      '255,255,255': 'white',
+      // Add more color mappings as needed
+  };
+
+  // Constructing the key for the color map
+  const key = `${r},${g},${b}`;
+
+  // Returning the corresponding color name, or the RGB string if no match found
+  return colorMap[key] || rgbString;
+}
+
+
 //Liking an item from hall page.
 app.post('/like-item', async (req, res) => {
   const userId = req.session.userId;
-  const { item_id } = req.body;
-  // console.log(item_id);
+  const { item_id , color} = req.body;
+  const stringColor = rgbToColorName(color);
   if(userId)
   {
     try {
+      let newArray = {};
       const user = await User.findById(userId);
-      const newArray = [...user.fav_items, item_id];
+      if(stringColor === 'black')
+      {
+        newArray = [...user.fav_items, item_id];
+        console.log('added to favorite items');
+      }
+      else
+      {
+        newArray = user.fav_items.filter(itemId => itemId !== item_id);
+        console.log('removed from favorite items');
+
+      }
       const updatedDetails = {
         fav_items: newArray,
       };
@@ -542,7 +574,7 @@ app.post('/like-item', async (req, res) => {
         { $set: updatedDetails },
         { new: true }
       );
-      res.json({ message: "This item will be added to your favorites. You can remove from your favorites in your profile page." });
+      res.status(200).json({ message: "Favorites updated. You can edit from your favorites in your profile page." });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "An error occurred while processing your request" });
@@ -637,7 +669,8 @@ app.get("/Restaurants", async (req, res) => {
 app.get("/Restaurants/:restaurantId", async (req, res) => {
   let userFirstName = "";
   let isLoggedIn = false;
-  const user = {};
+  let user = {};
+  let userId = req.session.userId
   if (req.session.userId) {
     try {
       user = await User.findById(req.session.userId);
@@ -671,14 +704,122 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
       });
       itemArray[category] = itemList;
     }
-    const menu = await Item.find({ hall: restaurant.Restaurant_name})
-   .populate({
+    let menu = await Item.find({ hall: restaurant.Restaurant_name})
+    .populate({
       path: 'reviews.postedBy',
       select: 'firstName'
     });
+
+    menu = menu.map(item => {
+      const itemObj = item.toObject();
+      
+      // Find user's rating for this item, if it exists
+      const userRating = item.ratings.find(rating => rating.user.toString() === userId);
+      
+      // Add userRatingValue to the item object
+      itemObj.userRatingValue = userRating ? userRating.value : null;
+      itemObj.userHasRated = !!userRating;
+      
+      return itemObj;
+  });
+  menu.forEach(item => {
+    const totalRatings = item.ratings.length;
+    const overallRating = totalRatings > 0 ? item.ratings.reduce((acc, curr) => acc + curr.value, 0) / totalRatings : 0;
+  
+    // Add default values for overallRating and totalRatings
+    item.overallRating = overallRating || 0;
+    item.totalRatings = totalRatings || 0;
+  });
     // Now itemArray should be populated with the results of the asynchronous operations
 
-    res.render("hall", { restaurant, itemArray, menu, isLoggedIn, userFirstName, user});
+    res.render("hall", { restaurant, itemArray, menu, isLoggedIn, user,scrollToItemId: null});
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
+
+app.get('/Restaurants/:restaurantId', async (req, res) => {
+  try {
+      const restaurantId = req.params.restaurantId;
+      const restaurant = await Restaurant.findById(restaurantId);
+
+      if (!restaurant) {
+          return res.status(404).send('Restaurant not found');
+      }
+
+      let items = await Item.find({ hall: restaurant.Restaurant_name });
+      
+      // Assuming you have a loggedInUserId variable that holds the ID of the current user
+      const userId = req.session.userId; 
+      
+      items = items.map(item => {
+          const itemObj = item.toObject();
+          
+          // Find user's rating for this item, if it exists
+          const userRating = item.ratings.find(rating => rating.user.toString() === userId);
+          
+          // Add userRatingValue to the item object
+          itemObj.userRatingValue = userRating ? userRating.value : null;
+          itemObj.userHasRated = !!userRating;
+          
+          return itemObj;
+      });
+      items.forEach(item => {
+        const totalRatings = item.ratings.length;
+        const overallRating = totalRatings > 0 ? item.ratings.reduce((acc, curr) => acc + curr.value, 0) / totalRatings : 0;
+      
+        // Add default values for overallRating and totalRatings
+        item.overallRating = overallRating || 0;
+        item.totalRatings = totalRatings || 0;
+      });
+      
+
+      // Combine restaurant and items into one object for the render method
+      res.render('hall', { restaurant: restaurant, items: items });
+  } catch (error) {
+      res.status(500).send('Server error');
+  }
+});
+
+app.get("/search/item/:itemId", async (req, res) => {
+  try {
+    const itemId = req.params.itemId;
+    const item = await Item.findById(itemId)
+
+    if (!item) {
+      return res.status(404).send("Item not found");
+    }
+
+    // Assuming 'hall' in the item is the name or ID of the restaurant
+    const restaurant = await Restaurant.findOne({ Restaurant_name: item.hall });
+
+    if (!restaurant) {
+      return res.status(404).send("Restaurant not found");
+    }
+    const categoryList = restaurant.category;
+    const itemArray = {};
+
+    for (const category of categoryList) {
+      const itemList = await Item.find({
+        hall: restaurant.Restaurant_name,
+        category
+      })
+      .populate({
+        path: 'reviews.postedBy',
+        select: 'firstName'
+      });
+      itemArray[category] = itemList;
+    }
+
+    const menu = await Item.find({ hall: item.hall })
+      .populate({
+        path: 'reviews.postedBy',
+        select: 'firstName'
+      });
+
+    // Render the same 'hall.ejs' template
+    res.render("hall", { restaurant, itemArray, menu, scrollToItemId: itemId });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");
@@ -721,5 +862,100 @@ app.post('/item/:itemId/review', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'An error occurred while processing your request' });
+  }
+});
+
+router.get('/menu', async (req, res) => {
+  try {
+    const userId = req.session.userId; // Assuming you store logged in userId in session
+    let menu = await Item.find({}); // Fetch all items, adjust query as needed
+
+    // Augment items with user rating information
+    menu = menu.map(item => {
+      const itemObj = item.toObject(); // Convert Mongoose document to plain object
+      
+      // Find user's rating for this item, if it exists
+      const userRating = item.ratings.find(rating => rating.user.toString() === userId);
+
+      // Add userRatingValue property to item object
+      itemObj.userRatingValue = userRating ? userRating.value : undefined;
+
+      // Add userHasRated property to easily check in the front end
+      itemObj.userHasRated = !!userRating;
+      return itemObj;
+    });
+    res.json(menu);
+
+  } catch (error) {
+    console.error('Failed to fetch items with user ratings', error);
+    res.status(500).send('Error fetching items');
+  }
+});
+
+app.post('/submit-rating', async (req, res) => {
+  const { itemId, rating } = req.body;
+  const userId = req.session.userId; // Make sure the user is logged in
+
+  if (!userId) {
+    return res.status(401).json({ error: 'User must be logged in to rate items' });
+  }
+
+  try {
+    const item = await Item.findById(itemId);
+    const user = await User.findById(userId);
+
+    if (!item) {
+      return res.status(404).json({ error: 'Item not found' });
+    }
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if user has already rated
+    const existingRatingIndex = item.ratings.findIndex(r => r.user.toString() === userId);
+    if (existingRatingIndex !== -1) {
+      // Update existing rating
+      item.ratings[existingRatingIndex].value = rating;
+    } else {
+      // Add new rating
+      item.ratings.push({ user: userId, value: rating });
+    }
+
+    // Here, you can increment the number of ratings for the user
+    user.no_ratings += 1;
+
+    await item.save();
+    await user.save();
+
+    res.status(200).json({ message: 'Rating submitted successfully' });
+  } catch (error) {
+    console.error('Error submitting rating:', error);
+    res.status(500).json({ error: 'Error submitting rating' });
+  }
+});
+app.post('/remove-rating', async (req, res) => {
+  const { itemId } = req.body;
+  const userId = req.session.userId; // Make sure the user is logged in
+
+  if (!userId) {
+      return res.status(401).json({ error: 'User must be logged in to remove ratings' });
+  }
+
+  try {
+      const item = await Item.findById(itemId);
+      if (!item) {
+          return res.status(404).json({ error: 'Item not found' });
+      }
+
+      // Remove the user's rating from the item
+      item.ratings = item.ratings.filter(rating => rating.user.toString() !== userId);
+      
+      await item.save();
+
+      res.json({ message: 'Rating removed successfully' });
+  } catch (error) {
+      console.error('Error removing rating:', error);
+      res.status(500).json({ error: 'Error removing rating' });
   }
 });

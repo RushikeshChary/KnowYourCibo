@@ -154,14 +154,6 @@
         <li onclick="showSection('section<%=i+1%>')"><a data-section="section<%=i+1%>"> <%= restaurant.category[i-1]  %> </a></li>
         <% } %>
 
-      <!-- <li onclick="showSection('section3')"><a data-section="section3">Mutton</a></li> -->
-      <!-- <li onclick="showSection('section4')"><a data-section="section4">Fish</a></li> -->
-      <!-- <li onclick="showSection('section5')"><a data-section="section5">Beverages</a></li> -->
-      <!-- <li onclick="showSection('section6')"><a data-section="section6">Chicken</a></li> -->
-      <!-- <li onclick="showSection('section7')"><a data-section="section7">Veg</a></li> -->
-      <!-- <li onclick="showSection('section8')"><a data-section="section8">Fast Food</a></li> -->
-      <!-- <li onclick="showSection('section9')"><a data-section="section9">Breads</a></li> -->
-      <!-- <li onclick="showSection('section10')"><a data-section="section10">Beverages</a></li> -->
     </ul>
   </section>
 
@@ -175,22 +167,36 @@
             <div class="inner">
               <!-- write item.img in src section here -->
               <div class="image"><img src="<%= item.image %>" alt=""></div>
-               <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon" data-info= "<%=item._id %>"></i>
+              <% if(isLoggedIn && user.fav_items.includes(`${item._id}`)){ %>
+                <!-- User favorite list -->
+                <i class="fas fa-heart heart-icon fa-2x custom-size clicked" id="heartIcon" data-info= <%=item._id %>></i>
+                <% } else {%>
+                  <!-- Not User favorite list -->
+                  <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon" data-info= <%=item._id %>></i>
+                  <% } %>
               <div>
                 <div class="innertext">
                   <h2><%= item.name %></h2>
                   <h3><%= item.price %></h3>
                 </div>
+              <div class="ratings-and-button-container">
                 <div class="rating-box">
                   <div class="stars">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
+                    <% for(let i = 1; i <= 5; i++) { %>
+                      <i class="fa fa-star <%= item.userRatingValue && i <= item.userRatingValue ? 'active' : '' %>" data-rating="<%= i %>"></i>
+                    <% } %>
                   </div>
                 </div>
-                <button class="review-btn" onclick="toggleReview('<%= item._id %>')">Review</button>
+                <button class="submit-rating-btn" data-item-id="<%= item._id %>" data-rated="<%= item.userHasRated %>">
+                  <%= item.userHasRated ? 'Remove rating' : 'Rate' %>
+                </button>
+              </div>
+              <div class="review-area">
+                <button class="review-btn">Review</button>
+                <div class="overall-rating">
+                  Rating: <%= item.overallRating.toFixed(1) %> / 5
+                    (<%= item.totalRatings %> ratings)
+                  </div>
               </div>
             </div>
           </div>
@@ -200,44 +206,60 @@
       <% } %>
     </div>
 
+
     <% for (let i = 0; i < restaurant.category.length; i++) { %>
       <div id="section<%= i + 2 %>" class="section" style="display: none;">
         <% if (itemArray[restaurant.category[i]].length > 0) { %>
           <% itemArray[restaurant.category[i]].forEach(item => { %>
-            <div class="tile">
+              <div id="item-<%= item._id %>" class="tile">
               <div class="inner">
                 <!-- write item.img in src section here -->
                 <div class="image"><img src="<%= item.image %>" alt=""></div>
-                <%= user && user.favorites.includes(item._id) ? 'Item is favorite' : 'Item is not favorite' %>
-                <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon" data-info= <%=item._id %>></i>
+                <% if(isLoggedIn && user.fav_items.includes(`${item._id}`)){ %>
+                  <!-- User favorite list -->
+                  <i class="fas fa-heart heart-icon fa-2x custom-size clicked" id="heartIcon" data-info= <%=item._id %>></i>
+                  <% } else {%>
+                    <!-- Not User favorite list -->
+                    <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon" data-info= <%=item._id %>></i>
+                    <% } %>
                 <div>
+
                   <div class="innertext">
                     <h2><%= item.name %></h2>
                     <h3><%= item.price %></h3>
                   </div>
-                  <div class="rating-box">
-                    <div class="stars">
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
-                      <i class="fa-solid fa-star"></i>
+                  <div class="ratings-and-button-container">
+                    <div class="rating-box">
+                      <div class="stars">
+                        <% for(let i = 1; i <= 5; i++) { %>
+                          <i class="fa fa-star <%= item.userRatingValue && i <= item.userRatingValue ? 'active' : '' %>" data-rating="<%= i %>"></i>
+                        <% } %>
+                      </div>
+                    </div>
+                    <button class="submit-rating-btn" data-item-id="<%= item._id %>" data-rated="<%= item.userHasRated %>">
+                      <%= item.userHasRated ? 'Remove rating' : 'Rate' %>
+                    </button>
+                  </div>
+                  <div class="review-area">
+                    <!-- <button class="review-btn">Review</button> -->
+                    <button class="review-btn" onclick="toggleReview('<%= item._id %>')">Review</button>
+                    <div class="overall-rating">
+                      <% if (typeof item.overallRating !== 'undefined') { %>
+                        Rating: <%= item.overallRating.toFixed(1) %> / 5 (<%= item.totalRatings %> ratings)
+                      <% } else { %>
+                        No ratings available
+                      <% } %>
                     </div>
                   </div>
-                  <button class="review-btn" onclick="toggleReview('<%= item._id %>')">Review</button>
                 </div>
               </div>
-            </div>
+              </div>
           <% }) %>
         <% } else { %>
           <p>There are no items in this category of the restaurant.<p>
         <% } %>
       </div>
     <% } %>
-
-
-         
-
     </div>
 
 </div>
@@ -356,14 +378,14 @@ ease: Expo.easeInOut
     event.preventDefault();
     // Toggle the 'clicked' class to change the color
     const item_id = this.getAttribute("data-info");
-    console.log(item_id);
+    const color = window.getComputedStyle(this).color;
     try {
       const response = await fetch("/like-item", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ item_id }),
+        body: JSON.stringify({ item_id ,color}),
       });
       if (!response.ok) {
         const errorData = await response.json(); // Assuming server sends error message in JSON format
@@ -371,13 +393,16 @@ ease: Expo.easeInOut
       }
       const data = await response.json();
       alert(data.message);
+      if(response.status == 200)
+      {
+        this.classList.toggle('clicked');
+      }
       // Reload the page after handling the response
       window.location.reload();
     } catch (error) {
       console.error("Error:", error);
       alert(error.message || "An error occurred while processing your request");
     }
-    this.classList.toggle('clicked');
   });
 });
 
@@ -440,6 +465,80 @@ window.location.reload();
 </script>
   
 
+<% if (scrollToItemId) { %>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      // Show the correct category section
+      const scrollToItemElement = document.getElementById('item-' + '<%= scrollToItemId %>');
+      if (scrollToItemElement) {
+        // Find the parent section of the item
+        const parentSection = scrollToItemElement.closest('.section');
+        // Show the parent section
+        if (parentSection) {
+          // Hide all sections first
+          document.querySelectorAll('.section').forEach(section => {
+            section.style.display = 'none';
+          });
+          // Show the parent section of the item
+          parentSection.style.display = 'block';
+        }
+        // Scroll to the item
+        scrollToItemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  </script>
+<% } %>
+
+<script>
+
+  $(document).ready(function() {
+    // AJAX call for submitting or removing a rating
+    $('.submit-rating-btn').click(function() {
+      const $thisButton = $(this); // The current "Rate" or "Remove rating" button
+      const itemId = $thisButton.data('item-id'); // ID of the item being rated
+      const isRated = $thisButton.data('rated'); // Whether the user has already rated this item
+  
+      // Prepare the data to be sent in the AJAX request
+      let requestData = { itemId: itemId };
+      let requestUrl = isRated ? '/remove-rating' : '/submit-rating';
+  
+      if (!isRated) {
+        // If submitting a new rating, get the rating value
+        const rating = $thisButton.siblings('.rating-box').find('.fa-star.active').length;
+        requestData.rating = rating;
+      }
+  
+      // Make the AJAX request
+      $.ajax({
+        type: 'POST',
+        url: requestUrl,
+        data: requestData,
+        success: function(response) {
+          alert(response.message); // Display a success message
+  
+          if (isRated) {
+            // If the rating was removed, reset the stars
+            $thisButton.siblings('.rating-box').find('.fa-star').removeClass('active');
+            $thisButton.text('Rate').data('rated', false); // Update the button
+          } else {
+            // If a rating was submitted, update the button to allow removal
+            $thisButton.text('Remove rating').data('rated', true);
+          }
+        },
+        error: function(xhr, status, error) {
+          if (xhr.status === 401) {
+            // If the user is not logged in, prompt them to log in
+            alert('You must be logged in to rate items.');
+          } else {
+            console.error('Error updating rating:', error);
+            alert('Failed to update rating. Please try again.');
+          }
+        }
+      });
+    });
+  });
+  
+  </script>
 </body>
 
 </html>

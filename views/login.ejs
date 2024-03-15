@@ -37,6 +37,7 @@
                     <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
                     <a href="/forgot_password" class="d-block mt-2" style="text-align: right;">Forgot Password?</a>
                 </div>
+                <input type="hidden" name="redirect" value="<%= redirect %>">
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Login</button>
                     <a href="/signup" class="white-link align-self-center">Create New Account?</a>

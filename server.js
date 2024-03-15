@@ -786,7 +786,7 @@ app.get("/search/item/:itemId", async (req, res) => {
       itemArray[category] = itemList;
     }
 
-    const menu = await Item.find({ hall: item.hall })
+    let menu = await Item.find({ hall: item.hall })
       .populate({
         path: 'reviews.postedBy',
         select: 'firstName'

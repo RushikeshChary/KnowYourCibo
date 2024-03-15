@@ -35,7 +35,10 @@
         <ul>
           <li><a href="/home">Home</a></li>
           <li><a href="/Restaurants">Restaurants</a></li>
-          <li><a href="/profile">Profile</a></li>
+          <% if (isLoggedIn) { %>
+            <li><a href="/profile">Profile</a></li>
+            <!-- <a href="/logout">Logout</a> -->
+          <% }%>
           <li><a href="/Feedback">Feedback</a></li>
         </ul>
       </div>
@@ -44,6 +47,16 @@
         <i class="fa fa-search"></i>
     </a>
 
+    <% if (isLoggedIn) { %>
+     
+      <div class="account">
+        <a href="/logout">Logout</a>
+      </div>
+    <% } else { %>
+      <div class="account">
+        <a href="/login">Login</a>
+      </div>
+    <% } %>
       <!-- <div class="account"><a href="#">my account</a></div> -->
 
     </div>

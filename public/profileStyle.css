@@ -313,7 +313,7 @@ font-family: Monoton;
       margin-top: 20px;
 }
 .content button:hover {
-      background-color: var(--text-color);
+      background-color: #B06161; /*******COLOR-CHANGE*******/
       border: 2px solid var(--text-color);
       color: var(--backgroundcolor);
       font-weight: 600;
@@ -321,7 +321,6 @@ font-family: Monoton;
       padding-right: 15px;
       transition: 0.2s ease-in-out;
 } 
-
 
 
 
@@ -342,6 +341,9 @@ font-family: Monoton;
 
 .container1 {
   padding: 2px 16px;
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Distribute items along the main axis, placing extra space between them */
+  align-items: center; /* Align items vertically */
 }
 
 img {
@@ -387,4 +389,17 @@ img {
 
 .heart-icon.clicked {
   color: black; /* Color when pressed */
+}
+
+.star-icon {
+  font-size: 11px; /* Adjust size as needed */
+  vertical-align: middle; /* Align the star icon vertically */
+  padding: 2px;
+  color: rgb(83, 79, 79);
+}
+
+/* Style for the container */
+.star-container {
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Align items vertically */
 }

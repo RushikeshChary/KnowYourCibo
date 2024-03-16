@@ -307,6 +307,7 @@ app.post("/login", async (req, res) => {
           errorMessage: "Invalid email or password.",
           userFirstName: "",
           isLoggedIn: false,
+          redirect:redirect,
         });
       }
     } else {
@@ -315,6 +316,7 @@ app.post("/login", async (req, res) => {
         errorMessage: "Invalid email or password.",
         userFirstName: "",
         isLoggedIn: false,
+        redirect:redirect,
       });
     }
   } catch (error) {
@@ -323,6 +325,7 @@ app.post("/login", async (req, res) => {
       errorMessage: "An error occurred during login. Please try again.",
       userFirstName: "",
       isLoggedIn: false,
+      redirect:redirect,
     });
   }
 });

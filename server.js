@@ -22,8 +22,11 @@ var otpStore = {}; // Declaration of otpStore
 const Port = process.env.PORT || 3000;
 
 // connect to mongodb & listen for requests
+const dbURI1 =
+  "mongodb+srv://rushi:rushi@cluster.8ailuyg.mongodb.net/Food-items?retryWrites=true&w=majority&appName=Cluster";
+
 mongoose
-  .connect(process.env.MONGODB_URL)
+  .connect(dbURI1)
   .then((result) =>
     app.listen(Port, () => {
       console.log("Database connection established");
@@ -112,10 +115,10 @@ app.get("/home", async (req, res) => {
       console.error("Error fetching user for home page", error);
     }
   }
-
+  const res_list = await Restaurant.find({});
   res.render("home", {
     isLoggedIn,
-    userFirstName,
+    userFirstName, res_list ,
   });
 });
 

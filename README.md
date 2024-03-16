@@ -25,7 +25,7 @@ Know Your Cibo is a web application designed to help users discover and rate dif
 #  Install dependencies:
 
 ```bash
-  pip install -r requirements.txt
+  npm install -r requirements.txt
 ```
 
 
@@ -48,7 +48,7 @@ Then, open a terminal and change into the KnowYourCibo
 Now you can open the webiste on your own system with this command:
 
 ```bash
-  node app.js
+  npm start
 ```
 
 After this navigate to http://localhost:3000 or click the same link that will be shown in the terminal

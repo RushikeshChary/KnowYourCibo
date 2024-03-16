@@ -1,9 +1,10 @@
 {
-  "name": "backendintro",
+  "name": "knowyourcibo",
   "version": "1.0.0",
-  "description": "Introduction to backend",
-  "main": "index.js",
+  "description": "A food rating and review software",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

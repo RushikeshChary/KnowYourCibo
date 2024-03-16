@@ -27,11 +27,11 @@ const app = express();
 
 const Port = process.env.PORT || 3000;
 // connect to mongodb & listen for requests
-const dbURI1 =
-  "mongodb+srv://rushi:rushi@cluster.8ailuyg.mongodb.net/Food-items?retryWrites=true&w=majority&appName=Cluster";
+// const dbURI1 =
+//   "mongodb+srv://rushi:rushi@cluster.8ailuyg.mongodb.net/Food-items?retryWrites=true&w=majority&appName=Cluster";
 
 mongoose
-  .connect(dbURI1)
+  .connect(process.env.MONGODB_URL)
   .then((result) =>
     app.listen(Port, () => {
       console.log("Database connection established");

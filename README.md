@@ -25,7 +25,7 @@ Know Your Cibo is a web application designed to help users discover and rate dif
 #  Install dependencies:
 
 ```bash
-  npm install -r requirements.txt
+  npm install requirements.txt
 ```
 
 

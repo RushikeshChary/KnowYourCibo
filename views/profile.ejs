@@ -112,7 +112,7 @@
             <% if (items.length > 0) { %> <% items.forEach(item => { %>
             <div class="card">
               <div class="img_card">
-                <img src= <%=item.image %> alt="Photo">
+                <img src= "<%=item.image%>" alt="Photo">
                 <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon" data-info= <%=item._id %>></i>
               </div>
               <div class="container1">
@@ -121,8 +121,8 @@
                   <p><%= item.hall %></p> 
                 </div>
                 <div class="star-container">
-                    <h2><b>5</b></h2> // Number 
-                    <span class="fa fa-star star-icon"></span> //Star icon 
+                    <h2><b><%= (item.ratings.reduce((sum, rating) => sum + rating.value, 0) / item.ratings.length).toFixed(1) %></b></h2>
+                    <span class="fa fa-star star-icon"></span> 
                 </div>
               </div>
             </div>

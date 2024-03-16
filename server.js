@@ -477,7 +477,7 @@ app.post("/searchPage", async (req, res) => {
     await Item.find({
       $or: [
         { name: { $regex: regexPattern } },
-        { hall: search },
+        { hall: { $regex: regexPattern } },
         { category: search },
       ],
     })

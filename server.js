@@ -12,24 +12,16 @@ const Item = require("./models/item.js");
 const User = require("./models/user.js");
 const Restaurant = require("./models/restaurant.js");
 const Feedback = require('./models/feedback.js');
-const router = express.Router();
-var otpStore = {}; // Declaration of otpStore
-
-// const userSchema = new mongoose.Schema({
-//   firstName: String,
-//   lastName: String,
-//   email: { type: String, unique: true, required: true },
-//   password: { type: String, required: true },
-// });
-// const User = mongoose.model('User', userSchema);
 
 const app = express();
+const router = express.Router();
+
+
+var otpStore = {}; // Declaration of otpStore
 
 const Port = process.env.PORT || 3000;
-// connect to mongodb & listen for requests
-// const dbURI1 =
-//   "mongodb+srv://rushi:rushi@cluster.8ailuyg.mongodb.net/Food-items?retryWrites=true&w=majority&appName=Cluster";
 
+// connect to mongodb & listen for requests
 mongoose
   .connect(process.env.MONGODB_URL)
   .then((result) =>
@@ -57,11 +49,6 @@ app.use(
   })
 );
 
-// app.use((req, res, next) => {
-//   res.locals.path = req.path;
-//   next();
-// });
-
 app.use((req, res, next) => {
   res.locals.isLoggedIn = req.session.userId ? true : false;
   res.locals.userFirstName = req.session.userFirstName || "";
@@ -79,6 +66,25 @@ function checkLogin(req, res, next) {
   }
 }
 
+function rgbToColorName(rgbString) {
+  // Extracting the RGB values from the string
+  const rgbValues = rgbString.match(/\d+/g).map(Number);
+  const [r, g, b] = rgbValues;
+
+  // Mapping RGB values to color names
+  const colorMap = {
+      '0,0,0': 'black',
+      '255,255,255': 'white',
+      // Add more color mappings as needed
+  };
+
+  // Constructing the key for the color map
+  const key = `${r},${g},${b}`;
+
+  // Returning the corresponding color name, or the RGB string if no match found
+  return colorMap[key] || rgbString;
+}
+
 //mail settings for sending otp.
 let transporter = nodemailer.createTransport({
   service: "gmail",
@@ -88,18 +94,31 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-//Database check to add items to database.
-app.get("/check", (req, res) => {
-  const rest = new Restaurant({
-    Restaurant_name: "Hall 2 Canteene",
-  });
-  rest
-    .save()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => console.error(err));
+//Home page.
+app.get("/", (req, res) => {
+  res.redirect("home");
 });
+
+app.get("/home", async (req, res) => {
+  let userFirstName = "";
+  let isLoggedIn = false;
+
+  if (req.session.userId) {
+    try {
+      const user = await User.findById(req.session.userId);
+      userFirstName = user.firstName;
+      isLoggedIn = true;
+    } catch (error) {
+      console.error("Error fetching user for home page", error);
+    }
+  }
+
+  res.render("home", {
+    isLoggedIn,
+    userFirstName,
+  });
+});
+
 
 //Authentication routing.
 app.get("/signup", (req, res) => {
@@ -121,9 +140,7 @@ app.post("/check-user", async (req, res) => {
     res.status(500).json({ error: "Error checking user existence." });
   }
 });
-// app.get('/login', (req, res) => {
-//   res.render('login', { errorMessage: '' });
-// });
+
 
 app.get("/login", async (req, res) => {
   let redirectUrl = req.headers.referer || '/home';
@@ -330,9 +347,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// app.get("/dashboard", checkLogin, (req, res) => {
-//   res.send("Welcome to your Dashboard!");
-// });
 
 app.get("/logout", (req, res) => {
   
@@ -439,33 +453,6 @@ app.post("/reset-password", async (req, res) => {
   }
 });
 
-// forgot password ends here.
-
-//Genereal routing starts from here.
-app.get("/", (req, res) => {
-  res.redirect("home");
-});
-
-app.get("/home", async (req, res) => {
-  let userFirstName = "";
-  let isLoggedIn = false;
-
-  if (req.session.userId) {
-    try {
-      const user = await User.findById(req.session.userId);
-      userFirstName = user.firstName;
-      isLoggedIn = true;
-    } catch (error) {
-      console.error("Error fetching user for home page", error);
-    }
-  }
-
-  res.render("home", {
-    isLoggedIn,
-    userFirstName,
-  });
-});
-
 app.get("/searchPage", (req, res) => {
   res.render("searchPage", { items: [] });
 });
@@ -533,26 +520,6 @@ app.post("/dislike-item", async (req, res) => {
     console.error(err);
   }
 });
-
-
-function rgbToColorName(rgbString) {
-  // Extracting the RGB values from the string
-  const rgbValues = rgbString.match(/\d+/g).map(Number);
-  const [r, g, b] = rgbValues;
-
-  // Mapping RGB values to color names
-  const colorMap = {
-      '0,0,0': 'black',
-      '255,255,255': 'white',
-      // Add more color mappings as needed
-  };
-
-  // Constructing the key for the color map
-  const key = `${r},${g},${b}`;
-
-  // Returning the corresponding color name, or the RGB string if no match found
-  return colorMap[key] || rgbString;
-}
 
 
 //Liking an item from hall page.

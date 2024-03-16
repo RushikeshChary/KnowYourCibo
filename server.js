@@ -335,12 +335,12 @@ app.post("/login", async (req, res) => {
 // });
 
 app.get("/logout", (req, res) => {
-  let redirectUrl = req.headers.referer || '/home';
+  
   req.session.destroy(function (err) {
     if (err) {
       console.error("Session destruction error", err);
     }
-    res.redirect(redirectUrl);
+    res.redirect("home");
   });
 });
 //Authentication ends here.

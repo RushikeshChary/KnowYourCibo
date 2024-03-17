@@ -452,30 +452,35 @@ app.post("/reset-password", async (req, res) => {
     res.status(500).json({ error: "Error resetting password" });
   }
 });
-
+// GET request handler for searchPage
 app.get("/searchPage", (req, res) => {
-  res.render("searchPage", { items: [] });
+  const referrer = req.headers.referer || '/'; // Default to home if no referrer
+  res.render("searchPage", { items: [], referrer: referrer });
 });
 
+// POST request handler for searchPage
 app.post("/searchPage", async (req, res) => {
   const search = req.body.search;
+  const referrer = req.body.referrer || '/'; // Get referrer from form input or default to home
+
   if (search.length > 0) {
     var regexPattern = new RegExp(search, "i");
-    await Item.find({
-      $or: [
-        { name: { $regex: regexPattern } },
-        { hall: { $regex: regexPattern } },
-        { category: search },
-      ],
-    })
-      .then((result) => {
-        res.render("searchPage", { items: result });
-      })
-      .catch((err) => console.error(err));
+    try {
+      const items = await Item.find({
+        $or: [
+          { name: { $regex: regexPattern } },
+          { hall: { $regex: regexPattern } },
+          { category: search },
+        ],
+      });
+      res.render("searchPage", { items: items, referrer: referrer });
+    } catch (err) {
+      console.error(err);
+      res.render("searchPage", { items: [], referrer: referrer });
+    }
   } else {
-    res.render("searchPage", { items: [] });
+    res.render("searchPage", { items: [], referrer: referrer });
   }
-  console.log(req.body);
 });
 
 // Profile page route

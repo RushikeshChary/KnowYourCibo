@@ -112,10 +112,10 @@ app.get("/home", async (req, res) => {
       console.error("Error fetching user for home page", error);
     }
   }
-
+  const res_list = await Restaurant.find({});
   res.render("home", {
     isLoggedIn,
-    userFirstName,
+    userFirstName, res_list ,
   });
 });
 

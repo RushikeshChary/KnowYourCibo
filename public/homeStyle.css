@@ -89,7 +89,7 @@ a {
   transition: 0.2s ease-in;
 }
 
-/* Starting loader page animations */
+/* Starting loader page animations
 
 .temp {
       position: absolute;
@@ -250,9 +250,10 @@ a {
 
 .loader ul li:nth-child(12) {
       animation-delay: 1.7s;
-}
+} */
 
 /* loader page transition ends */
+
 
 /* bottom footer*/
 .bottom-bar {

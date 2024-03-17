@@ -95,8 +95,28 @@ let transporter = nodemailer.createTransport({
 });
 
 //Home page.
-app.get("/", (req, res) => {
-  res.redirect("home");
+app.get("/", async (req, res) => {
+  let userFirstName = "";
+  let isLoggedIn = false;
+
+  if (req.session.userId) {
+    try {
+      const user = await User.findById(req.session.userId);
+      userFirstName = user.firstName;
+      isLoggedIn = true;
+    } catch (error) {
+      console.error("Error fetching user for home page", error);
+    }
+  }
+
+  const res_list = await Restaurant.find({});
+
+  res.render("home", {
+    isLoggedIn,
+    userFirstName,
+    res_list,
+    enableAnimations: true // Set true to enable animations for the home route
+  });
 });
 
 app.get("/home", async (req, res) => {
@@ -112,13 +132,16 @@ app.get("/home", async (req, res) => {
       console.error("Error fetching user for home page", error);
     }
   }
+
   const res_list = await Restaurant.find({});
+
   res.render("home", {
     isLoggedIn,
-    userFirstName, res_list ,
+    userFirstName,
+    res_list,
+    enableAnimations: false // Set false to disable animations for the /home route
   });
 });
-
 
 //Authentication routing.
 app.get("/signup", (req, res) => {

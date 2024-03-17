@@ -43,7 +43,7 @@
   <!-- body -->
 
   <div class="cross">
-    <a id="goBackButton" href="#">
+    <a id="goBackButton" href="<%= referrer %>">
     <span class="close">&times;</span>
     </a>
   </div>
@@ -52,6 +52,7 @@
   <div class="search-container">
   <form action="/searchPage" method="POST">
     <input type="text" placeholder="Search..." name="search" >
+    <input type="hidden" name="referrer" value="<%= referrer %>">
     <button type="submit"><i class="fa fa-search"></i></button>
   </form>
   </div>
@@ -124,9 +125,10 @@
   // // Set the href attribute to the previous page URL
   // previousPageLink.setAttribute('href', previousPageUrl);
 // });
-  document.getElementById('goBackButton').addEventListener('click', function() {
-    window.history.back();
-  });
+ // document.getElementById('goBackButton').addEventListener('click', function() {
+  //  event.preventDefault();
+   // window.history.back();
+  //});
 
   </script>
 

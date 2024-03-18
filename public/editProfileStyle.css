@@ -1,9 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 
 :root {
-  --backgroundcolor: #F5EEE6;
-  --text-color: #FEECE2;
-  --hover-color: black;
+  /* --backgroundcolor: #F5EEE6;
+  --text-color: black;
+  --hover-color: black; */
+  --backgroundcolor: #FFF7F1;
+  --text-color: #5F0F40;
+  --hover-color: #A25772;
 }
 
 * {
@@ -24,7 +27,7 @@ body {
   background-color: var(--backgroundcolor);
   color: var(--text-color);
   background-size: cover;
-  background-image: url("EditprofileImages/back.jpeg");
+  /* background-image: url("EditprofileImages/back.jpeg"); */
 }
 
 main{

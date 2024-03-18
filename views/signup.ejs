@@ -83,7 +83,7 @@
                 <input type="password" class="form-control" id="confirmpassword" name="confirm" required />
               </div>
               <div class="mb-3 d-flex" id="submitSection" style="display: none">
-                <button type="submit" class="btn btn-success">SignUp</button>
+                <button type="submit" id="signupbutton" class="btn btn-success" style="display: none">SignUp</button>
                 <p class="form-label ms-auto mt-2">
                   Already have an Account?
                   <a id="logind" href="/login">Login</a>
@@ -205,6 +205,24 @@
           alert("Error setting password, please try again.");
         }
       };
+    </script>
+    <script>
+      function toggleSignUpButton() {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmpassword').value;
+    const signUpButton = document.getElementById('signupbutton');
+
+    if (password && confirmPassword && password === confirmPassword) {
+      signUpButton.style.display = 'block';
+    } else {
+      signUpButton.style.display = 'none';
+    }
+  }
+
+  // Add event listeners to the password and confirm password fields
+  document.getElementById('password').addEventListener('input', toggleSignUpButton);
+  document.getElementById('confirmpassword').addEventListener('input', toggleSignUpButton);
+
     </script>
   </body>
 </html>

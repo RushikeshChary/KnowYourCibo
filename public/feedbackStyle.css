@@ -222,7 +222,7 @@ transition: 0.2s ease-in;
   text-align: center;
   margin-top: 5px;
   font-size: 30px;
-  color: #D37676;
+  color: var(--text-color);
   font-weight: 600;
   padding-bottom: 10px;
 }

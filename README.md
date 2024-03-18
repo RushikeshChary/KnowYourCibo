@@ -23,18 +23,13 @@ Know Your Cibo is a web application designed to help users discover and rate dif
 - **JavaScript:** Programming language for adding interactivity and dynamic behavior to web pages.
 
 ## Website link:
-```bash
-  https://knowyourcibo.onrender.com/
-```
 
-#  Install dependencies:
-
-```bash
-  npm install  requirements.txt
-```
+The website link is: https://knowyourcibo.onrender.com/
 
 
-## Running the code
+
+
+# Running the code
 
 For getting this project setup, you can clone the repository to create a local copy on your system
 
@@ -49,11 +44,17 @@ Then, open a terminal and change into the KnowYourCibo
   cd KnowYourCibo
 
 ```
+##  Install dependencies:
+
+Install the required dependencies , you can find them in requirements.txt file
+```bash
+  npm install
+```
 
 Now you can open the webiste on your own system with this command:
 
 ```bash
-  node app.js
+  npm start
 ```
 
 After this navigate to http://localhost:3000 or click the same link that will be shown in the terminal

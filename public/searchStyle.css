@@ -126,7 +126,7 @@ a {
 
 .social-media ul li {
       list-style: none;
-      color: #944E63;
+      color: var(--text-color);
       margin-top: 20px;
       margin-left:  20px;
       font-size: 25px;
@@ -147,7 +147,7 @@ a {
       transform: translateY(-50%);
       right: -4em;
       transform: rotate(90deg);
-      color: #944E63;
+      color: var(--text-color);
       letter-spacing: 4px;
       font-size: 17px;
       font-weight: 700;

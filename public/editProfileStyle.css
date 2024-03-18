@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 
 :root {
-  --backgroundcolor: #F5EEE6;
-  --text-color: #FEECE2;
+  --backgroundcolor: #FFEFE8;
+  --text-color: #31363F;
   --hover-color: black;
 }
 
@@ -155,7 +155,7 @@ a {
 .logo {
   font-size: 40px;
   color: var(--text-color);
-  font-family: Monoton;
+  font-family: "Black Ops One", system-ui;
 }
 
 /* social media */

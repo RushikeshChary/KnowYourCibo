@@ -43,7 +43,7 @@
             <li><a href="/profile">Profile</a></li>
             <!-- <a href="/logout">Logout</a> -->
           <% }%>
-          
+
           <li><a href="/feedback">Feedback</a></li>
           <!-- <li><a href="/">Contact us</a></li> -->
         </ul>
@@ -124,21 +124,21 @@
               </div>
             </div>
           <% } %>
-          
+
           <form id="review-form-<%= item._id %>" onsubmit="event.preventDefault(); addReview('<%= item._id %>');">
             <div class="review-input-container">
               <input id="review-input-<%= item._id %>" class="review-input" type="text" placeholder="Write a review..." name="review">
               <button type="submit" class="review-button">+</button>
             </div>
           </form>
-          
+
         </div>
       <% }); %> <!-- Closing forEach for items -->
       <% } else { %>
         <p>There are no items in this section of the restaurant.</p>
       <% } %>
 
-      
+
       <!-- <h3>Ratings</h3> -->
 
       <!-- here we display ratings -->
@@ -152,9 +152,9 @@
     <h1>Categories</h1>
   <section class="category">
     <ul>
-      <li onclick="showSection('section1')"><a data-section="section1">Menu</a></li>
+      <li onclick="showSection('section1')" class="category-list"><a data-section="section1">Menu</a></li>
       <% for (let i = 1; i <= restaurant.category.length; i++) { %>
-        <li onclick="showSection('section<%=i+1%>')"><a data-section="section<%=i+1%>"> <%= restaurant.category[i-1]  %> </a></li>
+        <li onclick="showSection('section<%=i+1%>')" class="category-list"><a data-section="section<%=i+1%>"> <%= restaurant.category[i-1]  %> </a></li>
         <% } %>
 
     </ul>
@@ -461,9 +461,9 @@ window.location.reload();
 .catch(error => {
   console.error('Error:', error);
 });
-} 
+}
 </script>
-  
+
 
 <% if (scrollToItemId) { %>
   <script>
@@ -496,17 +496,17 @@ window.location.reload();
       const $thisButton = $(this); // The current "Rate" or "Remove rating" button
       const itemId = $thisButton.data('item-id'); // ID of the item being rated
       const isRated = $thisButton.data('rated'); // Whether the user has already rated this item
-  
+
       // Prepare the data to be sent in the AJAX request
       let requestData = { itemId: itemId };
       let requestUrl = isRated ? '/remove-rating' : '/submit-rating';
-  
+
       if (!isRated) {
         // If submitting a new rating, get the rating value
         const rating = $thisButton.siblings('.rating-box').find('.fa-star.active').length;
         requestData.rating = rating;
       }
-  
+
       // Make the AJAX request
       $.ajax({
         type: 'POST',
@@ -514,7 +514,7 @@ window.location.reload();
         data: requestData,
         success: function(response) {
           alert(response.message); // Display a success message
-  
+
           if (isRated) {
             // If the rating was removed, reset the stars
             $thisButton.siblings('.rating-box').find('.fa-star').removeClass('active');

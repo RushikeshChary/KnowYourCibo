@@ -13,7 +13,7 @@ body {
     background-color: #fff;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
     width: 76vw;
-    height: 80vh;
+    min-height: 70vh;
     display: flex;
 }
 
@@ -65,8 +65,8 @@ button:hover {
 
 .left{
   width: 36vw;
-  height: 80vh;
-  background-image: url("forgotimages/forgot.jpeg");
+  min-height: 70vh;
+  background-image: url("b1.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -74,6 +74,11 @@ button:hover {
 
 .right{
   width: 40vw;
-  height: 80vh;
+  min-height: 70vh;
   padding: 25px;
+}
+
+.btn{
+  width: auto;
+  height: 6vh;
 }

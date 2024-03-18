@@ -156,11 +156,16 @@ app.post("/check-user", async (req, res) => {
 
 
 app.get("/login", async (req, res) => {
-  let redirectUrl = req.headers.referer || '/home';
-  if(redirectUrl=='/forgot_password' || '/signup'){
-    redirectUrl='/home';
+  let defaultRedirectUrl = '/home'; // Default redirect URL
+  let redirectUrl = req.headers.referer || defaultRedirectUrl;
+
+  // Check if the referrer is the "Forgot Password" page
+  // Assuming "/forgot_password" is the path for your "Forgot Password" page
+  if (redirectUrl.includes('/forgot_password')) {
+    redirectUrl = defaultRedirectUrl; // Set to default if coming from "Forgot Password"
   }
- 
+
+  console.log(redirectUrl);
   try {
     if (req.session.userId) {
       const user = await User.findById(req.session.userId);

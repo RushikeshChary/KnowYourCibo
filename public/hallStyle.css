@@ -81,6 +81,10 @@
   cursor: pointer;
 }
 
+.category-list:hover{
+  cursor: pointer;
+}
+
 .right-container h1{
   font-family: Allura;
   font-size: 40px;

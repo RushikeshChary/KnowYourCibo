@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 
 :root {
-  --backgroundcolor: #FFF7F1;
-  --text-color: #D37676;
-  --hover-color: #776B5D;
+ --backgroundcolor: #FFEFE8;
+  --text-color: #31363F;
+  --hover-color: black;
 }
 
 * {
@@ -126,7 +126,7 @@ a {
 
 .social-media ul li {
       list-style: none;
-      color: #944E63;
+      color: var(--text-color);
       margin-top: 20px;
       margin-left:  20px;
       font-size: 25px;
@@ -147,7 +147,7 @@ a {
       transform: translateY(-50%);
       right: -4em;
       transform: rotate(90deg);
-      color: #944E63;
+      color: var(--text-color);
       letter-spacing: 4px;
       font-size: 17px;
       font-weight: 700;

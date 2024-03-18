@@ -164,7 +164,9 @@ app.get("/login", async (req, res) => {
   if (redirectUrl.includes('/forgot_password')) {
     redirectUrl = defaultRedirectUrl; // Set to default if coming from "Forgot Password"
   }
-
+ if (redirectUrl.includes('/signup')) {
+    redirectUrl = defaultRedirectUrl; // Set to default if coming from "Forgot Password"
+  }
   console.log(redirectUrl);
   try {
     if (req.session.userId) {

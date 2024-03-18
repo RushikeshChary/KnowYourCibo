@@ -591,8 +591,27 @@ app.post('/like-item', async (req, res) => {
 
 
 //edit profile page route
-app.get("/editProfile", checkLogin, (req, res) => {
-  res.render("editProfile");
+app.get("/editProfile", checkLogin, async (req, res) => {
+  const userId = req.session.userId;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      res.redirect('/login');
+      return;
+    }
+
+    res.render("editProfile", {
+      userFirstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email, // Assuming you have an email field in your User model
+      // Do not send password for security reasons
+    });
+  } catch (err) {
+    console.error(err);
+    res.redirect('/login');
+  }
 });
 
 app.get("/searchpage", (req, res) => {

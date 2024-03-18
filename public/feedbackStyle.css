@@ -25,6 +25,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     font-size: 14px;
+    justify-content: center;
 }
 
 form {
@@ -36,8 +37,8 @@ form {
     border-radius: 10px;
     margin-left: 56vw;
     margin-top: 30px;
-    background-color: whitesmoke;
-    border: 2px solid #D37676;
+    background-color: white;
+    border: 2px solid var(--text-color);
 }
 
 label {

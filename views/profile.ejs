@@ -299,6 +299,18 @@
         });
       });
     </script>
-
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const currentPath = window.location.pathname;
+      const navLinks = document.querySelectorAll('.menu-links a');
+      navLinks.forEach(link => {
+          if (link.getAttribute('href') === currentPath) {
+              link.addEventListener('click', function(event) {
+                  event.preventDefault();
+              });
+          }
+      });
+  });
+</script>
   </body>
 </html>

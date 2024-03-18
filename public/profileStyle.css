@@ -368,7 +368,7 @@ img {
   margin: 5px;
   justify-content: center;
   align-items: center;
-  min-width: 21px;
+  width: 97%;
   height: 28vh;
   background-color: #B06161;
   overflow: hidden;

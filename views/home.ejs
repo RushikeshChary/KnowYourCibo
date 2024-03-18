@@ -28,6 +28,10 @@
 
 <body>
 
+   <% if (enableAnimations) { %>
+    <link rel="stylesheet" href="home_anim.css">
+
+  
   <div class="temp"></div>
   <div class="first-block"></div>
   <div class="second-block"></div>
@@ -46,7 +50,8 @@
               <li>B</li>
               <li>O</li>
         </ul>
-  </div>
+  </div> 
+  <% } %>
 
 <section class="section" id="section0">
 
@@ -63,7 +68,7 @@
             <div class="menu-links">
               <ul>
                 <li><a href="/home">Home</a></li>
-                <li><a href="/Restaurants">Restaurants</a></li>
+           <li><a href="/home#restaurant-section">Restaurants</a></li>
                 <% if (isLoggedIn) { %>
                   <li><a href="/profile">Profile</a></li>
                   <!-- <a href="/logout">Logout</a> -->
@@ -118,7 +123,8 @@
 
     <h1 class="title-r"> RESTAURANTS </h1>
 
-    <section class="restaurant-section">
+   <section class="section" id="restaurant-section">
+
 
         <% if (res_list.length > 0) { %> <% res_list.forEach(restaurant => { %>
             <a href="/Restaurants/<%= restaurant._id %>">
@@ -181,76 +187,71 @@
 
 
 <!-- transitions -->
-  <script>
+ <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const baseDelay = <%= JSON.stringify(enableAnimations ? 5 : 0.5) %>;
 
-    TweenMax.from(".heading", 1, {
-      delay: 5,
-      opacity: 0,
-      x: -20,
-      ease: Expo.easeInOut
-    })
-
-    TweenMax.staggerFrom(".menu-links ul li", 1, {
-      delay: 5.2,
-      opacity: 0,
-      x: -20,
-      ease: Power3.easeInOut
-    }, 0.08)
-
-    TweenMax.from(".search", 1, {
-      delay: 5.5,
-      opacity: 0,
-      x: -20,
-      ease: Expo.easeInOut
-    })
-
-    TweenMax.from(".account", 1, {
-      delay: 5.6,
-      opacity: 0,
-      x: -20,
-      ease: Expo.easeInOut
-    })
-
-    TweenMax.staggerFrom(".social-media ul li", 1, {
-    delay: 5.7,
-    opacity: 0,
-    y: 20,
-    ease: Power3.easeInOut
-  }, 0.08);
-
-    TweenMax.staggerFrom(".side-strip", 1, {
-    delay: 5.8,
-    opacity: 0,
-    y: 20,
-    ease: Power3.easeInOut
-  }, 0.08);
-
-    TweenMax.from(".scrolling", 1, {
-    delay: 5.75,
+  TweenMax.from(".heading", 1, {
+    delay: baseDelay,
     opacity: 0,
     x: -20,
     ease: Expo.easeInOut
-  })
-  
-  document.addEventListener("DOMContentLoaded", function() {
-  // Get the link that opens the restaurants section
-  var scrollToRestaurants = document.querySelector('a[href="/Restaurants"]');
-
-  // Listen for a click event on the link
-  scrollToRestaurants.addEventListener('click', function(event) {
-    event.preventDefault(); // Prevent the default link behavior
-
-    // Get the section you want to scroll to
-    var restaurantSection = document.querySelector('.restaurant-section');
-
-    // Use the `scrollIntoView` method to smoothly scroll to the section
-    restaurantSection.scrollIntoView({
-      behavior: 'smooth'
-    });
   });
+
+  TweenMax.staggerFrom(".menu-links ul li", 1, {
+    delay: baseDelay + 0.2,
+    opacity: 0,
+    x: -20,
+    ease: Power3.easeInOut
+  }, 0.08);
+
+  TweenMax.from(".search", 1, {
+    delay: baseDelay + 0.5,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+  });
+
+  TweenMax.from(".account", 1, {
+    delay: baseDelay + 0.6,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+  });
+
+  TweenMax.staggerFrom(".social-media ul li", 1, {
+  delay: baseDelay + 0.7,
+  opacity: 0,
+  y: 20,
+  ease: Power3.easeInOut
+}, 0.08);
+
+  TweenMax.staggerFrom(".side-strip", 1, {
+  delay: baseDelay + 0.8,
+  opacity: 0,
+  y: 20,
+  ease: Power3.easeInOut
+}, 0.08);
+
+  TweenMax.from(".scrolling", 1, {
+  delay: baseDelay + 0.75,
+  opacity: 0,
+  x: -20,
+  ease: Expo.easeInOut
+});
 });
 
-  </script>
+document.addEventListener('DOMContentLoaded', () => {
+if (window.location.hash) {
+  const id = window.location.hash.replace('#', '');
+  const element = document.getElementById(id);
+  if (element) {
+    // Scroll to the element with smooth behavior
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+});
+</script>
 
 </body>
 

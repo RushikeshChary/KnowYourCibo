@@ -24,7 +24,7 @@ body {
   background-color: var(--backgroundcolor);
   color: var(--text-color);
   background-size: cover;
-  background-image: url("EditprofileImages/back.jpeg");
+  /* background-image: url("EditprofileImages/back.jpeg"); */
 }
 
 main{

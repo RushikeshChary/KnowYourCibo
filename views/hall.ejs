@@ -38,7 +38,7 @@
       <div class="menu-links">
         <ul>
           <li><a href="/home">Home</a></li>
-          <li><a href="/Restaurants">Restaurants</a></li>
+       <li><a href="/home#restaurant-section">Restaurants</a></li>
           <% if (isLoggedIn) { %>
             <li><a href="/profile">Profile</a></li>
             <!-- <a href="/logout">Logout</a> -->
@@ -80,9 +80,9 @@
               <i class="fa fa-map-marker" aria-hidden="true"></i>
             </a>
           </li>
-          <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
+          <!-- <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
           <li><i class="fa fa-instagram" aria-hidden="true"></i></li>
-          <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
+          <li><i class="fa fa-twitter" aria-hidden="true"></i></li> -->
         </ul>
   </div>
 
@@ -253,9 +253,6 @@
                         No ratings available
                       <% } %>
                     </div>
-                    <button class="submit-rating-btn" data-item-id="<%= item._id %>" data-rated="<%= item.userHasRated %>">
-                      <%= item.userHasRated ? 'Remove rating' : 'Rate' %>
-                    </button>
                   </div>
                 </div>
               </div>

@@ -3,16 +3,16 @@
 } */
 
 .tile {
-  height: 28vh;
+  height: auto;
   padding: 10px;
   background-color: white;
   margin: 10px;
-  width: 30.5vw;
+  width: auto;
 }
 
 .tile img{
-  height:25vh;
-  width: 26vh;
+  height:27vh;
+  width: 28vh;
 }
 
 .container{
@@ -25,13 +25,13 @@
 }
 
 .left-container{
-  width: 23vw;
+  width: 27vw;
   border-right: 2px solid var(--text-color);
   align-self: center;
 }
 
 .right-container{
-  width: 65vw;
+  width: 61vw;
 }
 
 .left-container h1{
@@ -40,11 +40,7 @@
   font-weight: 400;
 }
 
-.left-container h3{
-  font-family: Allura;
-  font-size: 35px;
-  font-weight: 400;
-}
+
 
 .left-container p{
   font-family: Nunito;
@@ -73,14 +69,19 @@
    margin: 6px;
  }
 
-.category ul li :hover{
-  padding: 8px;
-  color: var(--hover-color);
+.category ul li :focus{
+  background-color: var(--text-color);
+  color: var(--backgroundcolor);
   font-size: 20px;
   font-weight: 600;
-  transition: 0.2s ease-in-out;
-  padding-bottom: 2.5px;
-  border-bottom: 1px solid var(--hover-color);
+  padding: 2.5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border: 1px solid var(--hover-color);
+  cursor: pointer;
+}
+
+.category ul li :hover{
   cursor: pointer;
 }
 
@@ -132,9 +133,9 @@
   width: 100px;
   background-color: var(--text-color);
   color: var(--backgroundcolor);
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
+  padding: 9px;
+  font-size: 15px;
+  border-radius: 3px;
   margin-left: 15px;
   border: 2px solid var(--text-color);
 }
@@ -148,25 +149,19 @@
 
 #div1{
   height: 61vh;
-  width: 22vw;
+  width: 25vw;
   background-color: white;
+  padding: 7px;
 }
 
-.review-container{
-  height: 55vh;
-  display: grid;
-  padding: 5.5px;
-  overflow-y: auto;
-  margin-top: 10px;
-}
+
 
 /* change */
 .reviews{
   height: auto;
-  width: 21vw;
-  background-color: grey;
-    margin-bottom: 8px;
-    padding-bottom: 5px;
+  width: 24vw;
+  background-color: var(--backgroundcolor);
+  margin-bottom: 7px;
 }
 
 .review-input-container {
@@ -174,17 +169,17 @@
     align-items: center;
   }
 
-.review-button {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: var(--text-color);
-    color: var(--backgroundcolor);
-    border: none;
-    cursor: pointer;
-    margin-left: 5px;
+  .review-button {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: var(--text-color);
+      color: var(--backgroundcolor);
+      border: none;
+      cursor: pointer;
+      margin-left: 5px;
 
-  }
+    }
 
 .review-input{
   margin-top: 5px;
@@ -193,51 +188,58 @@
   border: 2px solid var(--text-color);
   height: 30px;
   margin-bottom: 5px;
-  width: 18vw;
+  width: 20vw;
 }
 
 
 /* changes below */
-.user-name{
-  height: 40px;
-  background-color: black;
-  font: serif;
-  font-size: 16px;
+
+.review-text{
+  margin-left: 15px;
+}
+
+.user-name h3{
+  height: 32px;
+  margin-left: 15px;
+  font-family: Nunito;
+  font-size: 22px;
+}
+
+.review-line{
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .rating-box {
   position: relative;
   background: #fff;
-  padding: 10px;
+  padding: 5px;
   border-radius: 5px;
   margin: 10px;
-  margin-left: 15px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
-  background-color: grey;
+  margin-top: 0;
 }
 
 .rating-box .stars {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 .stars i {
-  color: #e6e6e6;
+  color: grey;
   font-size: 20px;
   cursor: pointer;
   transition: color 0.2s ease;
 }
 .stars i.active {
   color: #ff9c1a;
-} 
-
+}
 
 .image {
   position: relative;
 }
 
 .heart-icon {
-  color: black; /* Default color */
+  color: grey; /* Default color */
   cursor: pointer;
   size: 100;
   position: absolute;
@@ -277,16 +279,16 @@
   transform: scale(1.05); /* Slightly increase size */
 }
 .ratings-and-button-container {
-  display: flex; 
-  align-items: center; 
-}
-
-.rating-box {
-  margin-right: 10px; /* Add some space between the rating box and the rate button */
+  display: flex;
+  align-items: center;
 }
 
 .submit-rating-btn {
   padding: 8px 16px; /* Adjust padding as needed */
 }
 
-
+.overall-rating{
+  font-size: 14px;
+  margin-top: 7px;
+  margin-left: 10px;
+}

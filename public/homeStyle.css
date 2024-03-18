@@ -89,13 +89,13 @@ a {
   transition: 0.2s ease-in;
 }
 
-/* Starting loader page animations */
+/* Starting loader page animations
 
 .temp {
       position: absolute;
       width: 100%;
       height: 100vh;
-      background: url(temp.gif) no-repeat 50% 50%;
+      background: url(homeImages/temp.gif) no-repeat 50% 50%;
       background-size: cover;
       animation: fadeOut 4s linear forwards;
       opacity: 1;
@@ -250,9 +250,10 @@ a {
 
 .loader ul li:nth-child(12) {
       animation-delay: 1.7s;
-}
+} */
 
 /* loader page transition ends */
+
 
 /* bottom footer*/
 .bottom-bar {

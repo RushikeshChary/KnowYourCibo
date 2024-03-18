@@ -66,23 +66,13 @@ function checkLogin(req, res, next) {
   }
 }
 
-function rgbToColorName(rgbString) {
-  // Extracting the RGB values from the string
+function rgbStringToColorName(rgbString) {
   const rgbValues = rgbString.match(/\d+/g).map(Number);
-  const [r, g, b] = rgbValues;
-
-  // Mapping RGB values to color names
-  const colorMap = {
-      '0,0,0': 'black',
-      '255,255,255': 'white',
-      // Add more color mappings as needed
-  };
-
-  // Constructing the key for the color map
-  const key = `${r},${g},${b}`;
-
-  // Returning the corresponding color name, or the RGB string if no match found
-  return colorMap[key] || rgbString;
+  if (rgbValues[0] === 128 && rgbValues[1] === 128 && rgbValues[2] === 128) {
+      return 'grey';
+  } else {
+      return 'unknown'; // Or handle other cases accordingly
+  }
 }
 
 //mail settings for sending otp.
@@ -95,8 +85,28 @@ let transporter = nodemailer.createTransport({
 });
 
 //Home page.
-app.get("/", (req, res) => {
-  res.redirect("home");
+app.get("/", async (req, res) => {
+  let userFirstName = "";
+  let isLoggedIn = false;
+
+  if (req.session.userId) {
+    try {
+      const user = await User.findById(req.session.userId);
+      userFirstName = user.firstName;
+      isLoggedIn = true;
+    } catch (error) {
+      console.error("Error fetching user for home page", error);
+    }
+  }
+
+  const res_list = await Restaurant.find({});
+
+  res.render("home", {
+    isLoggedIn,
+    userFirstName,
+    res_list,
+    enableAnimations: true // Set true to enable animations for the home route
+  });
 });
 
 app.get("/home", async (req, res) => {
@@ -112,13 +122,16 @@ app.get("/home", async (req, res) => {
       console.error("Error fetching user for home page", error);
     }
   }
+
   const res_list = await Restaurant.find({});
+
   res.render("home", {
     isLoggedIn,
-    userFirstName, res_list ,
+    userFirstName,
+    res_list,
+    enableAnimations: false // Set false to disable animations for the /home route
   });
 });
-
 
 //Authentication routing.
 app.get("/signup", (req, res) => {
@@ -531,21 +544,21 @@ app.post("/dislike-item", async (req, res) => {
 app.post('/like-item', async (req, res) => {
   const userId = req.session.userId;
   const { item_id , color} = req.body;
-  const stringColor = rgbToColorName(color);
+  const stringColor = rgbStringToColorName(color)
   if(userId)
   {
     try {
       let newArray = {};
       const user = await User.findById(userId);
-      if(stringColor === 'black')
+      if(stringColor === 'grey')
       {
         newArray = [...user.fav_items, item_id];
-        console.log('added to favorite items');
+        // console.log('added to favorite items');
       }
       else
       {
         newArray = user.fav_items.filter(itemId => itemId !== item_id);
-        console.log('removed from favorite items');
+        // console.log('removed from favorite items');
 
       }
       const updatedDetails = {

@@ -654,12 +654,29 @@ app.get("/Feedback", (req, res) => {
 
 app.post('/submit-feedback', async (req, res) => {
   try {
-      const newFeedback = new Feedback(req.body);
-      await newFeedback.save();
-      res.json({ message: 'Feedback submitted successfully.' });
+    // Destructure the fields from req.body
+    const { name, email, feedbackDate, rating, comments } = req.body;
+    // Compose the email body
+    const emailBody = `
+      Feedback received from: ${name}
+      Email: ${email}
+      Date: ${feedbackDate}
+      Rating: ${rating}
+      Comments: ${comments}
+    `;
+    // Send the feedback as an email
+    await transporter.sendMail({
+      from: process.env.GMAIL_USER, // Sender address
+      to: 'knowyourcibo@gmail.com', // Replace with your website's email address
+      subject: "New Feedback Submission", // Subject line
+      text: emailBody, // Email body with the feedback
+    });
+    res.redirect('/home');
+    // res.json({ message: 'Feedback submitted successfully and emailed.' });
+  
   } catch (error) {
-      console.error('Error submitting feedback:', error);
-      res.status(500).json({ message: 'Error submitting feedback.' });
+    console.error('Error sending feedback email:', error);
+     res.status(500).json({ message: 'Error submitting feedback.' });
   }
 });
 

@@ -81,10 +81,6 @@
   cursor: pointer;
 }
 
-.category ul li :hover{
-  cursor: pointer;
-}
-
 .right-container h1{
   font-family: Allura;
   font-size: 40px;
@@ -147,7 +143,7 @@
 
 }
 
-#div1{
+.review-container{
   height: 61vh;
   width: 25vw;
   background-color: white;
@@ -196,6 +192,10 @@
 
 .review-text{
   margin-left: 15px;
+}
+
+.review-text p{
+  font-size: 16px;
 }
 
 .user-name h3{

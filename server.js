@@ -157,7 +157,10 @@ app.post("/check-user", async (req, res) => {
 
 app.get("/login", async (req, res) => {
   let redirectUrl = req.headers.referer || '/home';
-  console.log(redirectUrl);
+  if(redirectUrl=='/forgot_password' || '/signup'){
+    redirectUrl='/home';
+  }
+ 
   try {
     if (req.session.userId) {
       const user = await User.findById(req.session.userId);

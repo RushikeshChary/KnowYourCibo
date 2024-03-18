@@ -22,10 +22,15 @@ Know Your Cibo is a web application designed to help users discover and rate dif
 - **CSS:** Stylesheet language for designing the layout and appearance of web pages.
 - **JavaScript:** Programming language for adding interactivity and dynamic behavior to web pages.
 
+## Website link:
+```bash
+  https://knowyourcibo.onrender.com/
+```
+
 #  Install dependencies:
 
 ```bash
-  npm install requirements.txt
+  pip install -r requirements.txt
 ```
 
 
@@ -48,7 +53,7 @@ Then, open a terminal and change into the KnowYourCibo
 Now you can open the webiste on your own system with this command:
 
 ```bash
-  npm start
+  node app.js
 ```
 
 After this navigate to http://localhost:3000 or click the same link that will be shown in the terminal

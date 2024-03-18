@@ -84,7 +84,7 @@ a{
 
 .left{
   min-height: 590px;
-  width: 50vw;
+  width: 46vw;
   background-color: white;
   padding-left: 2.5vw;
   scroll-behavior: smooth;
@@ -95,7 +95,7 @@ a{
 }
 
 .right{
-  width: 35vw;
+  width: 39vw;
   min-height:590px;
   background-image: url("signupimages/signup.jpeg");
   background-repeat: no-repeat;

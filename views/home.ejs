@@ -85,7 +85,7 @@
       
              <!-- <div class="account"> -->
               <% if (isLoggedIn) { %>
-                  <span>Hello, <%= userFirstName %> </span>
+                  <span class= "username">Hello, <%= userFirstName %> </span>
                   <div class="account">
                     <a href="/logout">Logout</a>
                   </div>
@@ -217,6 +217,14 @@
     x: -20,
     ease: Expo.easeInOut
   });
+
+TweenMax.from(".username", 1, {
+    delay: baseDelay + 0.6,
+    opacity: 0,
+    x: -20,
+    ease: Expo.easeInOut
+  });
+
 
   TweenMax.staggerFrom(".social-media ul li", 1, {
   delay: baseDelay + 0.7,

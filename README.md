@@ -30,7 +30,7 @@ Know Your Cibo is a web application designed to help users discover and rate dif
 #  Install dependencies:
 
 ```bash
-  pip install -r requirements.txt
+  npm install  requirements.txt
 ```
 
 

@@ -702,10 +702,7 @@ app.post('/submit-feedback', async (req, res) => {
 });
 
 
-app.get("/Restaurants", async (req, res) => {
-  const res_list = await Restaurant.find({});
-  res.render("Restaurants", { res_list });
-});
+
 
 app.get("/Restaurants/:restaurantId", async (req, res) => {
   let userFirstName = "";

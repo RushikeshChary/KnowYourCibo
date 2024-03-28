@@ -20,23 +20,22 @@ window.onload = function(){
     }
 }
 
-<!--=============== SLIDE SHOW ===============-->
+let slideIndex = 0;
+showSlides();
 
-var img = document.getElementById('img');
-
-var slides=['homeImages/b2.jpeg','homeImages/b3.jpeg','homeImages/b4.jpeg','homeImages/b5.jpeg','homeImages/b6.jpeg','homeImages/b1.jpeg'];
-
-var Start=0;
-
-function slider(){
-    if(Start<slides.length){
-        Start=Start+1;
-    }
-    else{
-        Start=1;
-    }
-    console.log(img);
-    img.innerHTML = "<img src="+slides[Start-1]+">";
-
+function showSlides() {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}    
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active";
+  setTimeout(showSlides, 2000); 
 }
-setInterval(slider,2000);

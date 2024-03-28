@@ -126,18 +126,18 @@ a{
   padding-left: 40px;
 }
 .message-box {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%; /* Full width */
-  max-width: 400px; /* Maximum box width */
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  background-color: white;
-  text-align: center;
-  z-index: 1000; /* Ensure it sits on top of other content */
+  display: none; 
+  position: fixed;
+  top: 5px; 
+  right: 5px;
+  z-index: 1050;
+  background: white; 
+  color: black; 
+  border: 1px solid #ccc; 
+  padding: 10px 20px; 
+  border-radius: 5px; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+  max-width: 300px; 
 }
 
 .message-box p {

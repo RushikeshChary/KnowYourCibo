@@ -82,3 +82,51 @@ button:hover {
   width: auto;
   height: 6vh;
 }
+.message-box {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%; /* Full width */
+    max-width: 400px; /* Maximum box width */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: white;
+    text-align: center;
+    z-index: 1000; /* Ensure it sits on top of other content */
+  }
+  
+  .message-box p {
+    margin: 0 0 20px;
+    font-size: 18px; font-family: 700;
+  }
+  
+  .message-box button {
+    padding: 10px 20px;
+    font-size: 16px; background-color: var(—backgroundcolor);
+  }
+  .message-box1 {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%; /* Full width */
+    max-width: 400px; /* Maximum box width */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: white;
+    text-align: center;
+    z-index: 1000; /* Ensure it sits on top of other content */
+  }
+  
+  .message-box1 p {
+    margin: 0 0 20px;
+    font-size: 18px; font-family: 700;
+  }
+  
+  .message-box1 button {
+    padding: 10px 20px;
+    font-size: 16px; background-color: var(—backgroundcolor);
+  }

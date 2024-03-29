@@ -12,7 +12,9 @@ const Item = require("./models/item.js");
 const User = require("./models/user.js");
 const Restaurant = require("./models/restaurant.js");
 
-
+const {profileRender,editProfileGet,editProfilePost,dislikeItem,likeItem} = require("./controllers/profilecontrollers.js");
+const {postReview} = require("./controllers/reviewcontroller.js")
+const {searchResult} = require("./controllers/searchcontroller.js")
 const app = express();
 const router = express.Router();
 
@@ -22,15 +24,27 @@ var otpStore = {}; // Declaration of otpStore
 const Port = process.env.PORT || 3000;
 
 // connect to mongodb & listen for requests
-mongoose
+// mongoose
+//   .connect(process.env.MONGODB_URL)
+//   .then((result) =>
+//     app.listen(Port, () => {
+//       console.log("Database connection established");
+//       console.log(`Server is running at http://localhost:${Port}`);
+//     })
+//   )
+//   .catch((err) => console.log(err));
+
+  mongoose
   .connect(process.env.MONGODB_URL)
-  .then((result) =>
-    app.listen(Port, () => {
-      console.log("Database connection established");
-      console.log(`Server is running at http://localhost:${Port}`);
-    })
-  )
-  .catch((err) => console.log(err));
+  .then(result => {
+    if (process.env.NODE_ENV !== 'test') {
+      app.listen(Port, () => {
+        console.log('Database connection established');
+        console.log(`Server is running at http://localhost:${Port}`);
+      });
+    }
+  })
+  .catch(err => console.log(err));
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
@@ -60,20 +74,20 @@ function checkLogin(req, res, next) {
     next();
   } else {
     // res.redirect("/login");
-    res.send(
+    res.status(404).send(
       "You cannot access this page. Please login or Signup to access user personal pages and to give rating or reviews."
     );
   }
 }
 
-function rgbStringToColorName(rgbString) {
-  const rgbValues = rgbString.match(/\d+/g).map(Number);
-  if (rgbValues[0] === 128 && rgbValues[1] === 128 && rgbValues[2] === 128) {
-      return 'grey';
-  } else {
-      return 'unknown'; // Or handle other cases accordingly
-  }
-}
+// const rgbStringToColorName = (rgbString) => {
+//   const rgbValues = rgbString.match(/\d+/g).map(Number);
+//   if (rgbValues[0] === 128 && rgbValues[1] === 128 && rgbValues[2] === 128) {
+//       return 'grey';
+//   } else {
+//       return 'unknown'; // Or handle other cases accordingly
+//   }
+// }
 
 //mail settings for sending otp.
 let transporter = nodemailer.createTransport({
@@ -301,21 +315,9 @@ app.post("/signup", async (req, res) => {
       no_reviews: 0,
       no_ratings: 0,
     });
-    newUser
-      .save()
-      .then((savedUser) => {
-        console.log("User saved successfully:", savedUser);
-      })
-      .catch((error) => {
-        if (error.name === "ValidationError") {
-          console.error("Validation error:", error.message);
-        } else {
-          console.error("Error saving user:", error);
-        }
-      });
-
-    // Redirect or handle post-signup logic here
-    // res.redirect('/login');
+    const savedUser = await newUser.save(); // Use async/await here
+    console.log("User saved successfully:", savedUser);
+    res.status(200).send("User created"); // Send a success response
   } catch (error) {
     console.error(error);
     res.status(500).send("Error signing up user.");
@@ -482,187 +484,27 @@ app.get("/searchPage", (req, res) => {
 });
 
 // POST request handler for searchPage
-app.post("/searchPage", async (req, res) => {
-  const search = req.body.search;
-  const referrer = req.body.referrer || '/'; // Get referrer from form input or default to home
+app.post("/searchPage", searchResult);
 
-  if (search.length > 0) {
-    var regexPattern = new RegExp(search, "i");
-    try {
-      const items = await Item.find({
-        $or: [
-          { name: { $regex: regexPattern } },
-          { hall: { $regex: regexPattern } },
-          { category: search },
-        ],
-      });
-      res.render("searchPage", { items: items, referrer: referrer });
-    } catch (err) {
-      console.error(err);
-      res.render("searchPage", { items: [], referrer: referrer });
-    }
-  } else {
-    res.render("searchPage", { items: [], referrer: referrer });
-  }
-});
 
-// Profile page route
-app.get("/profile", checkLogin, async (req, res) => {
-  const id = req.session.userId;
-  // const id = "65eadd97673a7bf0caf2dc26";
-  await User.findById({ _id: id }).then(async (result) => {
-    const favArray = result.fav_items;
-    const userFirstName = result.firstName;
-    if (favArray.length > 0) {
-      await Item.find({ _id: { $in: favArray } }).then((foundItems) => {
-        // console.log('Found items:', foundItems);
-        res.render("profile", { info: result, items: foundItems, userFirstName });
-      });
-    } else {
-      res.render("profile", { info: result, items: [], userFirstName });
-    }
-    // console.log(result);
-  });
-});
+app.get("/profile", checkLogin, profileRender);
+
 
 //Disliking an item in profile page.
-app.post("/dislike-item", async (req, res) => {
-  const userId = req.session.userId;
-  // const userId = "65eadd97673a7bf0caf2dc26";
-  const { item_id } = req.body;
-  // console.log(item_id);
-  try {
-    const user = await User.findById(userId);
-    const newArray = user.fav_items.filter((item) => item !== item_id);
-    // console.log(newArray);
-    const updatedDetails = {
-      fav_items: newArray,
-    };
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { $set: updatedDetails },
-      { new: true }
-    );
-    res.json({ message: "This item will be removed from your favorites" });
-  } catch (err) {
-    console.error(err);
-  }
-});
+app.post("/dislike-item", dislikeItem);
 
 
 //Liking an item from hall page.
-app.post('/like-item', async (req, res) => {
-  const userId = req.session.userId;
-  const { item_id , color} = req.body;
-  const stringColor = rgbStringToColorName(color)
-  if(userId)
-  {
-    try {
-      let newArray = {};
-      const user = await User.findById(userId);
-      if(stringColor === 'grey')
-      {
-        newArray = [...user.fav_items, item_id];
-        // console.log('added to favorite items');
-      }
-      else
-      {
-        newArray = user.fav_items.filter(itemId => itemId !== item_id);
-        // console.log('removed from favorite items');
-
-      }
-      const updatedDetails = {
-        fav_items: newArray,
-      };
-      const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { $set: updatedDetails },
-        { new: true }
-      );
-      res.status(200).json({ message: "Favorites updated. You can edit from your favorites in your profile page." });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: "An error occurred while processing your request" });
-    }
-  }
-  else
-  {
-    res.status(400).json({ error: "You are not logged in" });
-  }
-});
+app.post('/like-item', likeItem);
 
 
 //edit profile page route
-app.get("/editProfile", checkLogin, async (req, res) => {
-  const userId = req.session.userId;
+app.get("/editProfile", checkLogin, editProfileGet);
 
-  try {
-    const user = await User.findById(userId);
-
-    if (!user) {
-      res.redirect('/login');
-      return;
-    }
-
-    res.render("editProfile", {
-      userFirstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email, // Assuming you have an email field in your User model
-      // Do not send password for security reasons
-    });
-  } catch (err) {
-    console.error(err);
-    res.redirect('/login');
-  }
-});
+app.post("/check-editProfile", editProfilePost);
 
 app.get("/searchpage", (req, res) => {
-  res.render("searchPage");
-});
-
-app.post("/check-editProfile", async (req, res) => {
-  const userId = req.session.userId;
-  // const userId = "65eadd97673a7bf0caf2dc26";
-  const { firstName, lastName, password, newpassword } = req.body;
-  var updatedDetails = {};
-  try {
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.json({ error: "User not found." });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.json({
-        message:
-          "Incorrect password!! Enter correct password to update details",
-      });
-    }
-
-    const newhashedPassword = await bcrypt.hash(newpassword, 10);
-
-    updatedDetails = {
-      firstName: firstName,
-      lastName: lastName,
-      password: newhashedPassword,
-    };
-
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { $set: updatedDetails },
-      { new: true }
-    );
-
-    // console.log("User details updated successfully:", updatedUser);
-    return res.json({ message: "Updated details successfully" });
-  } catch (err) {
-    console.error(err);
-    return res.json({
-      error: "Some error occurred in editing profile!! Try again.",
-    });
-  }
+res.render("searchPage");
 });
 
 app.get("/forgot_password", (req, res) => {
@@ -700,9 +542,6 @@ app.post('/submit-feedback', async (req, res) => {
      res.status(500).json({ message: 'Error submitting feedback.' });
   }
 });
-
-
-
 
 app.get("/Restaurants/:restaurantId", async (req, res) => {
   let userFirstName = "";
@@ -908,47 +747,8 @@ app.get("/search/item/:itemId", async (req, res) => {
   }
 });
 
-app.post('/item/:itemId/review', async (req, res) => {
-  if (!req.session.userId){ // Assuming you are using Passport.js or similar for authentication
-    return res.status(401).json({ success: false, message: 'You must be logged in to add a review.' });
-  }
-  const { comment } = req.body; // Assuming you're sending the review comment
-  const itemId = req.params.itemId;
-  const userId = req.session.userId; // Assuming you have a way to identify the logged-in user
+app.post('/item/:itemId/review', postReview);
 
-  try {
-    const item = await Item.findById(itemId);
-
-    if (!item) {
-      return res.status(404).json({ message: 'Item not found' });
-    }
-
-    // Check if the user has already reviewed this item
-    const alreadyReviewedIndex = item.reviews.findIndex(review => review.postedBy.toString() === userId.toString());
-
-    if (alreadyReviewedIndex !== -1) {
-      // User has already reviewed, update existing review
-      item.reviews[alreadyReviewedIndex].comment = comment;
-      // Add any other fields you want to update
-    } else {
-      // Add new review
-      item.reviews.push({
-        comment: comment,
-        postedBy: userId
-      });
-       const user = await User.findById(userId);
-      user.no_reviews += 1;
-      await user.save();
-    }
-
-    await item.save();
-
-    res.status(200).json({ message: 'Review updated successfully', item });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'An error occurred while processing your request' });
-  }
-});
 app.post('/submit-rating', async (req, res) => {
   const { itemId, rating } = req.body;
   const userId = req.session.userId; // Make sure the user is logged in
@@ -1045,3 +845,6 @@ router.get('/items', async (req, res) => {
     res.status(500).send('Error fetching items');
   }
 });
+
+
+module.exports = app;

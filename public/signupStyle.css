@@ -87,7 +87,7 @@ a{
   min-width: 46vw;
   background-color: white;
   padding-left: 2.5vw;
-  padding-right: 2.5vw;
+  padding-right: 1.5vw;
   scroll-behavior: smooth;
   overflow-y: scroll;
   display: grid;

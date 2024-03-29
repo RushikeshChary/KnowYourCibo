@@ -6,8 +6,8 @@ const User = require("../../models/user");
 const Item = require("../../models/item");
 
 // Mock the User and Item models
-jest.mock("../models/user");
-jest.mock("../models/item");
+jest.mock("../../models/user");
+jest.mock("../../models/item");
 
 // Mock user data
 const mockedUser = {

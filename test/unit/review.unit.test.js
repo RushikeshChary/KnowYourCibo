@@ -20,10 +20,10 @@ const mockUser = {
 };
 
 // Mock the Item and User models
-jest.mock('../models/item', () => ({
+jest.mock('../../models/item', () => ({
   findById: jest.fn()
 }));
-jest.mock('../models/user', () => ({
+jest.mock('../../models/user', () => ({
   findById: jest.fn()
 }));
 

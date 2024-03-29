@@ -1,8 +1,8 @@
 const request = require("supertest");
-const app = require("../app"); // Assuming your Express app is exported from app.js
-const Item = require("../models/item");
+const app = require("../../server"); // Assuming your Express app is exported from app.js
+const Item = require("../../models/item");
 
-jest.mock("../models/item"); // Mock the Item model
+jest.mock("../../models/item"); // Mock the Item model
 
 describe("Integration Test: searchResult API Endpoint", () => {
   afterEach(() => {
@@ -14,15 +14,15 @@ describe("Integration Test: searchResult API Endpoint", () => {
     Item.find.mockResolvedValueOnce([{ name: "Item 1" }, { name: "Item 2" }]);
 
     // Make a request to the searchResult endpoint with a valid search query
-    const response = await request(app)
+    const {body, statusCode} = await request(app)
       .post("/search")
       .send({ search: "someQuery", referrer: "/" });
 
     // Check if the response status is 200
-    expect(response.status).toBe(200);
+    expect(statusCode).toBe(200);
 
     // Check if the response body contains the expected items
-    expect(response.body.items).toEqual([{ name: "Item 1" }, { name: "Item 2" }]);
+    expect(body.items).toEqual([{ name: "Item 1" }, { name: "Item 2" }]);
   });
 
   it("should return an empty array when no items are found for the search query", async () => {

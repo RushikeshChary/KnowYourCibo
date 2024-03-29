@@ -1,8 +1,8 @@
 const { dislikeItem, likeItem } = require("../../controllers/profilecontrollers");
 const User = require("../../models/user");
 
-jest.mock("../models/user");
-jest.mock("../helperfunctions", () => ({
+jest.mock("../../models/user");
+jest.mock("../../helperfunctions", () => ({
     rgbStringToColorName: jest.fn(),
   }));
 describe("dislikeItem", () => {

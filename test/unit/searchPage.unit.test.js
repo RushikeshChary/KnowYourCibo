@@ -1,7 +1,7 @@
 const { searchResult } = require("../../controllers/searchcontroller");
 const Item = require("../../models/item");
 
-jest.mock("../models/item"); // Mock the Item model
+jest.mock("../../models/item"); // Mock the Item model
 
 describe("searchResult", () => {
   it("should render searchPage with items matching the search query", async () => {

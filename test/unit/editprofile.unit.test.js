@@ -7,7 +7,7 @@ const User = require("../../models/user");
 const bcrypt = require("bcryptjs");
 
 // Mock the User and Item models
-jest.mock("../models/user");
+jest.mock("../../models/user");
 jest.mock("bcryptjs");
 
 //GET CHECKING.

@@ -1,5 +1,5 @@
-const { searchResult } = require("../controllers/searchcontroller");
-const Item = require("../models/item");
+const { searchResult } = require("../../controllers/searchcontroller");
+const Item = require("../../models/item");
 
 jest.mock("../models/item"); // Mock the Item model
 

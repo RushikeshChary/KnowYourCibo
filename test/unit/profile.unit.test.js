@@ -1,9 +1,9 @@
 // Import required modules
 const {
   profileRender
-} = require("../controllers/profilecontrollers");
-const User = require("../models/user");
-const Item = require("../models/item");
+} = require("../../controllers/profilecontrollers");
+const User = require("../../models/user");
+const Item = require("../../models/item");
 
 // Mock the User and Item models
 jest.mock("../models/user");

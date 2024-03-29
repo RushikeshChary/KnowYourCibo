@@ -1,6 +1,6 @@
-const { postReview } = require('../controllers/reviewcontroller');
-const Item = require('../models/item');
-const User = require('../models/user');
+const { postReview } = require('../../controllers/reviewcontroller');
+const Item = require('../../models/item');
+const User = require('../../models/user');
 
 // Mock implementations with state
 const mockItem = {

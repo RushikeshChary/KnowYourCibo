@@ -1,5 +1,5 @@
-const { dislikeItem, likeItem } = require("../controllers/profilecontrollers");
-const User = require("../models/user");
+const { dislikeItem, likeItem } = require("../../controllers/profilecontrollers");
+const User = require("../../models/user");
 
 jest.mock("../models/user");
 jest.mock("../helperfunctions", () => ({
@@ -68,7 +68,7 @@ describe("likeItem", () => {
       _id: "65eadd97673a7bf0caf2dc26",
       fav_items: ["item2", "item3"],
     };
-    require("../helperfunctions").rgbStringToColorName.mockReturnValue("grey");
+    require("../../helperfunctions").rgbStringToColorName.mockReturnValue("grey");
     User.findById.mockResolvedValueOnce(user);
     User.findByIdAndUpdate.mockResolvedValueOnce(user);
 
@@ -102,7 +102,7 @@ describe("likeItem", () => {
       _id: "65eadd97673a7bf0caf2dc26",
       fav_items: ["item1", "item2", "item3"],
     };
-    require("../helperfunctions").rgbStringToColorName.mockReturnValue("unknown");
+    require("../../helperfunctions").rgbStringToColorName.mockReturnValue("unknown");
     User.findById.mockResolvedValueOnce(user);
     User.findByIdAndUpdate.mockResolvedValueOnce(user);
 

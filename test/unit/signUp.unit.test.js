@@ -1,10 +1,10 @@
 const sinon = require('sinon');
 const request = require('supertest');
 const mongoose = require('mongoose');
-const app = require('../server'); // Adjust the path as necessary
+const app = require('../../server'); // Adjust the path as necessary
 
 // Import your User model
-const User = require('../models/user'); 
+const User = require('../../models/user'); 
 
 describe('POST /signup', () => {
   let save;

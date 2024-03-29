@@ -2,8 +2,8 @@
 const {
   editProfileGet,
   editProfilePost,
-} = require("../controllers/profilecontrollers");
-const User = require("../models/user");
+} = require("../../controllers/profilecontrollers");
+const User = require("../../models/user");
 const bcrypt = require("bcryptjs");
 
 // Mock the User and Item models

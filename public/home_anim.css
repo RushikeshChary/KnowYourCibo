@@ -4,7 +4,7 @@
       position: absolute;
       width: 100%;
       height: 100vh;
-      background: url(homeImages/temp.gif) no-repeat 50% 50%;
+      background: url(homeImages/home1.gif) no-repeat 50% 50%;
       background-size: cover;
       animation: fadeOut 4s linear forwards;
       opacity: 1;

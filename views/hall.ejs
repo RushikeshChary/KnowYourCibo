@@ -268,6 +268,16 @@
 </div>
 
 </div>
+<!-- Message Box (hidden by default) -->
+<div id="messageBox" class="message-box" style="display:none;">
+  <p id="messageBoxText"></p>
+  <button onclick="closeMessageBox()">OK</button>
+</div>
+<div id="messageBox1" class="message-box1" style="display:none;">
+  <p id="messageBoxText1"></p>
+  <button onclick="closeMessageBox1()">OK</button>
+</div>
+
 
 <!-- transitions -->
   <script>
@@ -379,7 +389,6 @@ ease: Expo.easeInOut
   document.querySelectorAll('.heart-icon').forEach(function(icon) {
   icon.addEventListener('click', async function(event) {
     event.preventDefault();
-    // Toggle the 'clicked' class to change the color
     const item_id = this.getAttribute("data-info");
     const color = window.getComputedStyle(this).color;
     try {
@@ -388,26 +397,34 @@ ease: Expo.easeInOut
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ item_id ,color}),
+        body: JSON.stringify({ item_id, color }),
       });
       if (!response.ok) {
         const errorData = await response.json(); // Assuming server sends error message in JSON format
         throw new Error(errorData.error);
       }
       const data = await response.json();
-      alert(data.message);
-      if(response.status == 200)
-      {
-        this.classList.toggle('clicked');
+      
+      // Check the action performed (added to or removed from favorites)
+      if(this.classList.contains('clicked')) {
+        // If it's currently clicked, it was just added to favorites
+        showMessage('Removed from favorites');
+      } else {
+        // If not, it was just removed from favorites
+        showMessage('Added to favorites');
       }
-      // Reload the page after handling the response
-      window.location.reload();
+
+      // Toggle the 'clicked' class based on the action
+      this.classList.toggle('clicked');
+
     } catch (error) {
       console.error("Error:", error);
-      alert(error.message || "An error occurred while processing your request");
+      showMessage1(error.message || "An error occurred while processing your request"); // Use the custom message box instead of alert
     }
   });
 });
+
+
 
   function toggleReview(itemId) {
   // First, hide all review containers
@@ -430,7 +447,7 @@ function addReview(itemId) {
   const comment = reviewInput.value.trim();
 
   if (!comment) {
-    alert('Please enter a review.');
+    showMessage1('Please enter a review.');
     return;
   }
 
@@ -447,7 +464,7 @@ function addReview(itemId) {
     // If the response status code is not in the 200 range
     if (response.status === 401) {
       // If the user is not authorized, prompt them to log in
-      alert('You must be logged in to add a review.');
+      showMessage1('You must be logged in to add a review.');
     }
     throw new Error('Response not ok');
   }
@@ -456,7 +473,8 @@ function addReview(itemId) {
 
  .then(data => {
   reviewInput.value = '';
-window.location.reload();
+  showMessage('Review added successfully.');
+
 })
 .catch(error => {
   console.error('Error:', error);
@@ -491,52 +509,51 @@ window.location.reload();
 
   <script>
   $(document).ready(function() {
-    // AJAX call for submitting or removing a rating
-    $('.submit-rating-btn').click(function() {
-      const $thisButton = $(this); // The current "Rate" or "Remove rating" button
-      const itemId = $thisButton.data('item-id'); // ID of the item being rated
-      const isRated = $thisButton.data('rated'); // Whether the user has already rated this item
-
-      // Prepare the data to be sent in the AJAX request
-      let requestData = { itemId: itemId };
-      let requestUrl = isRated ? '/remove-rating' : '/submit-rating';
-
-      if (!isRated) {
-        // If submitting a new rating, get the rating value
-        const rating = $thisButton.siblings('.rating-box').find('.fa-star.active').length;
-        requestData.rating = rating;
-      }
-
-      // Make the AJAX request
-      $.ajax({
-        type: 'POST',
-        url: requestUrl,
-        data: requestData,
-        success: function(response) {
-          alert(response.message); // Display a success message
-
-          if (isRated) {
-            // If the rating was removed, reset the stars
-            $thisButton.siblings('.rating-box').find('.fa-star').removeClass('active');
-            $thisButton.text('Rate').data('rated', false); // Update the button
-          } else {
-            // If a rating was submitted, update the button to allow removal
-            $thisButton.text('Remove rating').data('rated', true);
-          }
-            window.location.reload();
-        },
-        error: function(xhr, status, error) {
-          if (xhr.status === 401) {
-            // If the user is not logged in, prompt them to log in
-            alert('You must be logged in to rate items.');
-          } else {
-            console.error('Error updating rating:', error);
-            alert('Failed to update rating. Please try again.');
-          }
+  $('.submit-rating-btn').click(function() {
+    const $thisButton = $(this); // The current "Rate" or "Remove rating" button
+    const itemId = $thisButton.data('item-id'); // ID of the item being rated
+    const isRated = $thisButton.data('rated'); // Whether the user has already rated this item
+    
+    // Prepare the data to be sent in the AJAX request
+    let requestData = { itemId: itemId };
+    let requestUrl = isRated ? '/remove-rating' : '/submit-rating';
+    
+    if (!isRated) {
+      // If submitting a new rating, get the rating value
+      const rating = $thisButton.siblings('.rating-box').find('.fa-star.active').length;
+      requestData.rating = rating;
+    }
+    
+    // Make the AJAX request
+    $.ajax({
+      type: 'POST',
+      url: requestUrl,
+      data: requestData,
+      success: function(response) {
+        showMessage(response.message); // Use the custom message box
+      
+        if (isRated) {
+          // If the rating was removed, reset the stars
+          $thisButton.siblings('.rating-box').find('.fa-star').removeClass('active');
+          $thisButton.text('Rate').data('rated', false); // Update the button
+        } else {
+          // If a rating was submitted, update the button to allow removal
+          $thisButton.text('Remove rating').data('rated', true);
         }
-      });
+
+      },
+      error: function(xhr, status, error) {
+        if (xhr.status === 401) {
+          showMessage1('You must be logged in to rate items.'); // Use the custom message box
+        } else {
+          console.error('Error updating rating:', error);
+          showMessage('Failed to update rating. Please try again.'); // Use the custom message box
+        }
+      }
     });
   });
+});
+
   </script>
   <script>
     $(document).ready(function(){
@@ -544,6 +561,30 @@ window.location.reload();
         $("#div1").toggle();
       });
     });
+    // Function to show the message box with a specific message
+function showMessage(message) {
+    $("#messageBoxText").text(message);
+    $("#messageBox").fadeIn();
+}
+
+// Function to hide the message box and reload the page
+function closeMessageBox() {
+    $("#messageBox").fadeOut('fast', function() {
+        window.location.reload(); // Reload the page after closing the message box
+    });
+}
+function showMessage1(message) {
+    $("#messageBoxText1").text(message);
+    $("#messageBox1").fadeIn();
+}
+
+// Function to hide the message box and reload the page
+function closeMessageBox1() {
+    $("#messageBox1").fadeOut('fast', function() {
+    });
+}
+
+
   </script>
 </body>
 

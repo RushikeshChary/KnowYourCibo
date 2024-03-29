@@ -26,7 +26,7 @@ const { setPassword } = require('./controllers/setPasswordController');
 
 const app = express();
 const router = express.Router();
-
+var otpStore = {}; // Declaration of otpStore
 
 const Port = process.env.PORT || 3000;
 
@@ -96,14 +96,14 @@ function checkLogin(req, res, next) {
 //   }
 // }
 
-// //mail settings for sending otp.
-// let transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: process.env.GMAIL_USER,
-//     pass: process.env.GMAIL_APP_PASS,
-//   },
-// });
+//mail settings for sending otp.
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASS,
+  },
+});
 
 //Home page.
 app.get("/", async (req, res) => {

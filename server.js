@@ -17,14 +17,16 @@ const {postReview} = require("./controllers/reviewcontroller.js")
 const {searchResult} = require("./controllers/searchcontroller.js")
 const { submitRating } = require('./controllers/ratingController');
 const { removeRating } = require('./controllers/removeratingController');
-
+const { signupUser } = require('./controllers/signupController');
+const { loginUser } = require('./controllers/loginController.js');
+const { sendOtp } = require('./controllers/sendOtpController');
+const { verifyOtp } = require('./controllers/verifyOtpController');
+const { setPassword } = require('./controllers/setPasswordController');
 
 
 const app = express();
 const router = express.Router();
 
-
-var otpStore = {}; // Declaration of otpStore
 
 const Port = process.env.PORT || 3000;
 
@@ -94,14 +96,14 @@ function checkLogin(req, res, next) {
 //   }
 // }
 
-//mail settings for sending otp.
-let transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASS,
-  },
-});
+// //mail settings for sending otp.
+// let transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: process.env.GMAIL_USER,
+//     pass: process.env.GMAIL_APP_PASS,
+//   },
+// });
 
 //Home page.
 app.get("/", async (req, res) => {
@@ -226,156 +228,14 @@ app.get("/login", async (req, res) => {
     });
   }
 });
+app.post("/send-otp", sendOtp);
+app.post("/verify-otp", verifyOtp);
+app.post("/set-password", setPassword);
+app.post("/signup", signupUser);
 
-app.post("/send-otp", async (req, res) => {
-  const { email, firstName, lastName } = req.body; // Capture firstName and lastName for later user creation
-  const otp = crypto.randomInt(100000, 999999).toString();
-  const otpExpires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes from now
 
-  // Store OTP and email expiration in memory
-  otpStore[email] = { otp, otpExpires, firstName, lastName };
+app.post("/login", loginUser);
 
-  try {
-    await transporter.sendMail({
-      from: process.env.GMAIL_USER,
-      to: email,
-      subject: "Your OTP",
-      text: `Your OTP is: ${otp}`,
-    });
-    res.json({ message: "OTP sent to " + email });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error sending OTP" });
-  }
-});
-
-app.post("/verify-otp", async (req, res) => {
-  const { email, otp } = req.body;
-  const otpData = otpStore[email];
-
-  if (otpData && otpData.otp === otp && otpData.otpExpires > new Date()) {
-    res.json({
-      success: true,
-      message: "OTP verified successfully. Please set your password.",
-    });
-  } else {
-    res.status(400).json({ success: false, error: "Invalid or expired OTP" });
-  }
-});
-
-//password setter.
-app.post("/set-password", async (req, res) => {
-  const { email, password, confirmPassword } = req.body;
-
-  if (password !== confirmPassword) {
-    res.status(400).json({ error: "Passwords do not match" });
-    return;
-  }
-
-  if (!otpStore[email]) {
-    res.status(400).json({ error: "OTP verification required" });
-    return;
-  }
-
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-
-  try {
-    // Create user with data from otpStore and the hashed password
-    const { firstName, lastName } = otpStore[email];
-    await User.create({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-      no_reviews: 0,
-      no_ratings: 0,
-    });
-
-    // Clean up OTP store
-    delete otpStore[email];
-
-    res.json({ message: "Signup complete. You can now log in." });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error creating user account" });
-  }
-});
-app.post("/signup", async (req, res) => {
-  const { email, password, firstName, lastName } = req.body;
-  console.log(req.body);
-  // Check if all fields are provided
-  if (!email || !password || !firstName || !lastName) {
-    return res.status(400).send("Please fill in all the fields.");
-  }
-
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(firstName, lastName);
-    const newUser = new User({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-      no_reviews: 0,
-      no_ratings: 0,
-    });
-    const savedUser = await newUser.save(); // Use async/await here
-    console.log("User saved successfully:", savedUser);
-    res.status(200).send("User created"); // Send a success response
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Error signing up user.");
-  }
-});
-//Later, change this /dashboard to /home.
-app.post("/login", async (req, res) => {
-  const { email, password ,redirect} = req.body;
-
-  try {
-    // Normalize email to lowercase before lookup to ensure case-insensitive match
-    const normalizedEmail = email.toLowerCase();
-    const user = await User.findOne({ email: normalizedEmail });
-
-    if (user) {
-      // If user is found, compare provided password with hashed password in the database
-      const isMatch = await bcrypt.compare(password, user.password);
-
-      if (isMatch) {
-        // Passwords match, set user information in session
-        req.session.userId = user._id; // Assuming 'user' is your user object from the database
-        req.session.userFirstName = user.firstName; // Ensure this matches the field name in your user model
-
-        // Redirect to the home page
-        res.redirect(redirect || '/home');
-      } else {
-        // Passwords do not match, render login page with error
-        return res.render("login", {
-          errorMessage: "Invalid email or password.",
-          userFirstName: "",
-          isLoggedIn: false,
-          redirect:redirect,
-        });
-      }
-    } else {
-      // No user found with the provided email, render login page with error
-      return res.render("login", {
-        errorMessage: "Invalid email or password.",
-        userFirstName: "",
-        isLoggedIn: false,
-        redirect:redirect,
-      });
-    }
-  } catch (error) {
-    console.error("Error during login:", error);
-    return res.render("login", {
-      errorMessage: "An error occurred during login. Please try again.",
-      userFirstName: "",
-      isLoggedIn: false,
-      redirect:redirect,
-    });
-  }
-});
 
 
 app.get("/logout", (req, res) => {

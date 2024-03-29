@@ -13,7 +13,7 @@
 
 .container {
   min-height: 590px;
-  width: 75vw;
+  min-width: 75vw;
   position: relative;
   display: flex;
 
@@ -25,7 +25,7 @@ a{
 }
 
   .w-50 {
-    width: 35vw;
+    min-width: 35vw;
     position: absolute;
     top: 5vh;
 
@@ -84,9 +84,10 @@ a{
 
 .left{
   min-height: 590px;
-  width: 46vw;
+  min-width: 46vw;
   background-color: white;
   padding-left: 2.5vw;
+  padding-right: 2.5vw;
   scroll-behavior: smooth;
   overflow-y: scroll;
   display: grid;

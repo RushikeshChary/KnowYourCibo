@@ -16,13 +16,13 @@ const searchResult = async (req, res) => {
           { category: search },
         ],
       });
-      res.status(200).render("searchPage", { items: items, referrer: referrer });
+      res.render("searchPage", { items: items, referrer: referrer });
     } catch (err) {
       console.log(err);
-      res.status(200).render("searchPage", { items: [], referrer: referrer });
+      res.render("searchPage", { items: [], referrer: referrer });
     }
   } else {
-    res.status(200).render("searchPage", { items: [], referrer: referrer });
+    res.render("searchPage", { items: [], referrer: referrer });
   }
 };
 

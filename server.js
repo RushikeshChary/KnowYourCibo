@@ -232,11 +232,7 @@ app.post("/send-otp", sendOtp);
 app.post("/verify-otp", verifyOtp);
 app.post("/set-password", setPassword);
 app.post("/signup", signupUser);
-
-
 app.post("/login", loginUser);
-
-
 
 app.get("/logout", (req, res) => {
   
@@ -613,75 +609,6 @@ app.get("/search/item/:itemId", async (req, res) => {
 });
 
 app.post('/item/:itemId/review', postReview);
-
-// app.post('/submit-rating', async (req, res) => {
-//   const { itemId, rating } = req.body;
-//   const userId = req.session.userId; // Make sure the user is logged in
-
-//   if (!userId) {
-//     return res.status(401).json({ error: 'User must be logged in to rate items' });
-//   }
-
-//   try {
-//     const item = await Item.findById(itemId);
-//     const user = await User.findById(userId);
-
-//     if (!item) {
-//       return res.status(404).json({ error: 'Item not found' });
-//     }
-
-//     if (!user) {
-//       return res.status(404).json({ error: 'User not found' });
-//     }
-
-//     // Check if user has already rated
-//     const existingRatingIndex = item.ratings.findIndex(r => r.user.toString() === userId);
-//     if (existingRatingIndex !== -1) {
-//       // Update existing rating
-//       item.ratings[existingRatingIndex].value = rating;
-//     } else {
-//       // Add new rating
-//       item.ratings.push({ user: userId, value: rating });
-//     }
-
-//     // Here, you can increment the number of ratings for the user
-//     user.no_ratings += 1;
-
-//     await item.save();
-//     await user.save();
-
-//     res.status(200).json({ message: 'Rating submitted successfully' });
-//   } catch (error) {
-//     console.error('Error submitting rating:', error);
-//     res.status(500).json({ error: 'Error submitting rating' });
-//   }
-// });
-// app.post('/remove-rating', async (req, res) => {
-//   const { itemId } = req.body;
-//   const userId = req.session.userId; // Make sure the user is logged in
-//   const user = await User.findById(userId);
-//   if (!userId) {
-//       return res.status(401).json({ error: 'User must be logged in to remove ratings' });
-//   }
-
-//   try {
-//       const item = await Item.findById(itemId);
-//       if (!item) {
-//           return res.status(404).json({ error: 'Item not found' });
-//       }
-
-//       // Remove the user's rating from the item
-//       item.ratings = item.ratings.filter(rating => rating.user.toString() !== userId);
-      
-//       await item.save();
-//       user.no_ratings -= 1;
-//       await user.save();
-//       res.json({ message: 'Rating removed successfully' });
-//   } catch (error) {
-//       console.error('Error removing rating:', error);
-//       res.status(500).json({ error: 'Error removing rating' });
-//   }
-// });
 
 app.post('/submit-rating', submitRating);
 

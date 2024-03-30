@@ -1,3 +1,4 @@
 /eg.js
 /node_modules
 /.env
+/.coverage

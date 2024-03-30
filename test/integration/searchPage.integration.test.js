@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../../server"); // Assuming your Express app is exported from app.js
+const app = require("../../server"); // Assuming your Express app is exported from server.js
 const Item = require("../../models/item");
 
 jest.mock("../../models/item"); // Mock the Item model
@@ -14,11 +14,11 @@ describe("Integration Test: searchResult API Endpoint", () => {
     Item.find.mockResolvedValueOnce([{ name: "Item 1" }, { name: "Item 2" }]);
 
     // Make a request to the searchResult endpoint with a valid search query
-    const {body, statusCode} = await request(app)
+    const { body, statusCode } = await request(app)
       .post("/search")
-      .send({ search: "someQuery", referrer: "/" });
+      .send({ search: "item", referrer: "/" });
 
-    // Check if the response status is 200
+    // Check if the response status code is 200
     expect(statusCode).toBe(200);
 
     // Check if the response body contains the expected items
@@ -32,10 +32,10 @@ describe("Integration Test: searchResult API Endpoint", () => {
     // Make a request to the searchResult endpoint with a search query that returns no items
     const response = await request(app)
       .post("/search")
-      .send({ search: "nonExistentQuery", referrer: "/" });
+      .send({ search: "none", referrer: "/" });
 
-    // Check if the response status is 200
-    expect(response.status).toBe(200);
+    // Check if the response status code is 200
+    expect(response.statusCode).toBe(200);
 
     // Check if the response body contains an empty array of items
     expect(response.body.items).toEqual([]);
@@ -47,8 +47,8 @@ describe("Integration Test: searchResult API Endpoint", () => {
       .post("/search")
       .send({ search: "", referrer: "/" });
 
-    // Check if the response status is 200
-    expect(response.status).toBe(200);
+    // Check if the response status code is 200
+    expect(response.statusCode).toBe(200);
 
     // Check if the response body contains an empty array of items
     expect(response.body.items).toEqual([]);
@@ -63,8 +63,8 @@ describe("Integration Test: searchResult API Endpoint", () => {
       .post("/search")
       .send({ search: "someQuery", referrer: "/" });
 
-    // Check if the response status is 200
-    expect(response.status).toBe(200);
+    // Check if the response status code is 200
+    expect(response.statusCode).toBe(200);
 
     // Check if the response body contains an empty array of items
     expect(response.body.items).toEqual([]);

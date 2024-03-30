@@ -313,20 +313,20 @@
 
 .message-box p {
   margin: 0 0 20px;
-  font-size: 18px; font-family: 700;
+  font-size: 13px; font-family: 700;
 }
 
 .message-box button {
   padding: 10px 20px;
-  font-size: 16px; background-color: var(—backgroundcolor);
+  font-size: 13px; background-color: var(—backgroundcolor);
 }
 .message-box1 {
   display: none; 
   position: fixed;
   top: 5px; 
   right: 5px;
-  z-index: 1050;
-  background: white; 
+  z-index: 1;
+  background-color: white; 
   color: black; 
   border: 1px solid #ccc; 
   padding: 10px 20px; 
@@ -337,9 +337,9 @@
 
 .message-box1 p {
   margin: 0 0 20px;
-  font-size: 18px; font-family: 700;
+  font-size: 13px; font-family: 700;
 }
 .message-box1 button {
   padding: 10px 20px;
-  font-size: 16px; background-color: var(—backgroundcolor);
+  font-size: 13px; background-color: var(—backgroundcolor);
 }

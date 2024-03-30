@@ -255,3 +255,11 @@ input[type="text"] {
 .section .item-container .item-details h3{
   font-size: 17px;
 }
+
+.section p{
+ position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+ font-size: 18px;
+}

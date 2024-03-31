@@ -302,7 +302,7 @@
   top: 5px; 
   right: 5px;
   z-index: 1050;
-  background: white; 
+  background-color: #FFEFE8; 
   color: black; 
   border: 1px solid #ccc; 
   padding: 10px 20px; 
@@ -318,7 +318,9 @@
 
 .message-box button {
   padding: 10px 20px;
-  font-size: 13px; background-color: var(—backgroundcolor);
+  font-size: 13px; 
+  background-color: black;
+  color:white;
 }
 .message-box1 {
   display: none; 
@@ -326,7 +328,7 @@
   top: 5px; 
   right: 5px;
   z-index: 1;
-  background-color: white; 
+  background-color: #FFEFE8; 
   color: black; 
   border: 1px solid #ccc; 
   padding: 10px 20px; 
@@ -341,5 +343,7 @@
 }
 .message-box1 button {
   padding: 10px 20px;
-  font-size: 13px; background-color: var(—backgroundcolor);
+  font-size: 13px;
+  background-color: black;
+  color:white;
 }

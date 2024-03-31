@@ -73,3 +73,20 @@ describe('submitRating', () => {
         expect(res.json).toHaveBeenCalledWith({ error: 'Item not found' });
     });
 });
+
+describe('submitRating Error Handling', () => {
+    it('should respond with an error if there is a server error', async () => {
+      // Simulate server error
+      const serverError = new Error('Server error');
+      Item.findById.mockRejectedValue(serverError);
+  
+      const req = mockRequest({ userId: 'user123' }, { itemId: 'item123', rating: 5 });
+      const res = mockResponse();
+  
+      await submitRating(req, res);
+  
+      // Assertions
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({ error: 'Error submitting rating' });
+    });
+  });

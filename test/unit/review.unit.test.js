@@ -1,6 +1,6 @@
-const { postReview } = require('../controllers/reviewcontroller');
-const Item = require('../models/item');
-const User = require('../models/user');
+const { postReview } = require('../../controllers/reviewcontroller');
+const Item = require('../../models/item');
+const User = require('../../models/user');
 
 // Mock implementations with state
 const mockItem = {
@@ -20,10 +20,10 @@ const mockUser = {
 };
 
 // Mock the Item and User models
-jest.mock('../models/item', () => ({
+jest.mock('../../models/item', () => ({
   findById: jest.fn()
 }));
-jest.mock('../models/user', () => ({
+jest.mock('../../models/user', () => ({
   findById: jest.fn()
 }));
 

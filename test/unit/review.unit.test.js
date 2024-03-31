@@ -1,6 +1,6 @@
-const { postReview } = require('../../controllers/reviewcontroller');
-const Item = require('../../models/item');
-const User = require('../../models/user');
+const { postReview } = require('../controllers/reviewcontroller');
+const Item = require('../models/item');
+const User = require('../models/user');
 
 // Mock implementations with state
 const mockItem = {
@@ -20,10 +20,10 @@ const mockUser = {
 };
 
 // Mock the Item and User models
-jest.mock('../../models/item', () => ({
+jest.mock('../models/item', () => ({
   findById: jest.fn()
 }));
-jest.mock('../../models/user', () => ({
+jest.mock('../models/user', () => ({
   findById: jest.fn()
 }));
 
@@ -93,5 +93,30 @@ describe('Review Controller', () => {
 
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.json).toHaveBeenCalledWith({ success: false, message: 'You must be logged in to add a review.' });
+  });
+
+
+    it('should update an existing review if the user has already reviewed the item', async () => {
+    // Setup an existing review by the same user
+    const existingReview = { comment: 'Old review', postedBy: '123' };
+    mockItem.reviews.push(existingReview);
+
+    // Mock request and response for updating the review
+    const req = mockRequest({ userId: '123' }, { comment: 'Updated review' }, { itemId: '456' });
+    const res = mockResponse();
+
+    await postReview(req, res);
+
+    // Assertions for review update
+    expect(mockItem.reviews.length).toBe(1); // Ensure no new review is added
+    expect(mockItem.reviews[0].comment).toBe('Updated review'); // Check updated comment
+    expect(mockItem.save).toHaveBeenCalledTimes(1);
+
+    // Assertions for user's review count should remain unchanged
+    expect(mockUser.no_reviews).toBe(0); // No increment since it's an update
+    expect(mockUser.save).toHaveBeenCalledTimes(0); // No save call as no_review count remains unchanged
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({ message: 'Review updated successfully', item: mockItem });
   });
 });

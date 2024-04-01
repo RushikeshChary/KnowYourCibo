@@ -89,4 +89,55 @@ describe('submitRating Error Handling', () => {
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({ error: 'Error submitting rating' });
     });
+ it('should handle database errors while fetching the item', async () => {
+    // Mock findById to simulate a database error
+    Item.findById.mockRejectedValue(new Error('Database error'));
+  
+    const req = mockRequest({ userId: 'user123' }, { itemId: 'item123', rating: 5 });
+    const res = mockResponse();
+  
+    await submitRating(req, res);
+  
+    // Assertions
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Error submitting rating' });
+  });
+  
+  it('should handle database errors while fetching the user', async () => {
+    // Mock findById to return a valid item
+    Item.findById.mockResolvedValue({ _id: 'item123', ratings: [] });
+    // Mock findById to simulate a database error for user
+    User.findById.mockRejectedValue(new Error('Database error'));
+  
+    const req = mockRequest({ userId: 'user123' }, { itemId: 'item123', rating: 5 });
+    const res = mockResponse();
+  
+    await submitRating(req, res);
+  
+    // Assertions
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Error submitting rating' });
+  });
+  
+  it('should update an existing rating if the user has already rated', async () => {
+    const mockUser = { _id: 'user123', no_ratings: 5, save: jest.fn() };
+    User.findById.mockResolvedValue(mockUser);
+    // Mock item to have an existing rating by the same user
+    const mockItem = { _id: 'item123', ratings: [{ user: 'user123', value: 3 }], save: jest.fn() };
+    Item.findById.mockResolvedValue(mockItem);
+  
+    const req = mockRequest({ userId: 'user123' }, { itemId: 'item123', rating: 4 });
+    const res = mockResponse();
+  
+    await submitRating(req, res);
+  
+    // Assertions
+    expect(mockItem.ratings[0].value).toBe(4); // Check if the rating value has been updated
+    expect(mockUser.no_ratings).toBe(5); // no_ratings should remain the same
+    expect(mockItem.save).toHaveBeenCalled(); // Ensure updated item data is saved
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({ message: 'Rating submitted successfully' });
+  });
+  
+
   });

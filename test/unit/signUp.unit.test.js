@@ -37,9 +37,35 @@ describe('Signup Controller', () => {
       password: expect.any(String) // Since password is hashed
     }));
   });
+  it('should return a 400 status code when required fields are missing', async () => {
+    const response = await request(app).post('/signup').send({
+      firstName: 'Test',
+      lastName: 'User',
+    });
 
-  // Additional tests...
+    expect(response.statusCode).toBe(400);
+    expect(response.text).toContain("Please fill in all the fields.");
+  });
+
+  it('should handle User.create failures gracefully', async () => {
+    User.create.mockRejectedValue(new Error('Mocked create error'));
+    
+    const response = await request(app)
+      .post('/signup')
+      .send({
+        email: 'test@example.com',
+        password: 'password123',
+        firstName: 'Test',
+        lastName: 'User'
+      });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.text).toContain("Error signing up user.");
+  });
+
+ 
 });
+
 
 
 

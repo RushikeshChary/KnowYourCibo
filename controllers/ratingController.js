@@ -29,9 +29,10 @@ const submitRating = async (req, res) => {
     } else {
       // Add new rating
       item.ratings.push({ user: userId, value: rating });
+      user.no_ratings += 1; // Increment the number of ratings
     }
 
-    user.no_ratings += 1; // Increment the number of ratings
+   
 
     await item.save();
     await user.save();

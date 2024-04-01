@@ -1,22 +1,22 @@
 const Item = require("../models/item.js");
 const User = require("../models/user.js");
-
+const Fuse = require("fuse.js");
 
 const searchResult = async (req, res) => {
   const search = req.body.search;
   const referrer = req.body.referrer || "/"; // Get referrer from form input or default to home
 
   if (search.length > 0) {
-    var regexPattern = new RegExp(search, "i");
     try {
-      const items = await Item.find({
-        $or: [
-          { name: { $regex: regexPattern } },
-          { hall: { $regex: regexPattern } },
-          { category: search },
-        ],
+      const items = await Item.find(); // Retrieve all items from the database
+      const fuse = new Fuse(items, {
+        keys: ["name", "hall", "category"], // Specify the keys you want to search in
+        includeScore: true, // Include score for each result
+        threshold: 0.4, // Adjust this value to fine-tune the fuzzy search threshold
       });
-      res.render("searchPage", { items: items, referrer: referrer });
+      const searchResults = fuse.search(search);
+      const filteredItems = searchResults.map((result) => result.item);
+      res.render("searchPage", { items: filteredItems, referrer: referrer });
     } catch (err) {
       console.log(err);
       res.render("searchPage", { items: [], referrer: referrer });
@@ -26,4 +26,4 @@ const searchResult = async (req, res) => {
   }
 };
 
-module.exports = {searchResult};
+module.exports = { searchResult };

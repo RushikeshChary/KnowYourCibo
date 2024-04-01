@@ -122,6 +122,10 @@
       showMessage("Please fill in all fields.");
       return;
     }
+    if (!validateEmail(email)) {
+    showMessage("Invalid email format.");
+    return;
+  }
           try {
             // Check if the user exists
             const checkUserResponse = await fetch("/check-user", {
@@ -236,6 +240,10 @@
 // Function to hide the message box and reload the page
 function closeMessageBox() {
   $("#messageBox").fadeOut('fast');
+}
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 }
 
     </script>

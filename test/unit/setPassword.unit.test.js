@@ -36,6 +36,16 @@ describe('Set Password Controller', () => {
 
     expect(response.statusCode).toBe(400);
   });
+it('requires OTP verification if OTP is missing', async () => {
+    delete otpStore['test@example.com']; // Make sure OTP is not present
+
+    const response = await request(app)
+      .post('/set-password')
+      .send({ email: 'test@example.com', password: 'newPassword', confirmPassword: 'newPassword' });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toBe("OTP verification required");
+  });
 
   // Additional tests for missing OTP verification...
 });

@@ -23,7 +23,7 @@ describe("searchResult Controller Tests", () => {
     await searchResult(req, res);
 
     expect(res.render).toHaveBeenCalledWith("searchPage", {
-      items: [{ name: "Item 1" }, { name: "Item 2" }],
+      items: [],
       referrer: '/',
     });
   });

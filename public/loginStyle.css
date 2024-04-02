@@ -117,3 +117,32 @@ hr{
   left: 65.5%;
   padding-top: 17px;
 }
+/* Style the toggle button */
+.toggle-btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* Adjust layout */
+.form-control,
+hr,
+.password-toggle {
+  width: 23vw;
+  position: relative;
+}
+
+.d-block,
+.ms-auto {
+  font-size: 12px;
+  position: absolute;
+  padding-top: 10px;
+}
+
+.ms-auto {
+  left: 65.5%;
+  padding-top: 17px;
+}
+

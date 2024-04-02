@@ -118,32 +118,16 @@
               <h2>You have no favorite items.</h2>
               <% } %>
 
-
-            <!--<div class="card">
-              <div class="img_card">
-                <img src="profileImages/img_1.avif" alt="Photo" />
-                <i class="fas fa-heart heart-icon fa-2x custom-size" id="heartIcon"></i>
-              </div>
-              <div class="container1">
-                <div class="item-details">
-                    <h2><b>Item name</b></h2> 
-                    <p>Hall 1 Canteen</p>
-                </div>
-                <div class="star-container">
-                    <h2><b>5</b></h2> // Number 
-                    <span class="fa fa-star star-icon"></span> //Star icon 
-                </div>
-            </div>
-            
-            </div>-->
-
-
           </div>
         </div>
       </div>
       
       <div class="side-strip">
         <span>EAT RATE CURATE</span>
+      </div>
+      <div id="messageBox" class="message-box" style="display:none;">
+        <p id="messageBoxText"></p>
+        <button onclick="closeMessageBox()">OK</button>
       </div>
     </main>
     <script>
@@ -275,6 +259,18 @@
           }
       });
   });
+  function showMessage(message) {
+  $("#messageBoxText").text(message);
+  $("#messageBox").fadeIn();
+}
+
+// Function to hide the message box and reload the page
+function closeMessageBox() {
+    $("#messageBox").fadeOut('fast', function() {
+        window.location.reload(); // Reload the page after closing the message box
+    });
+}
 </script>
+
   </body>
 </html>

@@ -494,27 +494,30 @@ function addReview(itemId) {
 }
 </script>
 
-
 <% if (scrollToItemId) { %>
   <script>
+    // Wait for the DOM content to be fully loaded
     window.addEventListener('DOMContentLoaded', () => {
-      // Show the correct category section
-      const scrollToItemElement = document.getElementById('item-' + '<%= scrollToItemId %>');
-      if (scrollToItemElement) {
-        // Find the parent section of the item
-        const parentSection = scrollToItemElement.closest('.section');
-        // Show the parent section
-        if (parentSection) {
-          // Hide all sections first
-          document.querySelectorAll('.section').forEach(section => {
-            section.style.display = 'none';
-          });
-          // Show the parent section of the item
-          parentSection.style.display = 'block';
+      // Set a timeout that matches the loader animation duration
+      setTimeout(function() {
+        // Show the correct category section
+        const scrollToItemElement = document.getElementById('item-' + '<%= scrollToItemId %>');
+        if (scrollToItemElement) {
+          // Find the parent section of the item
+          const parentSection = scrollToItemElement.closest('.section');
+          // Show the parent section
+          if (parentSection) {
+            // Hide all sections first
+            document.querySelectorAll('.section').forEach(section => {
+              section.style.display = 'none';
+            });
+            // Show the parent section of the item
+            parentSection.style.display = 'block';
+          }
+          // Scroll to the item
+          scrollToItemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-        // Scroll to the item
-        scrollToItemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+      }, 1000); // Adjust the delay as needed to match the loader timeout
     });
   </script>
 <% } %>

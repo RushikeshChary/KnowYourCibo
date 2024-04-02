@@ -119,11 +119,11 @@
     const firstName = document.getElementById("firstName").value;
     const lastName = document.getElementById("lastName").value;
     if (!email || !firstName || !lastName) {
-      showMessage("Please fill in all fields.");
+      alert("Please fill in all fields.");
       return;
     }
     if (!validateEmail(email)) {
-    showMessage("Invalid email format.");
+    alert("Invalid email format.");
     return;
   }
           try {
@@ -135,7 +135,7 @@
             });
             const checkUserData = await checkUserResponse.json();
             if (checkUserData.exists) {
-              showMessage(checkUserData.message);
+              alert(checkUserData.message);
               return; // Stop further execution if the user exists
             }
 
@@ -146,13 +146,13 @@
         body: JSON.stringify({ email, firstName, lastName }),
       });
             const otpData = await otpResponse.json();
-            showMessage(otpData.message);
+            alert(otpData.message);
             if (!otpData.error) {
               document.getElementById("otpSection").style.display = "block";
             }
           } catch (error) {
             console.error("Error:", error);
-            showMessage("An error occurred, please try again.");
+            alert("An error occurred, please try again.");
           }
         });
 
@@ -170,19 +170,19 @@
               });
               const data = await response.json();
               if (data.success) {
-                showMessage("OTP verified successfully. Please set your password.");
+                alert("OTP verified successfully. Please set your password.");
                 document.getElementById("passwordSection").style.display =
                   "block";
                 document.getElementById("submitSection").style.display = "flex";
               } else {
-                showMessage(data.error);
+                alert(data.error);
               }
             } catch (error) {
               console.error("Error verifying OTP:", error);
-              showMessage("Error verifying OTP, please try again.");
+              alert("Error verifying OTP, please try again.");
             }
           } else {
-            showMessage("Please enter a 6-digit OTP.");
+            alert("Please enter a 6-digit OTP.");
           }
         });
 
@@ -193,7 +193,7 @@
         const confirmPassword =
           document.getElementById("confirmpassword").value;
         if (password !== confirmPassword) {
-          showMessage("Passwords do not match.");
+          alert("Passwords do not match.");
           return;
         }
         try {
@@ -204,14 +204,14 @@
           });
           const data = await response.json();
           if (data.error) {
-            showMessage(data.error);
+            alert(data.error);
           } else {
-            showMessage("Successfully registered. Redirecting to login...");
+            alert("Successfully registered. Redirecting to login...");
             window.location.href = "/login";
           }
         } catch (error) {
           console.error("Error setting password:", error);
-          showMessage("Error setting password, please try again.");
+          alert("Error setting password, please try again.");
         }
       };
     </script>

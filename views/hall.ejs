@@ -21,11 +21,13 @@
   <script src="https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   <title>KnowYourCibo</title>
-   <link rel="stylesheet" href="loadStyle.css">
+  <link rel="stylesheet" href="loadStyle.css">
   <link rel="stylesheet" href="stylepage.css">
   <link rel="stylesheet" href="hallStyle.css">
   <script src="hallScript.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+
 
 
 </head>
@@ -415,10 +417,12 @@ ease: Expo.easeInOut
       // Check the action performed (added to or removed from favorites)
       if(this.classList.contains('clicked')) {
         // If it's currently clicked, it was just added to favorites
-        showMessage('Removed from favorites');
+        alert('Removed from favorites');
+        window.location.reload(); 
       } else {
         // If not, it was just removed from favorites
-        showMessage('Added to favorites');
+        alert('Added to favorites');
+        window.location.reload(); 
       }
 
       // Toggle the 'clicked' class based on the action
@@ -426,7 +430,7 @@ ease: Expo.easeInOut
 
     } catch (error) {
       console.error("Error:", error);
-      showMessage1(error.message || "An error occurred while processing your request"); // Use the custom message box instead of alert
+      alert(error.message || "An error occurred while processing your request"); // Use the custom message box instead of alert
     }
   });
 });
@@ -454,7 +458,7 @@ function addReview(itemId) {
   const comment = reviewInput.value.trim();
 
   if (!comment) {
-    showMessage1('Please enter a review.');
+    alert('Please enter a review.');
     return;
   }
 
@@ -471,7 +475,7 @@ function addReview(itemId) {
     // If the response status code is not in the 200 range
     if (response.status === 401) {
       // If the user is not authorized, prompt them to log in
-      showMessage1('You must be logged in to add a review.');
+      alert('You must be logged in to add a review.');
     }
     throw new Error('Response not ok');
   }
@@ -480,7 +484,8 @@ function addReview(itemId) {
 
  .then(data => {
   reviewInput.value = '';
-  showMessage('Review added successfully.');
+ alert('Review added successfully.');
+ window.location.reload(); 
 
 })
 .catch(error => {
@@ -489,30 +494,27 @@ function addReview(itemId) {
 }
 </script>
 
+
 <% if (scrollToItemId) { %>
   <script>
-    // Wait for the DOM content to be fully loaded
     window.addEventListener('DOMContentLoaded', () => {
-      // Set a timeout that matches the loader animation duration
-      setTimeout(function() {
-        // Show the correct category section
-        const scrollToItemElement = document.getElementById('item-' + '<%= scrollToItemId %>');
-        if (scrollToItemElement) {
-          // Find the parent section of the item
-          const parentSection = scrollToItemElement.closest('.section');
-          // Show the parent section
-          if (parentSection) {
-            // Hide all sections first
-            document.querySelectorAll('.section').forEach(section => {
-              section.style.display = 'none';
-            });
-            // Show the parent section of the item
-            parentSection.style.display = 'block';
-          }
-          // Scroll to the item
-          scrollToItemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Show the correct category section
+      const scrollToItemElement = document.getElementById('item-' + '<%= scrollToItemId %>');
+      if (scrollToItemElement) {
+        // Find the parent section of the item
+        const parentSection = scrollToItemElement.closest('.section');
+        // Show the parent section
+        if (parentSection) {
+          // Hide all sections first
+          document.querySelectorAll('.section').forEach(section => {
+            section.style.display = 'none';
+          });
+          // Show the parent section of the item
+          parentSection.style.display = 'block';
         }
-      }, 1000); // Adjust the delay as needed to match the loader timeout
+        // Scroll to the item
+        scrollToItemElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     });
   </script>
 <% } %>
@@ -540,7 +542,8 @@ function addReview(itemId) {
       url: requestUrl,
       data: requestData,
       success: function(response) {
-        showMessage(response.message); // Use the custom message box
+        alert(response.message);
+        window.location.reload();  // Use the custom message box
       
         if (isRated) {
           // If the rating was removed, reset the stars
@@ -554,10 +557,11 @@ function addReview(itemId) {
       },
       error: function(xhr, status, error) {
         if (xhr.status === 401) {
-          showMessage1('You must be logged in to rate items.'); // Use the custom message box
+          alert('You must be logged in to rate items.'); // Use the custom message box
         } else {
           console.error('Error updating rating:', error);
-          showMessage('Failed to update rating. Please try again.'); // Use the custom message box
+          alert('Failed to update rating. Please try again.');
+          window.location.reload();  // Use the custom message box
         }
       }
     });
@@ -596,7 +600,7 @@ function closeMessageBox1() {
 
 
   </script>
-<script>
+  <script>
  document.addEventListener("DOMContentLoaded", function() {
   // Show loading overlay
   document.getElementById("loading-overlay").style.display = "flex";
@@ -611,6 +615,7 @@ function closeMessageBox1() {
     document.querySelector(".original-content").style.display = "block";
   }, 1000); // Adjust the delay as needed (e.g., 3000 milliseconds = 3 seconds)
 });
+
 </script>
 </div>
 </body>

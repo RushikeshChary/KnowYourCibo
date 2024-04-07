@@ -528,7 +528,10 @@ function addReview(itemId) {
     const $thisButton = $(this); // The current "Rate" or "Remove rating" button
     const itemId = $thisButton.data('item-id'); // ID of the item being rated
     const isRated = $thisButton.data('rated'); // Whether the user has already rated this item
-    
+    if (!isRated && $thisButton.siblings('.rating-box').find('.fa-star.active').length === 0) {
+        alert('Please select a rating.'); // Prompt the user with an error message
+        return; // Exit the function early if no stars are selected
+      }
     // Prepare the data to be sent in the AJAX request
     let requestData = { itemId: itemId };
     let requestUrl = isRated ? '/remove-rating' : '/submit-rating';

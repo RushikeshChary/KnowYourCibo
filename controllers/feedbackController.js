@@ -9,6 +9,12 @@ async function submitFeedback(req, res) {
       return res.status(400).json({ message: 'You should fill the boxes completely' });
     }
 
+    const currentDateTime = new Date();
+    const providedFeedbackDate = new Date(feedbackDate);
+    if (providedFeedbackDate > currentDateTime) {
+      return res.status(400).json({ message: 'Feedback date cannot be a future date.' });
+    }
+
     const emailBody = `
       Feedback received from: ${name}
       Email: ${email}

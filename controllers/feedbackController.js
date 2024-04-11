@@ -5,7 +5,7 @@ async function submitFeedback(req, res) {
     const { name, email, feedbackDate, rating, comments } = req.body;
 
     // Check if all required fields are filled
-    if (!name || !email || !feedbackDate || !rating || !comments) {
+    if (!name || !email || !feedbackDate || !rating ) {
       return res.status(400).json({ message: 'You should fill the boxes completely' });
     }
 

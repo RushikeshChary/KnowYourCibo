@@ -3,6 +3,12 @@ const nodemailer = require('nodemailer');
 async function submitFeedback(req, res) {
   try {
     const { name, email, feedbackDate, rating, comments } = req.body;
+
+    // Check if all required fields are filled
+    if (!name || !email || !feedbackDate || !rating || !comments) {
+      return res.status(400).json({ message: 'You should fill the boxes completely' });
+    }
+
     const emailBody = `
       Feedback received from: ${name}
       Email: ${email}
@@ -11,15 +17,14 @@ async function submitFeedback(req, res) {
       Comments: ${comments}
     `;
 
-    
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-              user: process.env.GMAIL_USER,
-              pass: process.env.GMAIL_APP_PASS,
-            },
-          });
-    
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASS,
+      },
+    });
+
     await transporter.sendMail({
       from: process.env.GMAIL_USER,
       to: 'knowyourcibo@gmail.com',

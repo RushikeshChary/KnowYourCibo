@@ -183,6 +183,23 @@
 
   </script>
   <script>
+
+   document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+          const name = document.getElementById('name').value;
+          const email = document.getElementById('email').value;
+          const feedbackDate = document.getElementById('feedbackDate').value;
+          const comments = document.getElementById('comments').value; // Optional, no need to validate
+          const ratings = document.querySelectorAll('input[name="rating"]:checked');
+          
+          if (!name || !email || !feedbackDate || ratings.length === 0) {
+              alert("Please fill in all required fields and select a rating.");
+              event.preventDefault(); // Prevent form from submitting
+          }
+      });
+    });
+ 
+
     document.addEventListener('DOMContentLoaded', function() {
         const currentPath = window.location.pathname;
         const navLinks = document.querySelectorAll('.menu-links a');

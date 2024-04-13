@@ -4,16 +4,17 @@ async function submitFeedback(req, res) {
   try {
     const { name, email, feedbackDate, rating, comments } = req.body;
 
+    console.log(name,email,feedbackDate,rating,comments)
     // Check if all required fields are filled
-    if (!name || !email || !feedbackDate || !rating ) {
+    if (!name || !email || !feedbackDate || !rating) {
       return res.status(400).json({ message: 'You should fill the boxes completely' });
     }
 
-    const currentDateTime = new Date();
-    const providedFeedbackDate = new Date(feedbackDate);
-    if (providedFeedbackDate > currentDateTime) {
-      return res.status(400).json({ message: 'Feedback date cannot be a future date.' });
-    }
+    // const currentDateTime = new Date();
+    // const providedFeedbackDate = new Date(feedbackDate);
+    // if (providedFeedbackDate > currentDateTime) {
+    //   return res.status(400).json({ message: 'Feedback date cannot be a future date.' });
+    // }
 
     const emailBody = `
       Feedback received from: ${name}
@@ -38,7 +39,8 @@ async function submitFeedback(req, res) {
       text: emailBody,
     });
 
-    res.redirect('/home');
+    // res.redirect('/home');
+    res.status(400).json({ message: 'Successfully sent feedback' });
   } catch (error) {
     console.error('Error sending feedback email:', error);
     res.status(500).json({ message: 'Error submitting feedback.' });

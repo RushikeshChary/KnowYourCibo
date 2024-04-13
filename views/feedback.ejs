@@ -98,7 +98,7 @@
         <input type="email" id="email" name="email" required>
 
         <label for="feedbackDate">Date services were rendered:</label>
-        <input type="date" id="feedbackDate" name="feedbackDate" required>
+         <input type="date" id="feedbackDate" name="feedbackDate" required readonly value="<%= new Date().toISOString().substring(0, 10) %>">
 
         <label for="rating">Rate your overall experience with the application:</label>
         <div class="rating-container">

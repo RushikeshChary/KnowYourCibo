@@ -130,8 +130,8 @@
 
 
 <!-- transitions -->
-  <script>
-
+   <!-- <script>
+ document.addEventListener('DOMContentLoaded', () => {
     TweenMax.from(".logo", 1, {
       delay: 0.3,
       opacity: 0,
@@ -161,12 +161,14 @@
     })
 
     TweenMax.from(".social-media", 1, {
-      delay: 0.9,
-      opacity: 0,
-      x: -20,
-      ease: Expo.easeInOut
-    })
-
+  delay: 0.9,
+  opacity: 0,
+  x: -20,
+  ease: Expo.easeInOut,
+  onComplete: function() {
+    document.querySelector('.social-media').style.pointerEvents = 'auto';
+  }
+});
     TweenMax.from(".side-strip", 1, {
       delay: 0.9,
       opacity: 0,
@@ -180,8 +182,8 @@
       x: -20,
       ease: Expo.easeInOut
     })
-
-  </script>
+  });
+  </script> -->
   <script>
 
    document.addEventListener('DOMContentLoaded', function() {

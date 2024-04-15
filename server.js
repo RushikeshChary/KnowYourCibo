@@ -396,7 +396,7 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
   try {
     const restaurantId = req.params.restaurantId;
     const restaurant = await Restaurant.findById(restaurantId);
-
+    const scrollToItemId = req.query.scrollToItemId || null;
     if (!restaurant) {
       return res.status(404).send("Restaurant not found");
     }
@@ -473,7 +473,7 @@ app.get("/Restaurants/:restaurantId", async (req, res) => {
       
     // Now itemArray should be populated with the results of the asynchronous operations
 
-    res.render("hall", { restaurant, itemArray, menu, isLoggedIn, user,scrollToItemId: null});
+    res.render("hall", { restaurant, itemArray, menu, isLoggedIn, user, scrollToItemId: scrollToItemId});
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");

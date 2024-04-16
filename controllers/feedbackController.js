@@ -39,8 +39,7 @@ async function submitFeedback(req, res) {
       text: emailBody,
     });
 
-    // res.redirect('/home');
-    res.status(400).json({ message: 'Successfully sent feedback' });
+res.redirect('/Feedback');
   } catch (error) {
     console.error('Error sending feedback email:', error);
     res.status(500).json({ message: 'Error submitting feedback.' });

@@ -1,6 +1,10 @@
 /* .mosaic-container {
 
 } */
+html, body {
+  height: 100%;
+  overflow-y: auto; 
+}
 
 .tile {
   height: auto;

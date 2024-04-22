@@ -27,6 +27,9 @@
   <script src="hallScript.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+  <script>
+    var restaurantId = '<%= restaurant._id %>';  
+</script>
 
 
 
@@ -418,11 +421,11 @@ ease: Expo.easeInOut
       if(this.classList.contains('clicked')) {
         // If it's currently clicked, it was just added to favorites
         alert('Removed from favorites');
-        window.location.reload(); 
+        window.location.href = `/Restaurants/${restaurantId}?scrollToItemId=${item_id}`;
       } else {
         // If not, it was just removed from favorites
         alert('Added to favorites');
-        window.location.reload(); 
+        window.location.href = `/Restaurants/${restaurantId}?scrollToItemId=${item_id}`;
       }
 
       // Toggle the 'clicked' class based on the action
@@ -485,7 +488,9 @@ function addReview(itemId) {
  .then(data => {
   reviewInput.value = '';
  alert('Review added successfully.');
- window.location.reload(); 
+// Assuming `restaurantId` is defined in the scope
+window.location.href = `/Restaurants/${restaurantId}?scrollToItemId=${itemId}`;
+
 
 })
 .catch(error => {
@@ -549,7 +554,7 @@ function addReview(itemId) {
       data: requestData,
       success: function(response) {
         alert(response.message);
-        window.location.reload();  // Use the custom message box
+        window.location.href = `/Restaurants/${restaurantId}?scrollToItemId=${itemId}`;
       
         if (isRated) {
           // If the rating was removed, reset the stars
@@ -567,7 +572,7 @@ function addReview(itemId) {
         } else {
           console.error('Error updating rating:', error);
           alert('Failed to update rating. Please try again.');
-          window.location.reload();  // Use the custom message box
+          window.location.href = `/Restaurants/${restaurantId}?scrollToItemId=${itemId}`;
         }
       }
     });
@@ -627,3 +632,4 @@ function closeMessageBox1() {
 </body>
 
 </html>
+

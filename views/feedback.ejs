@@ -64,13 +64,19 @@
 
 
  <!-- social media -->
-<div class="social-media">
-  <ul>
-        <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
-        <li><i class="fa fa-instagram" aria-hidden="true"></i></li>
-        <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
-  </ul>
-</div>
+ <div class="social-media">
+        <ul>
+              <a href="https://www.facebook.com/profile.php?id=61557611412708" target="_blank">
+              <li><i class="fa fa-facebook" aria-hidden="true"></i></li>
+              </a>
+              <a href="https://www.instagram.com/knowyourcibo11/" target="_blank">
+              <li><i class="fa fa-instagram" aria-hidden="true"></i></li>
+              </a>
+              <a href="https://twitter.com/knowyourcibo11" target="_blank">
+              <li><i class="fa fa-twitter" aria-hidden="true"></i></li>
+              </a>
+        </ul>
+  </div>
 
 </header>
 
@@ -130,8 +136,8 @@
 
 
 <!-- transitions -->
-  <script>
-
+   <!-- <script>
+ document.addEventListener('DOMContentLoaded', () => {
     TweenMax.from(".logo", 1, {
       delay: 0.3,
       opacity: 0,
@@ -161,12 +167,14 @@
     })
 
     TweenMax.from(".social-media", 1, {
-      delay: 0.9,
-      opacity: 0,
-      x: -20,
-      ease: Expo.easeInOut
-    })
-
+  delay: 0.9,
+  opacity: 0,
+  x: -20,
+  ease: Expo.easeInOut,
+  onComplete: function() {
+    document.querySelector('.social-media').style.pointerEvents = 'auto';
+  }
+});
     TweenMax.from(".side-strip", 1, {
       delay: 0.9,
       opacity: 0,
@@ -180,24 +188,27 @@
       x: -20,
       ease: Expo.easeInOut
     })
-
-  </script>
+  });
+  </script> -->
   <script>
 
-   document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('feedbackForm').addEventListener('submit', function(event) {
-          const name = document.getElementById('name').value;
-          const email = document.getElementById('email').value;
-          const feedbackDate = document.getElementById('feedbackDate').value;
-          const comments = document.getElementById('comments').value; // Optional, no need to validate
-          const ratings = document.querySelectorAll('input[name="rating"]:checked');
-          
-          if (!name || !email || !feedbackDate || ratings.length === 0) {
-              alert("Please fill in all required fields and select a rating.");
-              event.preventDefault(); // Prevent form from submitting
-          }
-      });
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const feedbackDate = document.getElementById('feedbackDate').value;
+        const comments = document.getElementById('comments').value; // Optional, no need to validate
+        const ratings = document.querySelectorAll('input[name="rating"]:checked');
+        
+        if (!name || !email || !feedbackDate || ratings.length === 0) {
+            alert("Please fill in all required fields and select a rating.");
+            event.preventDefault(); // Prevent form from submitting
+        } else {
+            alert("Feedback sent successfully!");
+           
+        }
     });
+});
  
 
     document.addEventListener('DOMContentLoaded', function() {
